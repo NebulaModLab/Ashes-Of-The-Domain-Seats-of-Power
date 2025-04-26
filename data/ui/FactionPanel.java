@@ -6,6 +6,7 @@ import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import data.misc.UIDataSop;
+import data.ui.factionpolicies.FactionPolicyPanel;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -59,6 +60,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
     }
     public void clearUI(boolean clearMusic) {;
         panelMap.clear();
+        mainPanel.removeComponent(panelForPlugins);
         if(clearMusic){
             pauseSound();
         }
@@ -110,7 +112,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
         bg = Global.getSector().getPlayerFaction().getDarkUIColor();
         customProd = buttonTooltip.addButton("Policies", null, base, bg, Alignment.MID, CutStyle.TOP, 140, 20, 0f);
         research = buttonTooltip.addButton("Timeline", null, base, bg, Alignment.MID, CutStyle.TOP, 140, 20, 0f);;
-        sp = buttonTooltip.addButton("Statistics", null, base, bg, Alignment.MID, CutStyle.TOP, 140, 20, 0f);;
+        sp = buttonTooltip.addButton("Overview", null, base, bg, Alignment.MID, CutStyle.TOP, 140, 20, 0f);;
         customProd.setShortcut(Keyboard.KEY_R, false);
         research.setShortcut(Keyboard.KEY_T, false);
         sp.setShortcut(Keyboard.KEY_S, false);
@@ -120,6 +122,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
         buttonPanel.addUIElement(buttonTooltip).inTL(0, 0);
         buttonPanel.addComponent(panelHelper).inTL(0, 20);
         mainPanel.addComponent(buttonPanel).inTL(0, 10);
+        panelForPlugins.addComponent(new FactionPolicyPanel(panelForPlugins.getPosition().getWidth(),panelForPlugins.getPosition().getHeight()).getMainPanel()).inTL(0,0);
 
     }
 }

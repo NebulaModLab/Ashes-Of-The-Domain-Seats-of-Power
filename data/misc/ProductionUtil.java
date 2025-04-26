@@ -4,6 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignUIAPI;
 import com.fs.starfarer.api.campaign.CoreUIAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
+import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.ui.UIPanelAPI;
 
 public class ProductionUtil {
@@ -11,7 +12,6 @@ public class ProductionUtil {
         CampaignUIAPI campaignUI;
         campaignUI = Global.getSector().getCampaignUI();
         InteractionDialogAPI dialog = campaignUI.getCurrentInteractionDialog();
-
         CoreUIAPI core;
         if (dialog == null) {
             core = (CoreUIAPI) ReflectionUtilis.invokeMethod("getCore",campaignUI);
