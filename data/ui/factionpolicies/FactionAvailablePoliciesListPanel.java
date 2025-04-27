@@ -1,4 +1,4 @@
-package data.ui.basecomps;
+package data.ui.factionpolicies;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.ui.Alignment;

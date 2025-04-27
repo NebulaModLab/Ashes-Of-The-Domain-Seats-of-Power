@@ -1,20 +1,28 @@
-package data.ui.factionpolicies;
+package data.ui.timeline;
 
+import ashlib.data.plugins.ui.plugins.UILinesRenderer;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.PositionAPI;
-import data.ui.SoundUIManager;
-import data.ui.basecomps.*;
+import data.ui.basecomps.ExtendUIPanelPlugin;
+import data.ui.basecomps.FactionBonusPanel;
+import data.ui.basecomps.FactionFlagButtonComponent;
+import data.ui.basecomps.FactionXPPanel;
+import data.ui.factionpolicies.FactionAvailablePoliciesListPanel;
+import data.ui.factionpolicies.FactionCurrentPoliciesListPanel;
 
 import java.util.List;
 
-public class FactionPolicyPanel implements ExtendUIPanelPlugin , SoundUIManager {
+public class FactionTimelinePanel implements ExtendUIPanelPlugin {
+    float goalsWidth = 400;
     CustomPanelAPI mainPanel;
-
-    public FactionPolicyPanel(float width, float height){
+    UILinesRenderer renderer;
+    public FactionTimelinePanel(float width,float height){
         mainPanel = Global.getSettings().createCustom(width,height,this);
-        createUI();
+createUI();
+        renderer = new UILinesRenderer(0f);
+        renderer.setPanel(mainPanel);
     }
     public void createUI(){
         float width = mainPanel.getPosition().getWidth();
@@ -23,8 +31,6 @@ public class FactionPolicyPanel implements ExtendUIPanelPlugin , SoundUIManager 
         float widthT = width*0.5f - 10f;
         float heightT = height-160;
 
-        mainPanel.addComponent(new FactionCurrentPoliciesListPanel(widthT,heightT).getMainPanel()).inTL(0,0);
-        mainPanel.addComponent(new FactionAvailablePoliciesListPanel(widthT,heightT).getMainPanel()).inTL(widthT+5f,0);
         mainPanel.addComponent(new FactionFlagButtonComponent(130, 130).getPanelOfButton()).inTL(((width - 10) / 2) - 65, height - 130);
         mainPanel.addComponent(new FactionXPPanel(450, 130).getMainPanel()).inTL(((width - 10) / 2) - 65 - 455, height - 130);
         mainPanel.addComponent(new FactionBonusPanel(450, 130).getMainPanel()).inTL(((width - 10) / 2) + 70, height - 130);
@@ -63,16 +69,6 @@ public class FactionPolicyPanel implements ExtendUIPanelPlugin , SoundUIManager 
 
     @Override
     public void buttonPressed(Object buttonId) {
-
-    }
-
-    @Override
-    public void playSound() {
-
-    }
-
-    @Override
-    public void pauseSound() {
 
     }
 }

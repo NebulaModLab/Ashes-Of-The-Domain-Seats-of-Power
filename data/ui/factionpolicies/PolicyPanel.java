@@ -1,15 +1,15 @@
-package data.ui.basecomps;
+package data.ui.factionpolicies;
 
 import ashlib.data.plugins.ui.models.resizable.ImageViewer;
 import ashlib.data.plugins.ui.plugins.UILinesRenderer;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
 import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.loading.IndustrySpecAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
+import data.ui.basecomps.ExtendUIPanelPlugin;
 
 import java.awt.*;
 import java.util.List;

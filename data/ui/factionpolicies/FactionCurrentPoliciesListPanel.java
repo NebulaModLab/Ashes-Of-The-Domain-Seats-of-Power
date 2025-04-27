@@ -1,9 +1,10 @@
-package data.ui.basecomps;
+package data.ui.factionpolicies;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
+import data.ui.basecomps.ExtendUIPanelPlugin;
 
 import java.util.ArrayList;
 import java.util.List;

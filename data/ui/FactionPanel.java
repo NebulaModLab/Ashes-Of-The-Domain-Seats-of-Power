@@ -1,12 +1,15 @@
 package data.ui;
 
+import ashlib.data.plugins.misc.AshMisc;
 import ashlib.data.plugins.ui.plugins.UILinesRenderer;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import data.misc.UIDataSop;
+import data.scripts.CoreUITrackerScript;
 import data.ui.factionpolicies.FactionPolicyPanel;
+import data.ui.timeline.FactionTimelinePanel;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -23,6 +26,8 @@ public class FactionPanel implements CustomUIPanelPlugin {
     UILinesRenderer renderer;
     HashMap<ButtonAPI, CustomPanelAPI> panelMap = new HashMap<>();
     boolean pausedMusic = true;
+    FactionPolicyPanel policyPanel;
+    FactionTimelinePanel timelinePanel;
 
     public HashMap<ButtonAPI, CustomPanelAPI> getPanelMap() {
         return panelMap;
@@ -35,8 +40,8 @@ public class FactionPanel implements CustomUIPanelPlugin {
         this.mainPanel = mainPanel;
         renderer = new UILinesRenderer(0f);
         this.panelForPlugins = mainPanel.createCustomPanel(mainPanel.getPosition().getWidth(), mainPanel.getPosition().getHeight() - 45, null);
-        if (panelToShowcase == null) {
-            panelToShowcase = "timeline";
+        if (!AshMisc.isStringValid(panelToShowcase)) {
+            panelToShowcase = "Policies";
         }
 
 
@@ -84,6 +89,30 @@ public class FactionPanel implements CustomUIPanelPlugin {
     @Override
     public void advance(float amount) {
 
+        for (Map.Entry<ButtonAPI, CustomPanelAPI> entry : panelMap.entrySet()) {
+            entry.getKey().unhighlight();
+            if (entry.getKey().isChecked()) {
+                entry.getKey().setChecked(false);
+                if (!entry.getKey().equals(currentlyChosen)) {
+                    resetCurrentPlugin(entry.getKey());
+                    CoreUITrackerScript.setMemFlagForTechTab(entry.getKey().getText().toLowerCase());
+                }
+
+
+                break;
+            }
+        }
+        if (currentlyChosen != null) {
+            currentlyChosen.highlight();
+        }
+    }
+    public void resetCurrentPlugin(ButtonAPI newButton) {
+        if (currentlyChosen != null) {
+            this.panelForPlugins.removeComponent(panelMap.get(currentlyChosen));
+        }
+        currentlyChosen = newButton;
+        this.panelForPlugins.addComponent(panelMap.get(currentlyChosen)).inTL(0, 0);
+        playSound(currentlyChosen);
     }
 
     @Override
@@ -122,7 +151,27 @@ public class FactionPanel implements CustomUIPanelPlugin {
         buttonPanel.addUIElement(buttonTooltip).inTL(0, 0);
         buttonPanel.addComponent(panelHelper).inTL(0, 20);
         mainPanel.addComponent(buttonPanel).inTL(0, 10);
-        panelForPlugins.addComponent(new FactionPolicyPanel(panelForPlugins.getPosition().getWidth(),panelForPlugins.getPosition().getHeight()).getMainPanel()).inTL(0,0);
+        insertPolicyPanel(customProd);
+        insertTimeLinePanel(research);
 
+    }
+    private void insertPolicyPanel(ButtonAPI tiedButton) {
+        if (policyPanel == null) {
+            policyPanel = new FactionPolicyPanel(panelForPlugins.getPosition().getWidth(),panelForPlugins.getPosition().getHeight());
+        }
+
+        panelMap.put(tiedButton, policyPanel.getMainPanel());
+    }
+    private void insertTimeLinePanel(ButtonAPI tiedButton) {
+        if (timelinePanel == null) {
+            timelinePanel = new FactionTimelinePanel(panelForPlugins.getPosition().getWidth(),panelForPlugins.getPosition().getHeight());
+        }
+
+        panelMap.put(tiedButton, timelinePanel.getMainPanel());
+    }
+    public void playSound(ButtonAPI button) {
+        if (button.getText().toLowerCase().contains("policies")) {
+            policyPanel.playSound();
+        }
     }
 }
