@@ -1,6 +1,7 @@
 package data.ui.timeline;
 
 import ashlib.data.plugins.ui.plugins.UILinesRenderer;
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.PositionAPI;
@@ -13,7 +14,9 @@ public class FactionTimelineGoalsPanel implements ExtendUIPanelPlugin {
     UILinesRenderer renderer;
 
     public FactionTimelineGoalsPanel(float width,float height){
-
+        mainPanel = Global.getSettings().createCustom(width,height,this);
+        renderer = new UILinesRenderer(0f);
+        renderer.setPanel(mainPanel);
     }
     @Override
     public CustomPanelAPI getMainPanel() {
@@ -32,7 +35,7 @@ public class FactionTimelineGoalsPanel implements ExtendUIPanelPlugin {
 
     @Override
     public void render(float alphaMult) {
-
+        renderer.render(alphaMult);
     }
 
     @Override

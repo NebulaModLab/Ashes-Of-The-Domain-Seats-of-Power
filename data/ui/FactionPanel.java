@@ -83,7 +83,6 @@ public class FactionPanel implements CustomUIPanelPlugin {
 
     @Override
     public void render(float alphaMult) {
-        renderer.render(alphaMult);
     }
 
     @Override

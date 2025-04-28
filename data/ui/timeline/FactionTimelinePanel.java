@@ -17,26 +17,26 @@ import java.util.List;
 public class FactionTimelinePanel implements ExtendUIPanelPlugin {
     float goalsWidth = 400;
     CustomPanelAPI mainPanel;
-    UILinesRenderer renderer;
-    public FactionTimelinePanel(float width,float height){
-        mainPanel = Global.getSettings().createCustom(width,height,this);
-createUI();
-        renderer = new UILinesRenderer(0f);
-        renderer.setPanel(mainPanel);
+
+    public FactionTimelinePanel(float width, float height) {
+        mainPanel = Global.getSettings().createCustom(width, height, this);
+        createUI();
     }
-    public void createUI(){
+
+    public void createUI() {
         float width = mainPanel.getPosition().getWidth();
         float height = mainPanel.getPosition().getHeight();
 
-        float widthT = width*0.5f - 10f;
-        float heightT = height-160;
-
+        float widthT = width * 0.5f - 10f;
+        float heightT = height - 160;
+        mainPanel.addComponent(new FactionTimelineGoalsPanel(400, height - 160).getMainPanel()).inTL(0, 0);
         mainPanel.addComponent(new FactionFlagButtonComponent(130, 130).getPanelOfButton()).inTL(((width - 10) / 2) - 65, height - 130);
         mainPanel.addComponent(new FactionXPPanel(450, 130).getMainPanel()).inTL(((width - 10) / 2) - 65 - 455, height - 130);
         mainPanel.addComponent(new FactionBonusPanel(450, 130).getMainPanel()).inTL(((width - 10) / 2) + 70, height - 130);
-
+        Global.getSector().getPlayerFleet().getStats().getFuelUseNormalMult().setBaseValue(1f);
 
     }
+
     @Override
     public CustomPanelAPI getMainPanel() {
         return mainPanel;
