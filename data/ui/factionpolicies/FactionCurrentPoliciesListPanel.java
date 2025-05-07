@@ -37,7 +37,7 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
         headerPanel = Global.getSettings().createCustom(panelWidth,30,null);
         TooltipMakerAPI tooltipHeader = headerPanel.createUIElement(panelWidth,30,false);
         tooltipHeader.setParaFont(Fonts.ORBITRON_24AABOLD);
-        tooltipHeader.addPara("Faction Policies", Misc.getTooltipTitleAndLightHighlightColor(),2f).setAlignment(Alignment.MID);
+        tooltipHeader.addPara("Faction Policies ( 0 / 3 )", Misc.getTooltipTitleAndLightHighlightColor(),2f).setAlignment(Alignment.MID);
 
         tooltipPanel = Global.getSettings().createCustom(panelWidth, panelHeight-30, null);
         tooltip = tooltipPanel.createUIElement(panelWidth, panelHeight-30, true);
@@ -56,7 +56,7 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
             CustomPanelAPI row = Global.getSettings().createCustom(widthT, PolicyPanel.HEIGHT, null);
 
             for (int i = 0; i < itemsThisRow; i++) {
-                PolicyPanel item = new PolicyPanel(true);
+                PolicyPanel item = new PolicyPanel(true,null);
                 row.addComponent(item.getMainPanel()).inTL(currX,0);
                 currX+=PolicyPanel.WIDTH+separator;
                 created++;

@@ -6,6 +6,12 @@ import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.Fonts;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.managers.FactionManager;
+import data.scripts.managers.FactionPolicySpecManager;
+import data.scripts.models.FactionPolicySpec;
+
+import java.util.Iterator;
+import java.util.Map;
 
 public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesListPanel {
     public FactionAvailablePoliciesListPanel(float width, float height) {
@@ -31,12 +37,13 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
         tooltipPanel = Global.getSettings().createCustom(panelWidth, panelHeight-30, null);
         tooltip = tooltipPanel.createUIElement(panelWidth, panelHeight-30, true);
 
-        int amountOfItems = 13; // Total number of items to place
+        int amountOfItems =  FactionPolicySpecManager.getFactionPolicySpecs().values().size(); // Total number of items to place
         float separator = 5f;  // Example separator size
 
         int itemsPerRow = calculateMaxAmountOfItems(panelWidth, separator);
         int created = 0;
-        while (created < amountOfItems) {
+        Iterator<FactionPolicySpec>specs = FactionPolicySpecManager.getFactionPolicySpecs().values().iterator();
+        while (specs.hasNext()) {
             int itemsThisRow = Math.min(itemsPerRow, amountOfItems - created);
             float currX = 0;
             // Create a row panel
@@ -45,7 +52,9 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
             CustomPanelAPI row = Global.getSettings().createCustom(widthT, PolicyPanel.HEIGHT, null);
 
             for (int i = 0; i < itemsThisRow; i++) {
-                PolicyPanel item = new PolicyPanel(false);
+                if(!specs.hasNext())break;
+                FactionPolicySpec spec = specs.next();
+                PolicyPanel item = new PolicyPanel(false,spec.getId());
                 row.addComponent(item.getMainPanel()).inTL(currX,0);
                 currX+=PolicyPanel.WIDTH+separator;
                 created++;
