@@ -56,6 +56,7 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
                 if (!specs.hasNext()) break;
                 FactionPolicySpec spec = specs.next();
                 PolicyPanel item = new PolicyPanel(false, spec.getId());
+                panels.add(item);
                 row.addComponent(item.getMainPanel()).inTL(currX, 0);
                 currX += PolicyPanel.WIDTH + separator;
                 created++;
@@ -72,4 +73,17 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
         mainPanel.addComponent(tooltipPanel).inTL(0, 30);
         mainPanel.addComponent(headerPanel).inTL(0, 0);
     }
+
+    @Override
+    public void advance(float amount) {
+        for (PolicyPanel panel : panels) {
+            if(panel.getButton().isChecked()){
+                panel.getButton().setChecked(false);
+                FactionManager.getInstance().addNewPolicy(panel.policy.getSpec().getId());
+                changeRequired = true;
+                break;
+            }
+        }
+    }
+
 }

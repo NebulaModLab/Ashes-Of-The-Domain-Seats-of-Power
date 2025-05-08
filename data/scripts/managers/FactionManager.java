@@ -58,5 +58,8 @@ public class FactionManager {
         specs.removeIf(x->currentFactionPolicies.stream().anyMatch(y->y.getSpec().getId().equals(x.getId())));
         return specs;
     }
+    public void gainXP(float amount ){
+        currentXP += (int) amount;
+    }
 
 }

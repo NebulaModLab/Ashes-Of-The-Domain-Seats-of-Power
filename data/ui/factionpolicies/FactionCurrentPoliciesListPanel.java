@@ -19,6 +19,11 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
     CustomPanelAPI headerPanel;
     TooltipMakerAPI tooltip;
     float offset = 0f;
+    boolean changeRequired = false;
+
+    public void setChangeRequired(boolean changeRequired) {
+        this.changeRequired = changeRequired;
+    }
 
     public FactionCurrentPoliciesListPanel(float width, float height) {
         mainPanel = Global.getSettings().createCustom(width, height, this);
@@ -73,6 +78,9 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
             for (int i = 0; i < itemsThisRow; i++) {
                 BaseFactionPolicy policy = chosenPolicies.get(created); // Chosen or null
                 PolicyPanel item = new PolicyPanel(policy==null, policy);
+                if(policy!=null){
+                    this.panels.add(item);
+                }
                 row.addComponent(item.getMainPanel()).inTL(currX, 0);
                 currX += PolicyPanel.WIDTH + separator;
                 created++;
@@ -144,7 +152,14 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
 
     @Override
     public void advance(float amount) {
-
+        for (PolicyPanel panel : panels) {
+            if(panel.getButton().isChecked()){
+                panel.getButton().setChecked(false);
+                FactionManager.getInstance().removePolicy(panel.policy.getSpec().getId());
+                changeRequired = true;
+                break;
+            }
+        }
     }
 
     @Override

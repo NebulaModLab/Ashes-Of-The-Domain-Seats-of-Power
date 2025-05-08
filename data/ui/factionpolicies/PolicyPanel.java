@@ -28,7 +28,7 @@ public class PolicyPanel implements ExtendUIPanelPlugin {
     // optimal size : 330 x 260
     boolean addingPanel = false;
     String spec;
-    BaseFactionPolicy policy;
+    transient BaseFactionPolicy policy;
     public ButtonAPI getButton() {
         return button;
     }
@@ -67,6 +67,7 @@ public class PolicyPanel implements ExtendUIPanelPlugin {
 
         button = tooltip.addAreaCheckbox(null, null, Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Misc.getBrightPlayerColor(), tooltipPanel.getPosition().getWidth(), tooltipPanel.getPosition().getHeight(), 0f);
         button.getPosition().inTL(0, 0);
+        button.setClickable(!addingPanel);
         tooltip.setParaFont(Fonts.ORBITRON_20AA);
         if(!addingPanel){
             if(this.policy==null){
@@ -132,10 +133,9 @@ public class PolicyPanel implements ExtendUIPanelPlugin {
     public void advance(float amount) {
         if(addingPanel){
             faderUtil.advance(amount);
-            if(faderUtil.intervalElapsed()){
-            }
         }
     }
+
 
     @Override
     public void processInput(List<InputEventAPI> events) {
