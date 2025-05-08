@@ -10,6 +10,8 @@ import com.fs.starfarer.api.characters.AbilityPlugin;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
 import data.scripts.CoreUITrackerScript;
+import data.scripts.managers.FactionAdvance;
+import data.scripts.managers.FactionManager;
 import data.scripts.managers.FactionPolicySpecManager;
 import org.json.JSONException;
 
@@ -26,5 +28,10 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
             Global.getSector().addTransientScript(new CoreUITrackerScript());
         }
         FactionPolicySpecManager.loadSpecs();
+        if(!Global.getSector().hasScript(FactionAdvance.class)){
+            Global.getSector().addScript(new FactionAdvance());
+        }
+        FactionManager.getInstance().getAvailablePolicies().modifyFlat("aotd_bonus",2f);
+        FactionManager.getInstance().addNewPolicy("aotd_civ_fleet");
     }
 }
