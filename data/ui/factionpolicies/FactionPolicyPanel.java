@@ -15,6 +15,7 @@ public class FactionPolicyPanel implements ExtendUIPanelPlugin , SoundUIManager 
     public boolean sendSignalToRecreateBothComponents = false;
     public FactionCurrentPoliciesListPanel currentPoliciesListPanel;
     public FactionAvailablePoliciesListPanel availablePoliciesListPanel;
+    public FactionBonusPanel bonusPanel;
     public FactionPolicyPanel(float width, float height){
         mainPanel = Global.getSettings().createCustom(width,height,this);
         createUI();
@@ -28,11 +29,12 @@ public class FactionPolicyPanel implements ExtendUIPanelPlugin , SoundUIManager 
         FactionManager.getInstance().updateListBeforeUI();
         currentPoliciesListPanel =new FactionCurrentPoliciesListPanel(widthT,heightT);
         availablePoliciesListPanel = new FactionAvailablePoliciesListPanel(widthT,heightT);
+        bonusPanel= new FactionBonusPanel(450, 130);
         mainPanel.addComponent(currentPoliciesListPanel.getMainPanel()).inTL(0,0);
         mainPanel.addComponent(availablePoliciesListPanel.getMainPanel()).inTL(widthT+5f,0);
         mainPanel.addComponent(new FactionFlagButtonComponent(130, 130).getPanelOfButton()).inTL(((width - 10) / 2) - 65, height - 130);
         mainPanel.addComponent(new FactionXPPanel(450, 130).getMainPanel()).inTL(((width - 10) / 2) - 65 - 455, height - 130);
-        mainPanel.addComponent(new FactionBonusPanel(450, 130).getMainPanel()).inTL(((width - 10) / 2) + 70, height - 130);
+        mainPanel.addComponent(bonusPanel.getMainPanel()).inTL(((width - 10) / 2) + 70, height - 130);
 
 
     }
@@ -63,6 +65,7 @@ public class FactionPolicyPanel implements ExtendUIPanelPlugin , SoundUIManager 
             availablePoliciesListPanel.setChangeRequired(false);
             currentPoliciesListPanel.createUI();
             availablePoliciesListPanel.createUI();
+            bonusPanel.createUI();
         }
     }
 
