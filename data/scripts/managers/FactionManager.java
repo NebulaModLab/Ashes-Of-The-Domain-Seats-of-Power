@@ -6,9 +6,13 @@ import data.scripts.models.BaseFactionPolicy;
 import data.scripts.models.FactionPolicySpec;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FactionManager {
     public ArrayList<BaseFactionPolicy>currentFactionPolicies = new ArrayList<>();
+    public HashSet<String> copyOfPolicies = new HashSet<>();
     public MutableStat availablePolicies = new MutableStat(1f);
     public static final String memKey ="$aotd_faction_manager";
     int currentXP;
@@ -18,10 +22,16 @@ public class FactionManager {
         return currentFactionPolicies;
     }
 
+    public HashSet<String> getCopyOfPolicies() {
+        return copyOfPolicies;
+    }
+
     public MutableStat getAvailablePolicies() {
         return availablePolicies;
     }
+    public void reportMonthEnd() {
 
+    }
     public static FactionManager getInstance(){
         if(Global.getSector().getPersistentData().get(memKey)==null){
            setInstance();
@@ -31,9 +41,15 @@ public class FactionManager {
     public static void setInstance(){
         Global.getSector().getPersistentData().put(memKey, new FactionManager());
     }
+    public BaseFactionPolicy getPolicyFromList(String id){
+        return currentFactionPolicies.stream().filter(x->x.getSpec().getId().equals(id)).findFirst().orElse(FactionPolicySpecManager.getSpec(id).getPlugin());
+    }
 
     public boolean doesHavePolicyEnabled(String policyID){
         return currentFactionPolicies.stream().anyMatch(x->x.getSpec().getId().equals(policyID));
+    }
+    public boolean doesHavePolicyInCopy(String policyID){
+        return copyOfPolicies.contains(policyID);
     }
     public void advance(float amount ){
         currentFactionPolicies.forEach(x->x.advance(amount));
@@ -43,23 +59,66 @@ public class FactionManager {
         if(!policyExists){
             BaseFactionPolicy policy = FactionPolicySpecManager.getSpec(id).getPlugin();
             currentFactionPolicies.add(policy);
+            policy.applyPolicyEffectAfterChangeInUI(false);
             policy.applyPolicy();
         }
     }
     public void removePolicy(String id){
         boolean policyExists = doesHavePolicyEnabled(id);
         if(policyExists){
-            currentFactionPolicies.stream().filter(x->x.getSpec().getId().equals(id)).findFirst().ifPresent(BaseFactionPolicy::unapplyPolicy);
+            currentFactionPolicies.stream()
+                    .filter(x -> x.getSpec().getId().equals(id))
+                    .findFirst()
+                    .ifPresent(x -> {
+                        x.applyPolicyEffectAfterChangeInUI(true);
+                        x.unapplyPolicy();
+                    });
+
             currentFactionPolicies.removeIf(x->x.getSpec().getId().equals(id));
         }
     }
-    public ArrayList<FactionPolicySpec>getSpecsForAvailable(){
+    public void addPolicyToCopy(String id){
+        copyOfPolicies.add(id);
+    }
+    public void removePolicyFromCopy(String id){
+        copyOfPolicies.remove(id);
+    }
+    public void applyChangesFromUI(){
+         List<BaseFactionPolicy> toRemove = new ArrayList<>(getCurrentFactionPolicies().stream()
+                .filter(x -> !getCopyOfPolicies().contains(x.getSpec().getId()))
+                .toList());
+
+        toRemove.forEach(x -> removePolicy(x.getSpec().getId()));
+        toRemove.clear();
+        getCopyOfPolicies().stream().filter(x->!doesHavePolicyEnabled(x)).forEach(this::addNewPolicy);
+        getCopyOfPolicies().clear();
+        copyOfPolicies.clear();
+    }
+    public void updateListBeforeUI(){
+        copyOfPolicies.clear();
+        currentFactionPolicies.forEach(x->copyOfPolicies.add(x.getSpec().getId()));
+    }
+    public ArrayList<FactionPolicySpec> getSpecsForAvailableUI(){
         ArrayList<FactionPolicySpec> specs = new ArrayList<>(FactionPolicySpecManager.getFactionPolicySpecs().values());
-        specs.removeIf(x->currentFactionPolicies.stream().anyMatch(y->y.getSpec().getId().equals(x.getId())));
+        specs.removeIf(x->!canUsePolicyInUI(x.getPlugin()));
+        specs.removeIf(x->copyOfPolicies.contains(x.getId()));
+
         return specs;
     }
     public void gainXP(float amount ){
         currentXP += (int) amount;
+    }
+    public boolean canUsePolicyInUI(BaseFactionPolicy policy){
+        boolean canUse = true;
+        for (String incompatiblePolicyId : policy.getSpec().getIncompatiblePolicyIds()) {
+            if(FactionManager.getInstance().doesHavePolicyInCopy(incompatiblePolicyId)){
+                canUse = false;
+                break;
+            }
+        }
+
+
+        return canUse&policy.canUsePolicy()&&copyOfPolicies.stream().noneMatch(x->FactionPolicySpecManager.getSpec(x).getIncompatiblePolicyIds().contains(policy.getSpec().getId()));
     }
 
 }

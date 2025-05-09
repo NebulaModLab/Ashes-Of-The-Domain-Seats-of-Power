@@ -3,9 +3,7 @@ package data.ui.factionpolicies;
 import ashlib.data.plugins.ui.models.resizable.ImageViewer;
 import ashlib.data.plugins.ui.plugins.UILinesRenderer;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.input.InputEventAPI;
-import com.fs.starfarer.api.loading.IndustrySpecAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
@@ -27,6 +25,16 @@ public class PolicyPanel implements ExtendUIPanelPlugin {
     IntervalUtil faderUtil = new IntervalUtil(2f,2f);
     // optimal size : 330 x 260
     boolean addingPanel = false;
+    boolean displayDialog = false;
+
+    public boolean isDisplayDialog() {
+        return displayDialog;
+    }
+
+    public void setDisplayDialog(boolean displayDialog) {
+        this.displayDialog = displayDialog;
+    }
+
     String spec;
     transient BaseFactionPolicy policy;
     public ButtonAPI getButton() {

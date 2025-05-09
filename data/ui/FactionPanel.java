@@ -8,6 +8,7 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import data.misc.UIDataSop;
 import data.scripts.CoreUITrackerScript;
+import data.scripts.managers.FactionManager;
 import data.ui.factionpolicies.FactionPolicyPanel;
 import data.ui.timeline.FactionTimelinePanel;
 import org.lwjgl.input.Keyboard;
@@ -36,6 +37,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
     public CustomPanelAPI getMainPanel() {
         return mainPanel;
     }
+
     public void init(CustomPanelAPI mainPanel, String panelToShowcase, Object data) {
         this.mainPanel = mainPanel;
         renderer = new UILinesRenderer(0f);
@@ -63,14 +65,20 @@ public class FactionPanel implements CustomUIPanelPlugin {
         this.mainPanel.addComponent(panelForPlugins).inTL(0, 35);
         renderer.setPanel(panelForPlugins);
     }
-    public void clearUI(boolean clearMusic) {;
+
+    public void clearUI(boolean clearMusic) {
+        ;
         panelMap.clear();
+        FactionManager.getInstance().applyChangesFromUI();
+        policyPanel.availablePoliciesListPanel.getPanels().clear();
+        policyPanel.currentPoliciesListPanel.getPanels().clear();
         mainPanel.removeComponent(panelForPlugins);
-        if(clearMusic){
+        if (clearMusic) {
             pauseSound();
         }
 
     }
+
     @Override
     public void positionChanged(PositionAPI position) {
 
@@ -105,6 +113,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
             currentlyChosen.highlight();
         }
     }
+
     public void resetCurrentPlugin(ButtonAPI newButton) {
         if (currentlyChosen != null) {
             this.panelForPlugins.removeComponent(panelMap.get(currentlyChosen));
@@ -123,13 +132,15 @@ public class FactionPanel implements CustomUIPanelPlugin {
     public void buttonPressed(Object buttonId) {
 
     }
+
     public void pauseSound() {
         Global.getSoundPlayer().pauseCustomMusic();
         Global.getSoundPlayer().restartCurrentMusic();
         pausedMusic = true;
     }
+
     public void createButtonsAndMainPanels() {
-        ButtonAPI research, megastructures, customProd,sp;
+        ButtonAPI research, megastructures, customProd, sp;
         this.buttonPanel = this.mainPanel.createCustomPanel(mainPanel.getPosition().getWidth(), 25, null);
         UILinesRenderer renderer = new UILinesRenderer(0f);
         CustomPanelAPI panelHelper = this.buttonPanel.createCustomPanel(490, 0.5f, renderer);
@@ -139,8 +150,10 @@ public class FactionPanel implements CustomUIPanelPlugin {
         base = Global.getSector().getPlayerFaction().getBaseUIColor();
         bg = Global.getSector().getPlayerFaction().getDarkUIColor();
         customProd = buttonTooltip.addButton("Policies", null, base, bg, Alignment.MID, CutStyle.TOP, 140, 20, 0f);
-        research = buttonTooltip.addButton("Timeline", null, base, bg, Alignment.MID, CutStyle.TOP, 140, 20, 0f);;
-        sp = buttonTooltip.addButton("Overview", null, base, bg, Alignment.MID, CutStyle.TOP, 140, 20, 0f);;
+        research = buttonTooltip.addButton("Timeline", null, base, bg, Alignment.MID, CutStyle.TOP, 140, 20, 0f);
+        ;
+        sp = buttonTooltip.addButton("Overview", null, base, bg, Alignment.MID, CutStyle.TOP, 140, 20, 0f);
+        ;
         customProd.setShortcut(Keyboard.KEY_R, false);
         research.setShortcut(Keyboard.KEY_T, false);
         sp.setShortcut(Keyboard.KEY_S, false);
@@ -154,20 +167,23 @@ public class FactionPanel implements CustomUIPanelPlugin {
         insertTimeLinePanel(research);
 
     }
+
     private void insertPolicyPanel(ButtonAPI tiedButton) {
         if (policyPanel == null) {
-            policyPanel = new FactionPolicyPanel(panelForPlugins.getPosition().getWidth(),panelForPlugins.getPosition().getHeight());
+            policyPanel = new FactionPolicyPanel(panelForPlugins.getPosition().getWidth(), panelForPlugins.getPosition().getHeight());
         }
 
         panelMap.put(tiedButton, policyPanel.getMainPanel());
     }
+
     private void insertTimeLinePanel(ButtonAPI tiedButton) {
         if (timelinePanel == null) {
-            timelinePanel = new FactionTimelinePanel(panelForPlugins.getPosition().getWidth(),panelForPlugins.getPosition().getHeight());
+            timelinePanel = new FactionTimelinePanel(panelForPlugins.getPosition().getWidth(), panelForPlugins.getPosition().getHeight());
         }
 
         panelMap.put(tiedButton, timelinePanel.getMainPanel());
     }
+
     public void playSound(ButtonAPI button) {
         if (button.getText().toLowerCase().contains("policies")) {
             policyPanel.playSound();

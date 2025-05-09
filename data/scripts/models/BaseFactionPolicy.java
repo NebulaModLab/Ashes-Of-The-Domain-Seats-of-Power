@@ -7,6 +7,8 @@ import com.fs.starfarer.api.util.Misc;
 import data.scripts.managers.FactionManager;
 import data.scripts.managers.FactionPolicySpecManager;
 
+import java.awt.*;
+
 public  class BaseFactionPolicy {
     String specId;
     float daysTillPlaced = 0f;
@@ -16,11 +18,26 @@ public  class BaseFactionPolicy {
     }
 
     public void createTooltipDescription(TooltipMakerAPI tooltip){
-        tooltip.addPara("Gain %s on all worlds", 10f, Misc.getPositiveHighlightColor(), "+3 Stability").setAlignment(Alignment.MID);
-        tooltip.addPara("Decrease size of fleets by %s", 3f, Misc.getNegativeHighlightColor(), "50%").setAlignment(Alignment.MID);
-
+        tooltip.addPara("WORK IN PROGRESS",Misc.getTooltipTitleAndLightHighlightColor(),5f).setAlignment(Alignment.MID);
     }
     public void createDetailedTooltipDescription(TooltipMakerAPI tooltip){
+        if(FactionManager.getInstance().doesHavePolicyEnabled(this.getSpec().getId())){
+            if(FactionManager.getInstance().doesHavePolicyInCopy(this.getSpec().getId())){
+                tooltip.addPara("This policy is already in effect for about %s ",5f, Color.ORANGE,Misc.getStringForDays((int) daysTillPlaced));
+            }
+            else{
+                tooltip.addPara("This policy was in effect for about %s ",5f, Color.ORANGE,Misc.getStringForDays((int) daysTillPlaced));
+                tooltip.addPara("If left Command UI tab, this policy will unapply!",Misc.getNegativeHighlightColor(),5f);
+
+            }
+
+        }
+        else{
+            tooltip.addPara("This policy will be in effect once chosen and left Command UI tab ",Color.ORANGE,5f);
+
+        }
+    }
+    public void createEffectSectionForFactionInfoTooltip(TooltipMakerAPI tooltip){
 
     }
     public FactionPolicySpec getSpec(){
@@ -30,6 +47,10 @@ public  class BaseFactionPolicy {
         daysTillPlaced += Global.getSector().getClock().convertToDays(amount);
 
     }
+    public void applyPolicyEffectAfterChangeInUI(boolean removing){
+
+
+    }
     public void applyPolicy(){
 
     }
@@ -37,13 +58,6 @@ public  class BaseFactionPolicy {
 
     }
     public boolean canUsePolicy(){
-        boolean canUse = true;
-        for (String incompatiblePolicyId : getSpec().getIncompatiblePolicyIds()) {
-            if(FactionManager.getInstance().doesHavePolicyEnabled(incompatiblePolicyId)){
-                canUse = false;
-                break;
-            }
-        }
-        return canUse;
+        return true;
     }
 }

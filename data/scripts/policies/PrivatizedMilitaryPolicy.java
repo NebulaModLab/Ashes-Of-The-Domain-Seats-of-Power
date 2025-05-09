@@ -30,5 +30,6 @@ public class PrivatizedMilitaryPolicy extends BaseFactionPolicy {
         tooltip.addPara("Fleet get %s Fleet Point for each %s earned by market, maximum of %s fleet points can be reached.",5f,Color.ORANGE,"+1",Misc.getDGSCredits(2000),"300");
 
         tooltip.addPara("Fleets will follow their own fleet doctrine and will use it's own designs, not faction ones.",  Color.ORANGE,5f);
+        super.createDetailedTooltipDescription(tooltip);
     }
 }

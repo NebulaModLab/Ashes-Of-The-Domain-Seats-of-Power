@@ -4,6 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.PositionAPI;
+import data.scripts.managers.FactionManager;
 import data.ui.SoundUIManager;
 import data.ui.basecomps.*;
 
@@ -12,8 +13,8 @@ import java.util.List;
 public class FactionPolicyPanel implements ExtendUIPanelPlugin , SoundUIManager {
     CustomPanelAPI mainPanel;
     public boolean sendSignalToRecreateBothComponents = false;
-    FactionCurrentPoliciesListPanel currentPoliciesListPanel;
-    FactionAvailablePoliciesListPanel availablePoliciesListPanel;
+    public FactionCurrentPoliciesListPanel currentPoliciesListPanel;
+    public FactionAvailablePoliciesListPanel availablePoliciesListPanel;
     public FactionPolicyPanel(float width, float height){
         mainPanel = Global.getSettings().createCustom(width,height,this);
         createUI();
@@ -24,6 +25,7 @@ public class FactionPolicyPanel implements ExtendUIPanelPlugin , SoundUIManager 
 
         float widthT = width*0.5f - 10f;
         float heightT = height-160;
+        FactionManager.getInstance().updateListBeforeUI();
         currentPoliciesListPanel =new FactionCurrentPoliciesListPanel(widthT,heightT);
         availablePoliciesListPanel = new FactionAvailablePoliciesListPanel(widthT,heightT);
         mainPanel.addComponent(currentPoliciesListPanel.getMainPanel()).inTL(0,0);

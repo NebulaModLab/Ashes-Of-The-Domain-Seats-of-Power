@@ -14,7 +14,6 @@ public class SGCPolicy extends BaseFactionPolicy {
         tooltip.addPara("Provides bonuses towards %s, %s and %s, scaling with presence of Patrol HQ / Military Base / High Command", 0, Misc.getPositiveHighlightColor(), "Ground defence","Stability","Fleet size").setAlignment(Alignment.MID);
         tooltip.addPara("Increases demand for supplies and heavy armaments based on colony size",  Misc.getNegativeHighlightColor(),3f).setAlignment(Alignment.MID);
         tooltip.addPara("Slows down Major Crisis progression.",  Misc.getPositiveHighlightColor(),3f).setAlignment(Alignment.MID);
-
     }
 
     @Override
@@ -29,5 +28,6 @@ public class SGCPolicy extends BaseFactionPolicy {
         tooltip.addPara(BaseIntelPlugin.BULLET+"%s - 1 heavy armaments (rounded down)",3f, Color.ORANGE,"0.5 * market size");
 
         tooltip.addPara("Slows down Major Crisis progression.",  Misc.getPositiveHighlightColor(),5f);
+        super.createDetailedTooltipDescription(tooltip);
     }
 }

@@ -1,10 +1,13 @@
 package data.ui.factionpolicies;
 
+import ashlib.data.plugins.ui.models.BasePopUpDialog;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
+import data.misc.ProductionUtil;
 import data.scripts.managers.FactionManager;
+import data.scripts.managers.FactionPolicySpecManager;
 import data.scripts.models.BaseFactionPolicy;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 
@@ -18,6 +21,11 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
     CustomPanelAPI tooltipPanel;
     CustomPanelAPI headerPanel;
     TooltipMakerAPI tooltip;
+
+    public ArrayList<PolicyPanel> getPanels() {
+        return panels;
+    }
+
     float offset = 0f;
     boolean changeRequired = false;
 
@@ -40,6 +48,12 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
         }
         FactionManager manager = FactionManager.getInstance();
         List<BaseFactionPolicy> chosenPolicies = new ArrayList<>(manager.getCurrentFactionPolicies());
+        chosenPolicies.removeIf(x->!manager.getCopyOfPolicies().contains(x.getSpec().getId()));
+        manager.getCopyOfPolicies().forEach(x->{
+            if(chosenPolicies.stream().noneMatch(y->y.getSpec().getId().equals(x))){
+                chosenPolicies.add(FactionPolicySpecManager.getSpec(x).getPlugin());
+            }
+        });
         int policiesChosen = chosenPolicies.size();
         float panelWidth = mainPanel.getPosition().getWidth();
         float panelHeight = mainPanel.getPosition().getHeight();
@@ -155,9 +169,18 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
         for (PolicyPanel panel : panels) {
             if(panel.getButton().isChecked()){
                 panel.getButton().setChecked(false);
-                FactionManager.getInstance().removePolicy(panel.policy.getSpec().getId());
-                changeRequired = true;
-                break;
+                if(panel.isDisplayDialog()){
+                    BasePopUpDialog dialog = new FactionPolicyWarningDialog("Policy Warning!");
+                    CustomPanelAPI panelAPI = Global.getSettings().createCustom(700, 300, dialog);
+                    UIPanelAPI panelAPI1 = ProductionUtil.getCoreUI();
+                    dialog.init(panelAPI, panelAPI1.getPosition().getCenterX() - (panelAPI.getPosition().getWidth() / 2), panelAPI1.getPosition().getCenterY() + (panelAPI.getPosition().getHeight() / 2), true);
+                }
+                else{
+                    FactionManager.getInstance().removePolicyFromCopy(panel.policy.getSpec().getId());
+                    changeRequired = true;
+                    break;
+                }
+
             }
         }
     }

@@ -1,17 +1,14 @@
 package data.ui.factionpolicies;
 
+import ashlib.data.plugins.ui.models.BasePopUpDialog;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.ui.Alignment;
-import com.fs.starfarer.api.ui.CustomPanelAPI;
-import com.fs.starfarer.api.ui.Fonts;
-import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
+import data.misc.ProductionUtil;
 import data.scripts.managers.FactionManager;
-import data.scripts.managers.FactionPolicySpecManager;
 import data.scripts.models.FactionPolicySpec;
 
 import java.util.Iterator;
-import java.util.Map;
 
 public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesListPanel {
     public FactionAvailablePoliciesListPanel(float width, float height) {
@@ -38,12 +35,12 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
         tooltipPanel = Global.getSettings().createCustom(panelWidth, panelHeight - 30, null);
         tooltip = tooltipPanel.createUIElement(panelWidth, panelHeight - 30, true);
 
-        int amountOfItems = FactionManager.getInstance().getSpecsForAvailable().size(); // Total number of items to place
+        int amountOfItems = FactionManager.getInstance().getSpecsForAvailableUI().size(); // Total number of items to place
         float separator = 5f;  // Example separator size
 
         int itemsPerRow = calculateMaxAmountOfItems(panelWidth, separator);
         int created = 0;
-        Iterator<FactionPolicySpec> specs = FactionManager.getInstance().getSpecsForAvailable().iterator();
+        Iterator<FactionPolicySpec> specs = FactionManager.getInstance().getSpecsForAvailableUI().iterator();
         while (specs.hasNext()) {
             int itemsThisRow = Math.min(itemsPerRow, amountOfItems - created);
             float currX = 0;
@@ -55,7 +52,10 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
             for (int i = 0; i < itemsThisRow; i++) {
                 if (!specs.hasNext()) break;
                 FactionPolicySpec spec = specs.next();
-                PolicyPanel item = new PolicyPanel(false, spec.getId());
+                PolicyPanel item = new PolicyPanel(false, FactionManager.getInstance().getPolicyFromList(spec.getId()));
+                if(FactionManager.getInstance().getCopyOfPolicies().size()+1>FactionManager.getInstance().getAvailablePolicies().getModifiedInt()){
+                    item.getButton().setClickable(false);
+                }
                 panels.add(item);
                 row.addComponent(item.getMainPanel()).inTL(currX, 0);
                 currX += PolicyPanel.WIDTH + separator;
@@ -79,9 +79,18 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
         for (PolicyPanel panel : panels) {
             if(panel.getButton().isChecked()){
                 panel.getButton().setChecked(false);
-                FactionManager.getInstance().addNewPolicy(panel.policy.getSpec().getId());
-                changeRequired = true;
-                break;
+                if(panel.isDisplayDialog()){
+                    BasePopUpDialog dialog = new FactionPolicyWarningDialog("Policy Warning!");
+                    CustomPanelAPI panelAPI = Global.getSettings().createCustom(700, 300, dialog);
+                    UIPanelAPI panelAPI1 = ProductionUtil.getCoreUI();
+                    dialog.init(panelAPI, panelAPI1.getPosition().getCenterX() - (panelAPI.getPosition().getWidth() / 2), panelAPI1.getPosition().getCenterY() + (panelAPI.getPosition().getHeight() / 2), true);
+                }
+                else{
+                    FactionManager.getInstance().addPolicyToCopy(panel.policy.getSpec().getId());
+                    changeRequired = true;
+                    break;
+                }
+
             }
         }
     }

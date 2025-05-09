@@ -12,17 +12,13 @@ import com.fs.starfarer.api.combat.EngagementResultAPI;
 import data.scripts.CoreUITrackerScript;
 import data.scripts.managers.FactionAdvance;
 import data.scripts.managers.FactionManager;
+import data.scripts.managers.FactionMonthlyUpdateListenner;
 import data.scripts.managers.FactionPolicySpecManager;
 import org.json.JSONException;
 
 import java.io.IOException;
 
 public class AoDCapitalsModPlugin extends BaseModPlugin {
-    private void setListenersIfNeeded() {
-        ListenerManagerAPI l = Global.getSector().getListenerManager();
-
-    }
-
     public void onGameLoad(boolean newGame) {
         if (!Global.getSettings().getModManager().isModEnabled("aotd_vok")) {
             Global.getSector().addTransientScript(new CoreUITrackerScript());
@@ -33,5 +29,6 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         }
         FactionManager.getInstance().getAvailablePolicies().modifyFlat("aotd_bonus",2f);
         FactionManager.getInstance().addNewPolicy("aotd_civ_fleet");
+        Global.getSector().getListenerManager().addListener(new FactionMonthlyUpdateListenner(),true);
     }
 }
