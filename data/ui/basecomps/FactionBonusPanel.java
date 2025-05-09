@@ -11,6 +11,7 @@ import com.fs.starfarer.api.util.Misc;
 import data.scripts.managers.FactionManager;
 import data.scripts.managers.FactionPolicySpecManager;
 import data.scripts.models.BaseFactionPolicy;
+import data.ui.factionpolicies.DetailedFactionPolicyTooltip;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -67,7 +68,10 @@ public class FactionBonusPanel implements ExtendUIPanelPlugin {
             warningLabel = null;
         }
         tooltip.addPara("Current policies still in effect",Misc.getButtonTextColor(),5f).setAlignment(Alignment.MID);
-        currentPolicies.forEach(x -> tooltip.addPara(BaseIntelPlugin.BULLET + x.getSpec().getName(),Misc.getPositiveHighlightColor(),3f));
+        currentPolicies.forEach(x -> {
+            tooltip.addPara(BaseIntelPlugin.BULLET + x.getSpec().getName(),Misc.getPositiveHighlightColor(),3f);
+            tooltip.addTooltipToPrevious(new DetailedFactionPolicyTooltip(x), TooltipMakerAPI.TooltipLocation.BELOW,false);
+        });
         tooltip.addSpacer(10f);
 
 
