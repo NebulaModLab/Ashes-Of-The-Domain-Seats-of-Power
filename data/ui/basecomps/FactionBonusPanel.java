@@ -51,7 +51,7 @@ public class FactionBonusPanel implements ExtendUIPanelPlugin {
         ArrayList<BaseFactionPolicy>currentPolicies = FactionManager.getInstance().getCurrentFactionPolicies();
         if (copy.stream().anyMatch(x -> !FactionManager.getInstance().doesHavePolicyEnabled(x))||currentPolicies.stream().anyMatch(x->!copy.contains(x.getSpec().getId()))) {
             if(warningLabel==null){
-                warningLabel = tooltip.addPara("Warning those changes will be applied once left Command Tab UI", Misc.getNegativeHighlightColor(), 5f);
+                warningLabel = tooltip.addPara("Warning: These changes apply upon leaving the Command Tab", Misc.getNegativeHighlightColor(), 5f);
                 warningLabel.setAlignment(Alignment.MID);
                 warningLabel.flash(1f,1f);
                 util.setInterval(2f,2f);

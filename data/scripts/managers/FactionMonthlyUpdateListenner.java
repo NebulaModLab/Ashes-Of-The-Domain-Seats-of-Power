@@ -10,6 +10,7 @@ public class FactionMonthlyUpdateListenner implements EconomyTickListener {
 
     @Override
     public void reportEconomyMonthEnd() {
+        //Report fires after month ends
         FactionManager.getInstance().reportMonthEnd();
     }
 }
