@@ -13,6 +13,10 @@ public  class BaseFactionPolicy {
     String specId;
     float daysTillPlaced = 0f;
 
+    public float getDaysTillPlaced() {
+        return daysTillPlaced;
+    }
+
     public void setSpecId(String specId) {
         this.specId = specId;
     }
@@ -21,21 +25,7 @@ public  class BaseFactionPolicy {
         tooltip.addPara("WORK IN PROGRESS",Misc.getTooltipTitleAndLightHighlightColor(),5f).setAlignment(Alignment.MID);
     }
     public void createDetailedTooltipDescription(TooltipMakerAPI tooltip){
-        if(FactionManager.getInstance().doesHavePolicyEnabled(this.getSpec().getId())){
-            if(FactionManager.getInstance().doesHavePolicyInCopy(this.getSpec().getId())){
-                tooltip.addPara("This policy is already in effect for about %s ",5f, Color.ORANGE,Misc.getStringForDays((int) daysTillPlaced));
-            }
-            else{
-                tooltip.addPara("This policy was in effect for about %s ",5f, Color.ORANGE,Misc.getStringForDays((int) daysTillPlaced));
-                tooltip.addPara("If left Command UI tab, this policy will unapply!",Misc.getNegativeHighlightColor(),5f);
 
-            }
-
-        }
-        else{
-            tooltip.addPara("This policy will be in effect once chosen and left Command UI tab ",Color.ORANGE,5f);
-
-        }
     }
     public void createEffectSectionForFactionInfoTooltip(TooltipMakerAPI tooltip){
 

@@ -20,7 +20,6 @@ public class PrivatizedMilitaryPolicy extends BaseFactionPolicy {
 
     @Override
     public void createDetailedTooltipDescription(TooltipMakerAPI tooltip) {
-        tooltip.addTitle(getSpec().getName());
         tooltip.addPara("Reduces fleet size on all markets by %s", 5f, Misc.getNegativeHighlightColor(), "50%.");
         tooltip.addPara("All markets spawn Privateer Defence Fleets.",  Misc.getPositiveHighlightColor(),3f);
         tooltip.addPara("Each market spawns from %s to %s fleets depending on market size",5f,Color.ORANGE,"2","5");

@@ -18,7 +18,6 @@ public class SGCPolicy extends BaseFactionPolicy {
 
     @Override
     public void createDetailedTooltipDescription(TooltipMakerAPI tooltip) {
-        tooltip.addTitle(getSpec().getName());
         tooltip.addPara("Provides bonuses towards %s, %s and %s, scaling with presence of Patrol HQ / Military Base / High Command (with none present being treated as tier 0)", 5, Misc.getPositiveHighlightColor(), "Ground defence","Stability","Fleet size");
         tooltip.addPara(BaseIntelPlugin.BULLET+"1 + %s ground defence multiplier",3f, Color.ORANGE,"0.25 * tier");
         tooltip.addPara(BaseIntelPlugin.BULLET+"1 + %s stability ( %s )",3f,Color.ORANGE," 0.5 * tier","rounded down, so 1/1/2/2");
