@@ -1,5 +1,8 @@
 package data.scripts.models;
 
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.impl.campaign.ids.Industries;
+
 public class BaseFactionTimelineEvent {
     public int cycle;
     public int day;
@@ -11,7 +14,9 @@ public class BaseFactionTimelineEvent {
         this.day = day;
         this.month = month;
     }
-
+    public String getImagePath(){
+        return Global.getSettings().getIndustrySpec(Industries.POPULATION).getImageName();
+    }
     public int getCycle() {
         return cycle;
     }
