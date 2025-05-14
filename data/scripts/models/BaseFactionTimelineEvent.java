@@ -2,20 +2,43 @@ package data.scripts.models;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Industries;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
 
 public class BaseFactionTimelineEvent {
     public int cycle;
     public int day;
     public int month;
-    public String idOfEvent;
-    public BaseFactionTimelineEvent(String idOfEvent, int cycle, int day, int month) {
-        this.idOfEvent = idOfEvent;
+    public boolean gotReward= false;
+    public BaseFactionTimelineEvent(int cycle, int day, int month) {
         this.cycle = cycle;
         this.day = day;
         this.month = month;
     }
+    public String getTitleOfEvent(){
+        return "";
+    }
     public String getImagePath(){
         return Global.getSettings().getIndustrySpec(Industries.POPULATION).getImageName();
+    }
+    public void grantReward(){
+        if(!gotReward){
+            gotReward = true;
+            executeReward();
+        }
+    }
+    public void executeReward(){
+
+
+    }
+    public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip){
+        tooltip.setTitleOrbitronLarge();
+        tooltip.addTitle(getTitleOfEvent());
+    }
+    public void createSmallNoteForEvent(TooltipMakerAPI tooltip){
+
+    }
+    public TimelineEventType getEventType(){
+        return TimelineEventType.RESEARCH;
     }
     public int getCycle() {
         return cycle;
@@ -27,6 +50,9 @@ public class BaseFactionTimelineEvent {
 
     public int getMonth() {
         return month;
+    }
+    public void updateDataUponEntryOfUI(){
+        //This func is called for example when you change market name or anything that requires name
     }
 
 }

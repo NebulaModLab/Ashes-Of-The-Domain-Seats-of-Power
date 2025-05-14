@@ -11,6 +11,11 @@ public class CycleTimelineEvents {
         this.recordedCycle = recordedCycle;
         eventsDuringCycle = new ArrayList<>();
     }
+
+    public int getRecordedCycle() {
+        return recordedCycle;
+    }
+
     ArrayList<BaseFactionTimelineEvent>eventsDuringCycle;
 
     public ArrayList<BaseFactionTimelineEvent> getEventsDuringCycle() {

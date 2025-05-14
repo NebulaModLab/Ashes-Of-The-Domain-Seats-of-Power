@@ -18,7 +18,13 @@ public class FactionCycleShowcase implements ExtendUIPanelPlugin {
     CycleTimelineEvents events;
     public static float spacerBetweenEvents = 20f;
     public static float spacerBetweenLines = 50f;
-    public FactionCycleShowcase(CycleTimelineEvents timeline,float height) {
+    public float generatedWidth;
+
+    public float getGeneratedWidth() {
+        return generatedWidth;
+    }
+
+    public FactionCycleShowcase(CycleTimelineEvents timeline, float height) {
         events = timeline;
         float width = calculateUILength();
         mainPanel = Global.getSettings().createCustom(width,height,this);
@@ -37,6 +43,7 @@ public class FactionCycleShowcase implements ExtendUIPanelPlugin {
             tooltip.addCustom(new NoticeableEventComponent(event).getMainPanel(), 0f).getPosition().inTL(currX,contentPanel.getPosition().getHeight()/2-(NoticeableEventComponent.height/2));
             currX+=NoticeableEventComponent.width+spacerBetweenEvents;
         }
+        generatedWidth = currX;
         contentPanel.addUIElement(tooltip).inTL(0,0);
         mainPanel.addComponent(contentPanel);
 

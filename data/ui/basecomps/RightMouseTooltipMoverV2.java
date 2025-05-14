@@ -27,8 +27,8 @@ public class RightMouseTooltipMoverV2 implements ExtendUIPanelPlugin {
     private float targetX = 0f;
     private boolean isMoving = false;
     private float velocityX = 0f;
-    private final float acceleration = 600f;
-    private final float maxSpeed = 600f;
+    private final float acceleration = 2100;
+    private final float maxSpeed = 1400;
     private float decelerationDistance = 150f; // Distance to begin slowing down
 
     float leftBorderX;
@@ -79,6 +79,9 @@ public class RightMouseTooltipMoverV2 implements ExtendUIPanelPlugin {
     public void moveBy(float distance) {
         if (distance == 0) return;
         float desiredTarget = currOffset + distance;
+        if((desiredTarget<=leftBorderX&&currOffset==leftBorderX)||(desiredTarget>=rightBorderX&&currOffset==rightBorderX)){
+            return;
+        }
         moveTo(desiredTarget); // Reuses the existing moveTo logic
     }
 

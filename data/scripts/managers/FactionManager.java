@@ -3,9 +3,11 @@ package data.scripts.managers;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.MutableStat;
 import data.scripts.models.BaseFactionPolicy;
+import data.scripts.models.CycleTimelineEvents;
 import data.scripts.models.FactionPolicySpec;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,10 +16,26 @@ public class FactionManager {
     public ArrayList<BaseFactionPolicy>currentFactionPolicies = new ArrayList<>();
     public HashSet<String> copyOfPolicies = new HashSet<>();
     public MutableStat availablePolicies = new MutableStat(1f);
+    public ArrayList<CycleTimelineEvents>cycles = new ArrayList<>();
     public static final String memKey ="$aotd_faction_manager";
     int currentXP;
-    public MutableStat xpPointsPerMonth = new MutableStat(0f);
 
+    public ArrayList<CycleTimelineEvents> getCycles() {
+        return cycles;
+    }
+
+    public MutableStat xpPointsPerMonth = new MutableStat(0f);
+    public void addCycle(int cycle){
+        if(cycles.stream().noneMatch(x->x.getRecordedCycle()==cycle)){
+            cycles.add(new CycleTimelineEvents(cycle));
+        }
+    }
+    public void removeCycle(int cycle){
+        cycles.removeIf(x->x.getRecordedCycle()==cycle);
+    }
+    public CycleTimelineEvents getCycle(int cycle){
+        return cycles.stream().filter(x->x.getRecordedCycle()==cycle).findFirst().orElse(null);
+    }
     public ArrayList<BaseFactionPolicy> getCurrentFactionPolicies() {
         return currentFactionPolicies;
     }

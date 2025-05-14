@@ -33,7 +33,6 @@ public class FactionTimelinePanel implements ExtendUIPanelPlugin {
         mainPanel.addComponent(new FactionFlagButtonComponent(130, 130).getPanelOfButton()).inTL(((width - 10) / 2) - 65, height - 130);
         mainPanel.addComponent(new FactionXPPanel(450, 130).getMainPanel()).inTL(((width - 10) / 2) - 65 - 455, height - 130);
         mainPanel.addComponent(new FactionBonusPanel(450, 130).getMainPanel()).inTL(((width - 10) / 2) + 70, height - 130);
-        Global.getSector().getPlayerFleet().getStats().getFuelUseNormalMult().setBaseValue(1f);
 
     }
 
