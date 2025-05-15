@@ -1,4 +1,4 @@
-package data.scripts.timelineevents;
+package data.scripts.timelineevents.prosperity;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;

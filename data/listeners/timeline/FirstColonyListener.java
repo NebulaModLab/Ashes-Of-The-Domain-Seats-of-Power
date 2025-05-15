@@ -6,7 +6,7 @@ import com.fs.starfarer.api.util.Misc;
 import data.listeners.timeline.models.BaseOneTimeListener;
 import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
-import data.scripts.timelineevents.FirstColonyEstablishment;
+import data.scripts.timelineevents.special.FirstColonyEstablishment;
 
 public class FirstColonyListener extends BaseOneTimeListener {
     public FirstColonyListener(String memoryFlagToCheck) {

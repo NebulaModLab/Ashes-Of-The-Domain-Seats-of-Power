@@ -7,7 +7,7 @@ import com.fs.starfarer.api.impl.campaign.intel.misc.GateHaulerIntel;
 import data.listeners.timeline.models.BaseOneTimeListener;
 import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
-import data.scripts.timelineevents.GateHaulerWitnessed;
+import data.scripts.timelineevents.research_explo.GateHaulerWitnessed;
 
 import java.util.List;
 

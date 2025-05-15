@@ -1,7 +1,8 @@
-package data.scripts.timelineevents;
+package data.scripts.timelineevents.templates;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -10,32 +11,31 @@ import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
 
-public class FirstColonyEstablishment extends BaseFactionTimelineEvent {
+public class FirstMarketCondition extends BaseFactionTimelineEvent {
     String entityId;
     String lastSavedName;
-    public FirstColonyEstablishment(String entityId) {
+   public String marketCondition;
+    public void init(String entityId,String marketCondition) {
+        this.marketCondition = marketCondition;
         this.entityId = entityId;
-
     }
-
     @Override
     public String getTitleOfEvent() {
-        return "New Beginning";
+        return Global.getSettings().getMarketConditionSpec(marketCondition).getName();
     }
 
     @Override
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
         super.createDetailedTooltipOnHover(tooltip);
-        tooltip.addPara("%s has been colonized, becoming the first world under the control of %s.", 5f, Color.ORANGE, getName(), Global.getSector().getPlayerFaction().getDisplayNameLong());
     }
 
     @Override
     public String getImagePath() {
-        return Global.getSettings().getSpriteName("industry", "pop_low");
+        return Global.getSettings().getIndustrySpec(Industries.TECHMINING).getImageName();
     }
 
     public String getName(){
-       return lastSavedName;
+        return lastSavedName;
     }
 
     @Override
@@ -45,11 +45,11 @@ public class FirstColonyEstablishment extends BaseFactionTimelineEvent {
 
     @Override
     public void createSmallNoteForEvent(TooltipMakerAPI tooltip) {
-        tooltip.addPara(getName() +" has been colonized", Misc.getTextColor(),0f).setAlignment(Alignment.MID);
+        tooltip.addPara(getName() +" has been colonized, possessing "+Global.getSettings().getMarketConditionSpec(marketCondition).getName(), Misc.getTextColor(),0f).setAlignment(Alignment.MID);
     }
 
     @Override
     public TimelineEventType getEventType() {
-        return TimelineEventType.PROSPERITY;
+        return TimelineEventType.RESEARCH_AND_EXPLORATION;
     }
 }

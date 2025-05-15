@@ -5,7 +5,7 @@ import com.fs.starfarer.api.util.Misc;
 import data.listeners.timeline.models.BaseOneTimeListener;
 import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
-import data.scripts.timelineevents.ParadiseColonizationEvent;
+import data.scripts.timelineevents.prosperity.ParadiseColonizationEvent;
 
 public class ParadiseColonyListener extends BaseOneTimeListener {
     public ParadiseColonyListener(String memoryFlagToCheck) {
@@ -13,15 +13,23 @@ public class ParadiseColonyListener extends BaseOneTimeListener {
     }
 
     @Override
+    public void advance(float amount) {
+        if(isDone())return;
+    }
+
+    @Override
     public void advanceImpl(float amount) {
-        Misc.getFactionMarkets(Factions.PLAYER).stream()
-                .filter(x -> x.getPlanetEntity() != null)
-                .filter(x -> Misc.getPlanetSurveyClass(x.getPlanetEntity()).equals("Class V"))
-                .findFirst()
-                .ifPresent(x -> {
-                    BaseFactionTimelineEvent event = new ParadiseColonizationEvent(x.getPlanetEntity().getId());
-                    FactionManager.getInstance().addEventToTimeline(event);
-                    finish(event);
-                });
+        if(!isDone()){
+            Misc.getFactionMarkets(Factions.PLAYER).stream()
+                    .filter(x -> x.getPlanetEntity() != null)
+                    .filter(x -> Misc.getPlanetSurveyClass(x.getPlanetEntity()).equals("Class V"))
+                    .findFirst()
+                    .ifPresent(x -> {
+                        BaseFactionTimelineEvent event = new ParadiseColonizationEvent(x.getPlanetEntity().getId());
+                        FactionManager.getInstance().addEventToTimeline(event);
+                        finish(event);
+                    });
+        }
+
     }
 }

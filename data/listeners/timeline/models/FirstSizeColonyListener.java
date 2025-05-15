@@ -1,12 +1,10 @@
-package data.listeners.timeline;
+package data.listeners.timeline.models;
 
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.Misc;
-import data.listeners.timeline.models.BaseOneTimeListener;
 import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
-import data.scripts.timelineevents.FirstSizeReach;
-import data.scripts.timelineevents.ParadiseColonizationEvent;
+import data.scripts.timelineevents.prosperity.FirstSizeReach;
 
 public class FirstSizeColonyListener extends BaseOneTimeListener {
     int checkedSizeFor;

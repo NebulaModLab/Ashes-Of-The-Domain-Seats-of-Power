@@ -1,4 +1,4 @@
-package data.scripts.timelineevents;
+package data.scripts.timelineevents.research_explo;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.ui.Alignment;

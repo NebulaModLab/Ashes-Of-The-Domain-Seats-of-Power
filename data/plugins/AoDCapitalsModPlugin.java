@@ -3,7 +3,10 @@ package data.plugins;
 
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
-import data.listeners.timeline.FirstSizeColonyListener;
+import com.fs.starfarer.api.impl.campaign.ids.Conditions;
+import data.listeners.timeline.ParadiseColonyListenerEnforcer;
+import data.listeners.timeline.models.FirstMarketConditionListener;
+import data.listeners.timeline.models.FirstSizeColonyListener;
 import data.listeners.timeline.ParadiseColonyListener;
 import data.scripts.managers.TimelineListenerManager;
 import data.listeners.timeline.FirstColonyListener;
@@ -14,6 +17,7 @@ import data.scripts.listeners.FactionAdvance;
 import data.scripts.listeners.FactionHistoryUpdateListener;
 import data.scripts.listeners.FactionMonthlyUpdateListenner;
 import data.scripts.managers.*;
+import data.scripts.timelineevents.research_explo.FirstVastRuins;
 
 public class AoDCapitalsModPlugin extends BaseModPlugin {
 
@@ -32,6 +36,9 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
             Global.getSector().getListenerManager().addListener(new FactionHistoryUpdateListener());
         }
         addTransientScripts();
+        if(newGame){
+            Global.getSector().getEconomy().getMarketsCopy().forEach(x->x.getPrimaryEntity().getMemoryWithoutUpdate().set("$aotd_was_colonized",true));
+        }
 
 
     }
@@ -42,5 +49,8 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         for (int i = 6; i <=10 ; i++) {
             TimelineListenerManager.getInstance().addNewListener(new FirstSizeColonyListener(AoTDSopMemFlags.SIZE_FLAG_COLONY,i,i-5));
         }
+        TimelineListenerManager.getInstance().addNewListener(new FirstMarketConditionListener(AoTDSopMemFlags.MARKET_CONDITION_COLONIZED, Conditions.RUINS_VAST,new FirstVastRuins(),false));
+        TimelineListenerManager.getInstance().setNeedsResetAfterInterval(true);
+        Global.getSector().getListenerManager().addListener(new ParadiseColonyListenerEnforcer(),true);
     }
 }
