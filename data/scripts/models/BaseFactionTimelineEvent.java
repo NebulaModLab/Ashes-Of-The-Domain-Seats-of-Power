@@ -3,13 +3,14 @@ package data.scripts.models;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import data.intel.EventOccuredIntel;
 
 public class BaseFactionTimelineEvent {
     public int cycle;
     public int day;
     public int month;
     public boolean gotReward= false;
-    public BaseFactionTimelineEvent(int cycle, int day, int month) {
+    public void setDate(int cycle, int day, int month) {
         this.cycle = cycle;
         this.day = day;
         this.month = month;
@@ -38,7 +39,11 @@ public class BaseFactionTimelineEvent {
 
     }
     public TimelineEventType getEventType(){
-        return TimelineEventType.RESEARCH;
+        return TimelineEventType.RESEARCH_AND_EXPLORATION;
+    }
+    public void createIntelEntryForUnlocking(){
+        EventOccuredIntel intel = new EventOccuredIntel(this);
+        Global.getSector().getIntelManager().addIntel(intel);
     }
     public int getCycle() {
         return cycle;

@@ -88,7 +88,7 @@ public class FactionTimelineViewerComponent implements ExtendUIPanelPlugin {
         float currOffset =25;
         for (FactionCycleShowcase showcase : generatedShowcases) {
             tooltip.addCustom(showcase.getMainPanel(),0f).getPosition().inTL(currOffset,0);
-            currOffset+=showcase.getMainPanel().getPosition().getWidth()+FactionCycleShowcase.spacerBetweenEvents;
+            currOffset+=showcase.generatedWidth+FactionCycleShowcase.spacerBetweenEvents;
         }
         generatedShowcases.clear();
         content.addUIElement(tooltip).inTL(0, 0);

@@ -1,6 +1,7 @@
-package data.scripts.managers;
+package data.scripts.listeners;
 
 import com.fs.starfarer.api.campaign.listeners.EconomyTickListener;
+import data.scripts.managers.FactionManager;
 
 public class FactionMonthlyUpdateListenner implements EconomyTickListener {
     @Override

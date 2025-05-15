@@ -1,8 +1,10 @@
 package data.scripts.managers;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignClockAPI;
 import com.fs.starfarer.api.combat.MutableStat;
 import data.scripts.models.BaseFactionPolicy;
+import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.CycleTimelineEvents;
 import data.scripts.models.FactionPolicySpec;
 
@@ -30,11 +32,18 @@ public class FactionManager {
             cycles.add(new CycleTimelineEvents(cycle));
         }
     }
+    public void addEventToTimeline(BaseFactionTimelineEvent event){
+        CampaignClockAPI clock= Global.getSector().getClock();
+        event.setDate(clock.getCycle(),clock.getDay(),clock.getMonth());
+        event.updateDataUponEntryOfUI();
+        getCycle(Global.getSector().getClock().getCycle()).addNewEvent(event);
+    }
     public void removeCycle(int cycle){
         cycles.removeIf(x->x.getRecordedCycle()==cycle);
     }
     public CycleTimelineEvents getCycle(int cycle){
-        return cycles.stream().filter(x->x.getRecordedCycle()==cycle).findFirst().orElse(null);
+        addCycle(cycle);
+        return cycles.stream().filter(x->x.getRecordedCycle()==cycle).findFirst().get();
     }
     public ArrayList<BaseFactionPolicy> getCurrentFactionPolicies() {
         return currentFactionPolicies;
