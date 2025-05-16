@@ -46,7 +46,7 @@ public class NoticeableEventComponent implements ExtendUIPanelPlugin {
         TooltipMakerAPI tl = tooltip.beginSubTooltip(contentPanel.getPosition().getWidth()-20);
         timelineEvent.createSmallNoteForEvent(tl);
         tooltip.endSubTooltip();
-        tooltip.addCustom(tl,0f).getPosition().inTL(0,(height-15)/2-(tl.getHeightSoFar()/2));
+        tooltip.addCustom(tl,0f).getPosition().inTL(10,(height-15)/2-(tl.getHeightSoFar()/2));
         ImageViewer viewer1 = new ImageViewer(contentPanel.getPosition().getWidth(),contentPanel.getPosition().getHeight(),Global.getSettings().getSpriteName("timeline_overlay",timelineEvent.getEventType().toString()));
         tooltip.addCustom(viewer1.getComponentPanel(),0f).getPosition().inTL(0,0);
         contentPanel.addUIElement(tooltip).inTL(0,0);
@@ -64,6 +64,7 @@ public class NoticeableEventComponent implements ExtendUIPanelPlugin {
             @Override
             public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
                 timelineEvent.createDetailedTooltipOnHover(tooltip);
+                timelineEvent.createPointSection(tooltip);
             }
         },contentPanel, TooltipMakerAPI.TooltipLocation.BELOW,false);
         mainPanel.addComponent(contentPanel).inTL(0,0);

@@ -5,6 +5,7 @@ import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Conditions;
 import data.listeners.timeline.ParadiseColonyListenerEnforcer;
+import data.listeners.timeline.models.FirstIncomeColonyListener;
 import data.listeners.timeline.models.FirstMarketConditionListener;
 import data.listeners.timeline.models.FirstSizeColonyListener;
 import data.listeners.timeline.ParadiseColonyListener;
@@ -36,21 +37,26 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
             Global.getSector().getListenerManager().addListener(new FactionHistoryUpdateListener());
         }
         addTransientScripts();
-        if(newGame){
-            Global.getSector().getEconomy().getMarketsCopy().forEach(x->x.getPrimaryEntity().getMemoryWithoutUpdate().set("$aotd_was_colonized",true));
+        if (newGame) {
+            Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getPrimaryEntity().getMemoryWithoutUpdate().set("$aotd_was_colonized", true));
         }
 
 
     }
-    public void addTransientScripts(){
+
+    public void addTransientScripts() {
         TimelineListenerManager.getInstance().addNewListener(new FirstColonyListener(AoTDSopMemFlags.FIRST_COLONY_TIMELINE_FLAG));
         TimelineListenerManager.getInstance().addNewListener(new GateHaulerWitness(AoTDSopMemFlags.GATE_ARRIVAL_WITNESS));
         TimelineListenerManager.getInstance().addNewListener(new ParadiseColonyListener(AoTDSopMemFlags.CLASS_V_COLONY));
-        for (int i = 6; i <=10 ; i++) {
-            TimelineListenerManager.getInstance().addNewListener(new FirstSizeColonyListener(AoTDSopMemFlags.SIZE_FLAG_COLONY,i,i-5));
+        for (int i = 6; i <= 10; i++) {
+            TimelineListenerManager.getInstance().addNewListener(new FirstSizeColonyListener(AoTDSopMemFlags.SIZE_FLAG_COLONY, i, i - 5));
         }
-        TimelineListenerManager.getInstance().addNewListener(new FirstMarketConditionListener(AoTDSopMemFlags.MARKET_CONDITION_COLONIZED, Conditions.RUINS_VAST,new FirstVastRuins(),false));
+        TimelineListenerManager.getInstance().addNewListener(new FirstIncomeColonyListener(AoTDSopMemFlags.REACHED_INCOME, 100000, 1));
+        TimelineListenerManager.getInstance().addNewListener(new FirstIncomeColonyListener(AoTDSopMemFlags.REACHED_INCOME, 1000000, 2));
+        TimelineListenerManager.getInstance().addNewListener(new FirstIncomeColonyListener(AoTDSopMemFlags.REACHED_INCOME, 10000000, 3));
+
+        TimelineListenerManager.getInstance().addNewListener(new FirstMarketConditionListener(AoTDSopMemFlags.MARKET_CONDITION_COLONIZED, Conditions.RUINS_VAST, new FirstVastRuins(), false));
         TimelineListenerManager.getInstance().setNeedsResetAfterInterval(true);
-        Global.getSector().getListenerManager().addListener(new ParadiseColonyListenerEnforcer(),true);
+        Global.getSector().getListenerManager().addListener(new ParadiseColonyListenerEnforcer(), true);
     }
 }

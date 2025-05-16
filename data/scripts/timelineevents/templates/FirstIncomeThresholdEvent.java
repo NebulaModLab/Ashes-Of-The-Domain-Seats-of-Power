@@ -1,7 +1,8 @@
-package data.scripts.timelineevents.prosperity;
+package data.scripts.timelineevents.templates;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -10,14 +11,14 @@ import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
 
-public  class FirstSizeReach extends BaseFactionTimelineEvent {
+public class FirstIncomeThresholdEvent extends BaseFactionTimelineEvent {
     String entityId;
     String lastSavedName;
-    int reachedSize;
+    int reqIncome;
     int romani;
-    public FirstSizeReach(String entityId,int reachedSize,int romani) {
+    public FirstIncomeThresholdEvent(String entityId, int reqIncome, int romani) {
         this.entityId = entityId;
-        this.reachedSize = reachedSize;
+        this.reqIncome = reqIncome;
         this.romani = romani;
 
     }
@@ -27,24 +28,29 @@ public  class FirstSizeReach extends BaseFactionTimelineEvent {
     }
 
     @Override
+    public String getID() {
+        return "FirstIncomeThresholdEvent"+ reqIncome;
+    }
+
+    @Override
     public String getImagePath() {
-        return Global.getSettings().getSpriteName("industry", "pop_high");
+        return Global.getSettings().getIndustrySpec(Industries.COMMERCE).getImageName();
     }
 
     @Override
     public String getTitleOfEvent() {
-        return "Blooming population "+getRomanNumeral();
+        return "Income Tycoon "+getRomanNumeral();
     }
 
     @Override
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
         super.createDetailedTooltipOnHover(tooltip);
         tooltip.addPara(
-                "%s has reached size %s, becoming the first colony of this size under the control of %s.",
+                "People of %s rejoice due to immense wealth, that this colony brings.",
                 5f,
                 Color.ORANGE,
                 getName(),
-                ""+reachedSize,
+                ""+ reqIncome,
                 Global.getSector().getPlayerFaction().getDisplayNameLong()
         );
     }
@@ -60,7 +66,7 @@ public  class FirstSizeReach extends BaseFactionTimelineEvent {
 
     @Override
     public void createSmallNoteForEvent(TooltipMakerAPI tooltip) {
-        tooltip.addPara(getName() +" reached size "+reachedSize, Misc.getTextColor(),0f).setAlignment(Alignment.MID);
+        tooltip.addPara(getName() +" reached income of  "+ Misc.getDGSCredits(reqIncome), Misc.getTextColor(),0f).setAlignment(Alignment.MID);
     }
 
     @Override

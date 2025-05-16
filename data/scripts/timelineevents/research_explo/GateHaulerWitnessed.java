@@ -17,6 +17,10 @@ public class GateHaulerWitnessed extends BaseFactionTimelineEvent {
 
     }
     @Override
+    public String getID() {
+        return "GateHaulerWitnessed";
+    }
+    @Override
     public String getTitleOfEvent() {
         return "Gate Hauler Arrival";
     }

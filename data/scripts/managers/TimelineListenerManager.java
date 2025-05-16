@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class TimelineListenerManager implements EveryFrameScript {
     public IntervalUtil intervalCheck = new IntervalUtil(2f, 2f);
     public ArrayList<BaseTimelineListener> transientListeners = new ArrayList<>();
-    protected transient ArrayList<BaseTimelineListener>listenersInQueue = new ArrayList<>();
+    protected ArrayList<BaseTimelineListener>listenersInQueue = new ArrayList<>();
     protected boolean needsResetAfterInterval = false;
 
     public void setNeedsResetAfterInterval(boolean needsResetAfterInterval) {

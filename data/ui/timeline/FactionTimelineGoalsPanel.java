@@ -4,6 +4,7 @@ import ashlib.data.plugins.ui.plugins.UILinesRenderer;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
+import data.scripts.models.TimelineEventType;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 
 import java.util.List;
@@ -27,9 +28,9 @@ public class FactionTimelineGoalsPanel implements ExtendUIPanelPlugin {
         tooltip.setTitleOrbitronVeryLarge();
         tooltip.addTitle("Faction Goals").setAlignment(Alignment.MID);
         tooltip.setParaFont(Fonts.ORBITRON_20AA);
-        LabelAPI label = tooltip.addPara("WORK IN PROGRESS",5f);
-        label.setAlignment(Alignment.MID);
-        label.getPosition().inTL(0,panelOfContent.getPosition().getHeight()/2-(label.computeTextHeight(label.getText())/2));
+        tooltip.addCustom(new FactionGoalButton(TimelineEventType.PROSPERITY).getMainPanel(),5f);
+        tooltip.addCustom(new FactionGoalButton(TimelineEventType.MILITARY).getMainPanel(),10f);
+        tooltip.addCustom(new FactionGoalButton(TimelineEventType.RESEARCH_AND_EXPLORATION).getMainPanel(),10f);
         panelOfContent.addUIElement(tooltip).inTL(0,0);
         mainPanel.addComponent(panelOfContent);
     }

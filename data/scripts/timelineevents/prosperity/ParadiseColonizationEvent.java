@@ -28,7 +28,10 @@ public class ParadiseColonizationEvent extends BaseFactionTimelineEvent {
         super.createDetailedTooltipOnHover(tooltip);
         tooltip.addPara("%s has been colonized, becoming the first world of Class V under %s.", 5f, Color.ORANGE, getName(), Global.getSector().getPlayerFaction().getDisplayNameLong());
     }
-
+    @Override
+    public String getID() {
+        return "ParadiseColonizationEvent";
+    }
     public String getName(){
         return lastSavedName;
     }

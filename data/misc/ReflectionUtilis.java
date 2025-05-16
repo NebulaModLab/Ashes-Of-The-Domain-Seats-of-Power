@@ -72,6 +72,7 @@ public class ReflectionUtilis {
         }
     }
 
+
     public static Object getPrivateVariableFromSuperClass(String fieldName, Object instanceToGetFrom) {
         try {
             Class<?> instances = instanceToGetFrom.getClass();

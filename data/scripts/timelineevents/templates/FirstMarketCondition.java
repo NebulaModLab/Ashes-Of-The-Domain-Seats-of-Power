@@ -23,7 +23,10 @@ public class FirstMarketCondition extends BaseFactionTimelineEvent {
     public String getTitleOfEvent() {
         return Global.getSettings().getMarketConditionSpec(marketCondition).getName();
     }
-
+    @Override
+    public String getID() {
+        return "FirstMarketCondition_"+marketCondition;
+    }
     @Override
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
         super.createDetailedTooltipOnHover(tooltip);
@@ -40,6 +43,7 @@ public class FirstMarketCondition extends BaseFactionTimelineEvent {
 
     @Override
     public void updateDataUponEntryOfUI() {
+
         Misc.getFactionMarkets(Factions.PLAYER).stream().filter(x->x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x->lastSavedName = x.getName());
     }
 
