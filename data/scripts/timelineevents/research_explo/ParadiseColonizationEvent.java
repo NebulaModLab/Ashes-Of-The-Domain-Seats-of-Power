@@ -1,4 +1,4 @@
-package data.scripts.timelineevents.prosperity;
+package data.scripts.timelineevents.research_explo;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
@@ -11,11 +11,8 @@ import data.scripts.models.TimelineEventType;
 import java.awt.*;
 
 public class ParadiseColonizationEvent extends BaseFactionTimelineEvent {
-    String marketID;
-    String lastSavedName;
     public ParadiseColonizationEvent(String marketID) {
-        this.marketID = marketID;
-
+        this.entityId = marketID;
     }
 
     @Override
@@ -38,12 +35,12 @@ public class ParadiseColonizationEvent extends BaseFactionTimelineEvent {
 
     @Override
     public String getImagePath() {
-        return Global.getSettings().getSpriteName("illustrations","gilead");
+        return Global.getSettings().getSpriteName("illustrations","survey");
     }
 
     @Override
     public void updateDataUponEntryOfUI() {
-        Misc.getFactionMarkets(Factions.PLAYER).stream().filter(x->x.getPrimaryEntity().getId().equals(marketID)).findFirst().ifPresent(x->lastSavedName = x.getName());
+        Misc.getFactionMarkets(Factions.PLAYER).stream().filter(x->x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x->lastSavedName = x.getName());
     }
 
     @Override
@@ -53,6 +50,6 @@ public class ParadiseColonizationEvent extends BaseFactionTimelineEvent {
 
     @Override
     public TimelineEventType getEventType() {
-        return TimelineEventType.PROSPERITY;
+        return TimelineEventType.RESEARCH_AND_EXPLORATION;
     }
 }

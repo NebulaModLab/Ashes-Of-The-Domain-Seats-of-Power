@@ -1,4 +1,4 @@
-package data.scripts.timelineevents.special;
+package data.scripts.timelineevents.research_explo;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
@@ -10,29 +10,29 @@ import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
 
-public class FirstColonyEstablishment extends BaseFactionTimelineEvent {
-    public FirstColonyEstablishment(String entityId) {
+public class VastRuinsScouredEvent extends BaseFactionTimelineEvent {
+    public VastRuinsScouredEvent(String entityId) {
         this.entityId = entityId;
     }
 
     @Override
     public String getTitleOfEvent() {
-        return "New Beginning";
+        return "Spoils of the Forgotten";
     }
 
     @Override
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
         super.createDetailedTooltipOnHover(tooltip);
-        tooltip.addPara("%s has been colonized, becoming the first world under the control of %s.", 5f, Color.ORANGE, getName(), Global.getSector().getPlayerFaction().getDisplayNameLong());
+        tooltip.addPara("%s located on %s has been fully exhausted!.", 5f, Color.ORANGE, "Vast Ruins",getName());
     }
 
     @Override
     public String getImagePath() {
-        return Global.getSettings().getSpriteName("industry", "pop_low");
+        return Global.getSettings().getSpriteName("illustrations", "salvor_ruins");
     }
 
     public String getName(){
-       return lastSavedName;
+        return lastSavedName;
     }
 
     @Override
@@ -42,11 +42,13 @@ public class FirstColonyEstablishment extends BaseFactionTimelineEvent {
 
     @Override
     public void createSmallNoteForEvent(TooltipMakerAPI tooltip) {
-        tooltip.addPara(getName() +" has been colonized", Misc.getTextColor(),0f).setAlignment(Alignment.MID);
+        tooltip.addPara("Nothing remains in the vast ruins on " + getName() + "—they’ve given up all their secrets.",
+                Misc.getTextColor(), 0f).setAlignment(Alignment.MID);
     }
+
 
     @Override
     public TimelineEventType getEventType() {
-        return TimelineEventType.UNIQUE;
+        return TimelineEventType.RESEARCH_AND_EXPLORATION;
     }
 }

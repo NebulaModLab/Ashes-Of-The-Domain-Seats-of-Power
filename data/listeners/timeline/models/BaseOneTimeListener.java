@@ -1,6 +1,7 @@
 package data.listeners.timeline.models;
 
 import com.fs.starfarer.api.Global;
+import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 
 public abstract class BaseOneTimeListener extends BaseTimelineListener{
@@ -24,5 +25,9 @@ public abstract class BaseOneTimeListener extends BaseTimelineListener{
             event.createIntelEntryForUnlocking();
         }
         Global.getSector().getMemoryWithoutUpdate().set(memoryFlagToCheck,true);
+    }
+    public void addEvent(BaseFactionTimelineEvent event){
+        FactionManager.getInstance().addEventToTimeline(event);
+        finish(event);
     }
 }

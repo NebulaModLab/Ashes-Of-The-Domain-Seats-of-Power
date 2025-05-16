@@ -6,6 +6,7 @@ import com.fs.starfarer.api.campaign.CampaignClockAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 
@@ -63,6 +64,9 @@ public class NoticeableEventComponent implements ExtendUIPanelPlugin {
 
             @Override
             public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
+                tooltip.setTitleOrbitronLarge();
+                tooltip.addTitle(timelineEvent.getTitleOfEvent());
+                tooltip.addPara("Event type : %s", 5f, Misc.getGrayColor(), FactionManager.getColorForEvent(timelineEvent.getEventType()).brighter(), FactionManager.getStringType(timelineEvent.getEventType()));
                 timelineEvent.createDetailedTooltipOnHover(tooltip);
                 timelineEvent.createPointSection(tooltip);
             }

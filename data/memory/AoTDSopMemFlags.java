@@ -7,5 +7,7 @@ public class AoTDSopMemFlags {
     public static String SIZE_FLAG_COLONY = "$aotd_sop_size_colony";
     public static String MARKET_CONDITION_COLONIZED = "$aotd_sop_market_condition_colony";
     public static String REACHED_INCOME = "$aotd_sop_reached_income";
+    public static String VAST_RUINS_DEPLETED = "$aotd_sop_vast_ruins_depleted";
+    public static String FIRST_INDUSTRY = "$aotd_sop_first_industry";
 
 }

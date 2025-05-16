@@ -2,7 +2,6 @@ package data.scripts.timelineevents.templates;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
-import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -11,43 +10,45 @@ import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
 
-public class FirstIncomeThresholdEvent extends BaseFactionTimelineEvent {
-    int reqIncome;
+public class FirstIndustryEvent extends BaseFactionTimelineEvent {
+    String industryId;
 
-    public FirstIncomeThresholdEvent(String entityId, int reqIncome, int romani) {
-        this.entityId = entityId;
-        this.reqIncome = reqIncome;
-        this.romanNumeral = romani;
-
+    public String getIndustryId() {
+        return industryId;
     }
 
+    public FirstIndustryEvent(String industryId, String entityId) {
+        this.industryId = industryId;
+        this.entityId = entityId;
+    }
     @Override
     public String getID() {
-        return "FirstIncomeThresholdEvent"+ reqIncome;
+        return "FirstIndustry_"+industryId;
     }
 
     @Override
     public String getImagePath() {
-        return Global.getSettings().getIndustrySpec(Industries.COMMERCE).getImageName();
+        return Global.getSettings().getIndustrySpec(industryId).getImageName();
     }
 
     @Override
     public String getTitleOfEvent() {
-        return "Income Tycoon "+getRomanNumeral();
+        return Global.getSettings().getIndustrySpec(industryId).getName();
     }
 
     @Override
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
         super.createDetailedTooltipOnHover(tooltip);
         tooltip.addPara(
-                "People of %s rejoice due to immense wealth, that this colony brings.",
+                "The first %s has been constructed on %s, marking a new milestone for %s.",
                 5f,
                 Color.ORANGE,
+                Global.getSettings().getIndustrySpec(industryId).getName(),
                 getName(),
-                ""+ reqIncome,
                 Global.getSector().getPlayerFaction().getDisplayNameLong()
         );
     }
+
 
     public String getName(){
         return lastSavedName;
@@ -60,13 +61,13 @@ public class FirstIncomeThresholdEvent extends BaseFactionTimelineEvent {
 
     @Override
     public void createSmallNoteForEvent(TooltipMakerAPI tooltip) {
-        tooltip.addPara(getName() +" reached income of %s",0f,Color.ORANGE, Misc.getDGSCredits(reqIncome)).setAlignment(Alignment.MID);
+        tooltip.addPara("First ever " + Global.getSettings().getIndustrySpec(industryId).getName() + " built on " + getName() ,
+                Misc.getTextColor(), 0f).setAlignment(Alignment.MID);
     }
+
 
     @Override
     public TimelineEventType getEventType() {
         return TimelineEventType.PROSPERITY;
     }
-
-
 }

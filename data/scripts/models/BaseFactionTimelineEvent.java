@@ -9,18 +9,27 @@ import data.intel.EventOccuredIntel;
 import data.scripts.managers.FactionManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BaseFactionTimelineEvent {
     public int cycle;
     public int day;
     public int month;
     public boolean gotReward = false;
-
+    public String entityId;
+   public String lastSavedName;
+    public int romanNumeral;
     public void setDate(int cycle, int day, int month) {
         this.cycle = cycle;
         this.day = day;
         this.month = month;
+    }
+
+    public void setRomanNumeral(int romanNumeral) {
+        this.romanNumeral = romanNumeral;
+    }
+
+    public void initEntityMemory(String entityId) {
+        this.entityId = entityId;
     }
 
     public String getTitleOfEvent() {
@@ -42,12 +51,10 @@ public class BaseFactionTimelineEvent {
 
 
     }
-
+    public  String  getRomanNumeral(){
+        return toRoman(romanNumeral);
+    }
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
-        tooltip.setTitleOrbitronLarge();
-        tooltip.addTitle(getTitleOfEvent());
-        tooltip.addPara("Event type : %s", 5f, Misc.getGrayColor(), FactionManager.getColorForEvent(getEventType()).brighter(), FactionManager.getStringType(getEventType()));
-
     }
 
     public void createPointSection(TooltipMakerAPI tooltip) {
@@ -108,6 +115,18 @@ public class BaseFactionTimelineEvent {
 
     public int getPointsForGoal() {
         return 10;
+    }
+    protected String toRoman(int number) {
+        String[] romans = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+        int[] values = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < values.length; i++) {
+            while (number >= values[i]) {
+                number -= values[i];
+                result.append(romans[i]);
+            }
+        }
+        return result.toString();
     }
 
 }

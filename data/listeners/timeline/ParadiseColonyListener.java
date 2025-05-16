@@ -5,7 +5,7 @@ import com.fs.starfarer.api.util.Misc;
 import data.listeners.timeline.models.BaseOneTimeListener;
 import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
-import data.scripts.timelineevents.prosperity.ParadiseColonizationEvent;
+import data.scripts.timelineevents.research_explo.ParadiseColonizationEvent;
 
 public class ParadiseColonyListener extends BaseOneTimeListener {
     public ParadiseColonyListener(String memoryFlagToCheck) {

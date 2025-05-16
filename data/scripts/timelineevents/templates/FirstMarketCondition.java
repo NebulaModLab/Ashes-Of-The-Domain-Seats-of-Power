@@ -12,8 +12,6 @@ import data.scripts.models.TimelineEventType;
 import java.awt.*;
 
 public class FirstMarketCondition extends BaseFactionTimelineEvent {
-    String entityId;
-    String lastSavedName;
    public String marketCondition;
     public void init(String entityId,String marketCondition) {
         this.marketCondition = marketCondition;

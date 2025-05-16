@@ -4,20 +4,20 @@ package data.plugins;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Conditions;
-import data.listeners.timeline.ParadiseColonyListenerEnforcer;
+import data.listeners.timeline.*;
 import data.listeners.timeline.models.FirstIncomeColonyListener;
+import data.listeners.timeline.models.FirstIndustryListener;
 import data.listeners.timeline.models.FirstMarketConditionListener;
 import data.listeners.timeline.models.FirstSizeColonyListener;
-import data.listeners.timeline.ParadiseColonyListener;
 import data.scripts.managers.TimelineListenerManager;
-import data.listeners.timeline.FirstColonyListener;
-import data.listeners.timeline.GateHaulerWitness;
 import data.memory.AoTDSopMemFlags;
 import data.scripts.CoreUITrackerScript;
 import data.scripts.listeners.FactionAdvance;
 import data.scripts.listeners.FactionHistoryUpdateListener;
 import data.scripts.listeners.FactionMonthlyUpdateListenner;
 import data.scripts.managers.*;
+import data.scripts.timelineevents.research_explo.MildConditionEvent;
+import data.scripts.timelineevents.special.FirstPlanetaryShieldEvent;
 import data.scripts.timelineevents.research_explo.FirstVastRuins;
 
 public class AoDCapitalsModPlugin extends BaseModPlugin {
@@ -37,6 +37,7 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
             Global.getSector().getListenerManager().addListener(new FactionHistoryUpdateListener());
         }
         addTransientScripts();
+        TimelineListenerManager.getInstance().setNeedsResetAfterInterval(true);
         if (newGame) {
             Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getPrimaryEntity().getMemoryWithoutUpdate().set("$aotd_was_colonized", true));
         }
@@ -56,7 +57,12 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         TimelineListenerManager.getInstance().addNewListener(new FirstIncomeColonyListener(AoTDSopMemFlags.REACHED_INCOME, 10000000, 3));
 
         TimelineListenerManager.getInstance().addNewListener(new FirstMarketConditionListener(AoTDSopMemFlags.MARKET_CONDITION_COLONIZED, Conditions.RUINS_VAST, new FirstVastRuins(), false));
-        TimelineListenerManager.getInstance().setNeedsResetAfterInterval(true);
+        TimelineListenerManager.getInstance().addNewListener(new FirstMarketConditionListener(AoTDSopMemFlags.MARKET_CONDITION_COLONIZED,Conditions.MILD_CLIMATE,new MildConditionEvent(),false));
         Global.getSector().getListenerManager().addListener(new ParadiseColonyListenerEnforcer(), true);
+
+
+        TimelineListenerManager.getInstance().addNewListener(new VastRuinsScouredEventListener(AoTDSopMemFlags.VAST_RUINS_DEPLETED));
+        TimelineListenerManager.getInstance().addNewListener(new FirstIndustryListener(AoTDSopMemFlags.FIRST_INDUSTRY,new FirstPlanetaryShieldEvent(null)));
+
     }
 }
