@@ -4,6 +4,12 @@ package data.plugins;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Conditions;
+import com.fs.starfarer.api.impl.campaign.intel.PerseanLeagueMembership;
+import com.fs.starfarer.api.impl.campaign.intel.TriTachyonDeal;
+import com.fs.starfarer.api.impl.campaign.intel.events.HegemonyHostileActivityFactor;
+import com.fs.starfarer.api.impl.campaign.intel.events.LuddicChurchHostileActivityFactor;
+import com.fs.starfarer.api.impl.campaign.intel.events.LuddicPathHostileActivityFactor;
+import com.fs.starfarer.api.impl.campaign.intel.events.TriTachyonHostileActivityFactor;
 import data.listeners.timeline.*;
 import data.listeners.timeline.models.FirstIncomeColonyListener;
 import data.listeners.timeline.models.FirstIndustryListener;
@@ -16,9 +22,12 @@ import data.scripts.listeners.FactionAdvance;
 import data.scripts.listeners.FactionHistoryUpdateListener;
 import data.scripts.listeners.FactionMonthlyUpdateListenner;
 import data.scripts.managers.*;
+import data.scripts.timelineevents.military.*;
+import data.scripts.timelineevents.prosperity.TriTachyonDealEvent;
 import data.scripts.timelineevents.research_explo.MildConditionEvent;
 import data.scripts.timelineevents.special.FirstPlanetaryShieldEvent;
 import data.scripts.timelineevents.research_explo.FirstVastRuins;
+import data.scripts.timelineevents.special.OrbitalShadeEvent;
 
 public class AoDCapitalsModPlugin extends BaseModPlugin {
 
@@ -58,11 +67,24 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
 
         TimelineListenerManager.getInstance().addNewListener(new FirstMarketConditionListener(AoTDSopMemFlags.MARKET_CONDITION_COLONIZED, Conditions.RUINS_VAST, new FirstVastRuins(), false));
         TimelineListenerManager.getInstance().addNewListener(new FirstMarketConditionListener(AoTDSopMemFlags.MARKET_CONDITION_COLONIZED,Conditions.MILD_CLIMATE,new MildConditionEvent(),false));
+        TimelineListenerManager.getInstance().addNewListener(new FirstMarketConditionListener(AoTDSopMemFlags.MARKET_CONDITION_COLONIZED,Conditions.SOLAR_ARRAY,new OrbitalShadeEvent(),false));
+
         Global.getSector().getListenerManager().addListener(new ParadiseColonyListenerEnforcer(), true);
 
 
         TimelineListenerManager.getInstance().addNewListener(new VastRuinsScouredEventListener(AoTDSopMemFlags.VAST_RUINS_DEPLETED));
         TimelineListenerManager.getInstance().addNewListener(new FirstIndustryListener(AoTDSopMemFlags.FIRST_INDUSTRY,new FirstPlanetaryShieldEvent(null)));
+        TimelineListenerManager.getInstance().addNewListener(new FirstIndustryListener(AoTDSopMemFlags.FIRST_INDUSTRY,new FirstHighCommand(null)));
+
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new HegemonyInspectionDefeat()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new TriTachyonFendingOffAttacks()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new LuddicChurchDefeat()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new LuddicPathDefeat()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new DefeatingPerseanLeague()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new TriTachyonDealEvent()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new SindiranDiktatDefeat()));
+
+
 
     }
 }

@@ -9,5 +9,5 @@ public class AoTDSopMemFlags {
     public static String REACHED_INCOME = "$aotd_sop_reached_income";
     public static String VAST_RUINS_DEPLETED = "$aotd_sop_vast_ruins_depleted";
     public static String FIRST_INDUSTRY = "$aotd_sop_first_industry";
-
+    public static String MISC_EVENT = "$aotd_misc_event";
 }

@@ -8,7 +8,7 @@ import data.scripts.managers.TimelineListenerManager;
 public class ParadiseColonyListenerEnforcer implements PlayerColonizationListener {
     @Override
     public void reportPlayerColonizedPlanet(PlanetAPI planet) {
-        TimelineListenerManager.getInstance().executeListenersOfClass(1f, ParadiseColonyListenerEnforcer.class);
+        TimelineListenerManager.getInstance().executeListenersOfClass(1f, ParadiseColonyListener.class);
     }
 
     @Override

@@ -18,6 +18,12 @@ public class BaseFactionTimelineEvent {
     public String entityId;
    public String lastSavedName;
     public int romanNumeral;
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+
     public void setDate(int cycle, int day, int month) {
         this.cycle = cycle;
         this.day = day;
@@ -85,7 +91,7 @@ public class BaseFactionTimelineEvent {
         goalStats.forEach(x->x.modifyFlat(getID(),getPointsForGoal()));
     }
     public String getID(){
-        return "";
+        return this.getClass().getSimpleName();
     }
 
     public TimelineEventType getEventType() {
@@ -127,6 +133,9 @@ public class BaseFactionTimelineEvent {
             }
         }
         return result.toString();
+    }
+    public boolean checkForCondition(){
+        return false;
     }
 
 }

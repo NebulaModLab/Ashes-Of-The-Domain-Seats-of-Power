@@ -70,13 +70,14 @@ public class TimelineListenerManager implements EveryFrameScript {
     public void executeAllListeners(float amount) {
         if (!Misc.getFactionMarkets(Factions.PLAYER).isEmpty()) {
             transientListeners.forEach(x -> x.advance(amount));
+            Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getMemoryWithoutUpdate().set("$aotd_was_colonized",true));
         }
         pruneListeners();
         intervalCheck.nextInterval();
     }
     public void executeListenersOfClass(float amount,Class<?>clazz) {
         if (!Misc.getFactionMarkets(Factions.PLAYER).isEmpty()) {
-            transientListeners.stream().filter(x->x.getClass().equals(clazz)).forEach(x->x.advanceImpl(amount));
+            transientListeners.stream().filter(x->x.getClass().equals(clazz)).forEach(x->x. advanceImpl(amount));
         }
         pruneListeners();
     }

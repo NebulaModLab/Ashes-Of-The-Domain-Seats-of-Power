@@ -24,7 +24,7 @@ public class FirstColonyEstablishment extends BaseFactionTimelineEvent {
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
         super.createDetailedTooltipOnHover(tooltip);
         tooltip.addPara("%s has been colonized, becoming the first world under the control of %s.", 5f, Color.ORANGE, getName(), Global.getSector().getPlayerFaction().getDisplayNameLong());
-    }
+     }
 
     @Override
     public String getImagePath() {

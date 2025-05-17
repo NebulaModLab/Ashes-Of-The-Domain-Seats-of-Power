@@ -22,6 +22,7 @@ public class ParadiseColonyListener extends BaseOneTimeListener {
         if(!isDone()){
             Misc.getFactionMarkets(Factions.PLAYER).stream()
                     .filter(x -> x.getPlanetEntity() != null)
+                    .filter(x->!x.getPrimaryEntity().getMemoryWithoutUpdate().is("$aotd_was_colonized",true))
                     .filter(x -> Misc.getPlanetSurveyClass(x.getPlanetEntity()).equals("Class V"))
                     .findFirst()
                     .ifPresent(x -> {

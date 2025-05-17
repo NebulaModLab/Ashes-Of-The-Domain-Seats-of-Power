@@ -27,5 +27,6 @@ public class FirstMarketConditionListener extends BaseOneTimeListener {
                     FactionManager.getInstance().addEventToTimeline(event);
                     finish(event);
                 });
+
     }
 }
