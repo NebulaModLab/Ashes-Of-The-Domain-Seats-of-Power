@@ -18,7 +18,7 @@ public class FactionHistoryUpdateListener implements EconomyTickListener {
     public void reportEconomyMonthEnd() {
         if(Global.getSector().getClock().getCycle()!=currentCycle){
             currentCycle = Global.getSector().getClock().getCycle();
-            if(!Misc.getFactionMarkets(Global.getSector().getFaction(Factions.PLAYER)).isEmpty()){
+            if(!FactionManager.getMarketsUnderPlayer().isEmpty()){
                 FactionManager.getInstance().addCycle(currentCycle);
             }
         }

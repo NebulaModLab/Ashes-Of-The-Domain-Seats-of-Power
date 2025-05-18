@@ -23,11 +23,15 @@ import data.scripts.listeners.FactionHistoryUpdateListener;
 import data.scripts.listeners.FactionMonthlyUpdateListenner;
 import data.scripts.managers.*;
 import data.scripts.timelineevents.military.*;
+import data.scripts.timelineevents.prosperity.FirstFourIndustries;
+import data.scripts.timelineevents.prosperity.FoodMonopolyEvent;
 import data.scripts.timelineevents.prosperity.TriTachyonDealEvent;
 import data.scripts.timelineevents.research_explo.MildConditionEvent;
 import data.scripts.timelineevents.special.FirstPlanetaryShieldEvent;
 import data.scripts.timelineevents.research_explo.FirstVastRuins;
+import data.scripts.timelineevents.special.HypershuntInstallEvent;
 import data.scripts.timelineevents.special.OrbitalShadeEvent;
+import data.scripts.timelineevents.special.PristineNanoforgeEvent;
 
 public class AoDCapitalsModPlugin extends BaseModPlugin {
 
@@ -83,6 +87,11 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new DefeatingPerseanLeague()));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new TriTachyonDealEvent()));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new SindiranDiktatDefeat()));
+
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.FIRST_ITEM,new HypershuntInstallEvent()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.FIRST_ITEM,new PristineNanoforgeEvent()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FirstFourIndustries()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FoodMonopolyEvent()));
 
 
 

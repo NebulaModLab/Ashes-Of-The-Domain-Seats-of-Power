@@ -18,7 +18,7 @@ public class FirstMarketConditionListener extends BaseOneTimeListener {
 
     @Override
     public void advanceImpl(float amount) {
-        Misc.getFactionMarkets(Factions.PLAYER).stream()
+        FactionManager.getMarketsUnderPlayer().stream()
                 .filter(x->x.hasCondition(marketCondition))
                 .filter(x->!x.getPrimaryEntity().getMemoryWithoutUpdate().is("$aotd_was_colonized",true)||includePrevWorlds)
                 .findFirst()

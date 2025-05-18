@@ -22,7 +22,9 @@ public class BaseFactionTimelineEvent {
     public String getEntityId() {
         return entityId;
     }
-
+    public String getName(){
+        return lastSavedName;
+    }
 
     public void setDate(int cycle, int day, int month) {
         this.cycle = cycle;

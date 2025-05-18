@@ -29,7 +29,7 @@ public class FirstIndustryListener extends BaseOneTimeListener {
     }
     @Override
     public void advanceImpl(float amount) {
-        Misc.getFactionMarkets(Factions.PLAYER).stream()
+        FactionManager.getMarketsUnderPlayer().stream()
                 .filter(x->x.hasIndustry(industryID))
                 .findFirst()
                 .ifPresent(x -> {

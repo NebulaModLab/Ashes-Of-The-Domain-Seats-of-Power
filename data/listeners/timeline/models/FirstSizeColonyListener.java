@@ -17,7 +17,7 @@ public class FirstSizeColonyListener extends BaseOneTimeListener {
 
     @Override
     public void advanceImpl(float amount) {
-        Misc.getFactionMarkets(Factions.PLAYER).stream()
+        FactionManager.getMarketsUnderPlayer().stream()
                 .filter(x->x.getSize()>=checkedSizeFor)
                 .findFirst()
                 .ifPresent(x -> {

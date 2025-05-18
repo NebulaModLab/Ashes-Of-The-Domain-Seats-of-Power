@@ -2,7 +2,11 @@ package data.scripts.managers;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignClockAPI;
+import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.combat.MutableStat;
+import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.campaign.econ.Market;
 import data.scripts.models.*;
 
 import java.awt.*;
@@ -203,5 +207,8 @@ public class FactionManager {
 
         }
         return null;
+    }
+    public static List<MarketAPI>getMarketsUnderPlayer(){
+        return Misc.getFactionMarkets(Factions.PLAYER).stream().filter(x->!x.hasTag("nex_playerOutpost")).toList();
     }
 }

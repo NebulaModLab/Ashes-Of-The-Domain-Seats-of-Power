@@ -20,8 +20,8 @@ public class FirstColonyListener extends BaseOneTimeListener {
 
     @Override
     public void advanceImpl(float amount) {
-        if (!Misc.getFactionMarkets(Factions.PLAYER).isEmpty()) {
-            BaseFactionTimelineEvent event = new FirstColonyEstablishment(Misc.getFactionMarkets(Factions.PLAYER).stream().findFirst().get().getPrimaryEntity().getId());
+        if (!FactionManager.getMarketsUnderPlayer().isEmpty()) {
+            BaseFactionTimelineEvent event = new FirstColonyEstablishment(FactionManager.getMarketsUnderPlayer().stream().findFirst().get().getPrimaryEntity().getId());
             FactionManager.getInstance().addEventToTimeline(event);
             finish(event);
         }

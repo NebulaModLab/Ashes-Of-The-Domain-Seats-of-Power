@@ -6,6 +6,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Conditions;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.Misc;
 import data.listeners.timeline.models.BaseOneTimeListener;
+import data.scripts.managers.FactionManager;
 import data.scripts.timelineevents.research_explo.VastRuinsScouredEvent;
 
 import static com.fs.starfarer.api.impl.campaign.ids.Stats.TECH_MINING_MULT;
@@ -17,7 +18,7 @@ public class VastRuinsScouredEventListener extends BaseOneTimeListener {
 
     @Override
     public void advanceImpl(float amount) {
-        Misc.getFactionMarkets(Factions.PLAYER).stream()
+        FactionManager.getMarketsUnderPlayer().stream()
                 .filter(x -> x.hasCondition(Conditions.RUINS_VAST))
                 .filter(x -> getTechMiningMult(x) < 0.25f)
                 .findFirst()

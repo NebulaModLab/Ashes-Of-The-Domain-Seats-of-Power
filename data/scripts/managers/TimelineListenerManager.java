@@ -68,7 +68,7 @@ public class TimelineListenerManager implements EveryFrameScript {
     //reset interval for obvious reasons
 
     public void executeAllListeners(float amount) {
-        if (!Misc.getFactionMarkets(Factions.PLAYER).isEmpty()) {
+        if (!FactionManager.getMarketsUnderPlayer().isEmpty()) {
             transientListeners.forEach(x -> x.advance(amount));
             Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getMemoryWithoutUpdate().set("$aotd_was_colonized",true));
         }
@@ -76,7 +76,7 @@ public class TimelineListenerManager implements EveryFrameScript {
         intervalCheck.nextInterval();
     }
     public void executeListenersOfClass(float amount,Class<?>clazz) {
-        if (!Misc.getFactionMarkets(Factions.PLAYER).isEmpty()) {
+        if (!FactionManager.getMarketsUnderPlayer().isEmpty()) {
             transientListeners.stream().filter(x->x.getClass().equals(clazz)).forEach(x->x. advanceImpl(amount));
         }
         pruneListeners();
