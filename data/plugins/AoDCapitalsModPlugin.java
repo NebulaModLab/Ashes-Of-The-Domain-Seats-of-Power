@@ -22,10 +22,12 @@ import data.scripts.listeners.FactionAdvance;
 import data.scripts.listeners.FactionHistoryUpdateListener;
 import data.scripts.listeners.FactionMonthlyUpdateListenner;
 import data.scripts.managers.*;
+import data.scripts.models.TimelineEventType;
 import data.scripts.timelineevents.military.*;
 import data.scripts.timelineevents.prosperity.FirstFourIndustries;
 import data.scripts.timelineevents.prosperity.FoodMonopolyEvent;
 import data.scripts.timelineevents.prosperity.TriTachyonDealEvent;
+import data.scripts.timelineevents.prosperity.TwelveSturcutresEvent;
 import data.scripts.timelineevents.research_explo.MildConditionEvent;
 import data.scripts.timelineevents.special.FirstPlanetaryShieldEvent;
 import data.scripts.timelineevents.research_explo.FirstVastRuins;
@@ -91,7 +93,8 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.FIRST_ITEM,new HypershuntInstallEvent()));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.FIRST_ITEM,new PristineNanoforgeEvent()));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FirstFourIndustries()));
-        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FoodMonopolyEvent()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new TwelveSturcutresEvent()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FoodMonopolyEvent(TimelineEventType.PROSPERITY,"food")));
 
 
 

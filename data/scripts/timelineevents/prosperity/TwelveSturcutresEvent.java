@@ -2,6 +2,7 @@ package data.scripts.timelineevents.prosperity;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -17,12 +18,12 @@ public class TwelveSturcutresEvent extends BaseFactionTimelineEvent {
 
     @Override
     public int getPointsForGoal() {
-        return 30;
+        return 20;
     }
 
     @Override
     public String getTitleOfEvent() {
-        return "Industrial Tycoon";
+        return "Advanced Infrastructure";
     }
     @Override
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
@@ -37,7 +38,7 @@ public class TwelveSturcutresEvent extends BaseFactionTimelineEvent {
 
     @Override
     public String getImagePath() {
-        return Global.getSettings().getSpriteName("illustrations","industrial_megafacility");
+        return Global.getSettings().getIndustrySpec(Industries.LIGHTINDUSTRY).getImageName();
     }
 
     @Override
@@ -49,7 +50,7 @@ public class TwelveSturcutresEvent extends BaseFactionTimelineEvent {
 
     @Override
     public boolean checkForCondition() {
-        MarketAPI market = FactionManager.getMarketsUnderPlayer().stream().filter(x -> Misc.getNumIndustries(x) >= 4).findFirst().orElse(null);
+        MarketAPI market = FactionManager.getMarketsUnderPlayer().stream().filter(x->x.getIndustries().size()>=12).findFirst().orElse(null);
         if (market != null) {
             entityId = market.getPrimaryEntity().getId();
         }

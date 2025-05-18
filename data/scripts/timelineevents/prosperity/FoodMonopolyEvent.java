@@ -6,9 +6,14 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.TimelineEventType;
+import data.scripts.timelineevents.templates.MonopolyEvent;
 
-public class FoodMonopolyEvent extends BaseFactionTimelineEvent {
+public class FoodMonopolyEvent extends MonopolyEvent {
 
+
+    public FoodMonopolyEvent(TimelineEventType typeOfMonopoly, String id) {
+        super(typeOfMonopoly, id, Commodities.FOOD);
+    }
     @Override
     public String getTitleOfEvent() {
         return "Spoils of the Harvest";
@@ -21,17 +26,12 @@ public class FoodMonopolyEvent extends BaseFactionTimelineEvent {
 
     @Override
     public int getPointsForGoal() {
-        return 140;
+        return 180;
     }
 
     @Override
     public String getImagePath() {
         return Global.getSettings().getSpriteName("illustrations","harvest");
-    }
-
-    @Override
-    public boolean checkForCondition() {
-        return Global.getSector().getEconomy().getMarketsCopy().stream().findFirst().get().getCommodityData(Commodities.FOOD).getCommodityMarketData().getMarketSharePercent(Global.getSector().getPlayerFaction())>30;
     }
     @Override
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
@@ -53,5 +53,4 @@ public class FoodMonopolyEvent extends BaseFactionTimelineEvent {
                 Global.getSector().getPlayerFaction().getDisplayNameLong()
         );
     }
-
 }
