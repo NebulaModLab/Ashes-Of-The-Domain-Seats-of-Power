@@ -26,7 +26,7 @@ public class TriTachyonFendingOffAttacks extends DefeatMajorFactionCrisisEvent {
                 5f,
                 Misc.getHighlightColor(),
                 Global.getSector().getPlayerFaction().getDisplayNameLong()
-        );
+        ).setAlignment(Alignment.MID);;
     }
 
     @Override

@@ -55,7 +55,7 @@ public class TriTachyonDealEvent extends BaseFactionTimelineEvent {
                 5f,
                 Misc.getHighlightColor(),
                 Global.getSector().getPlayerFaction().getDisplayNameLong()
-        );
+        ).setAlignment(Alignment.MID);;
     }
 
     @Override

@@ -2,6 +2,7 @@ package data.scripts.timelineevents.prosperity;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Commodities;
+import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.models.BaseFactionTimelineEvent;
@@ -51,6 +52,6 @@ public class FoodMonopolyEvent extends MonopolyEvent {
                 0f,
                 Misc.getTextColor(),
                 Global.getSector().getPlayerFaction().getDisplayNameLong()
-        );
+        ).setAlignment(Alignment.MID);;
     }
 }

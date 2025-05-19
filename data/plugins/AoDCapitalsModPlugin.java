@@ -24,16 +24,14 @@ import data.scripts.listeners.FactionMonthlyUpdateListenner;
 import data.scripts.managers.*;
 import data.scripts.models.TimelineEventType;
 import data.scripts.timelineevents.military.*;
-import data.scripts.timelineevents.prosperity.FirstFourIndustries;
-import data.scripts.timelineevents.prosperity.FoodMonopolyEvent;
-import data.scripts.timelineevents.prosperity.TriTachyonDealEvent;
-import data.scripts.timelineevents.prosperity.TwelveSturcutresEvent;
+import data.scripts.timelineevents.prosperity.*;
 import data.scripts.timelineevents.research_explo.MildConditionEvent;
 import data.scripts.timelineevents.special.FirstPlanetaryShieldEvent;
 import data.scripts.timelineevents.research_explo.FirstVastRuins;
 import data.scripts.timelineevents.special.HypershuntInstallEvent;
 import data.scripts.timelineevents.special.OrbitalShadeEvent;
 import data.scripts.timelineevents.special.PristineNanoforgeEvent;
+import data.scripts.timelineevents.templates.GroundDefenceModifierEvent;
 
 public class AoDCapitalsModPlugin extends BaseModPlugin {
 
@@ -95,7 +93,13 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FirstFourIndustries()));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new TwelveSturcutresEvent()));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FoodMonopolyEvent(TimelineEventType.PROSPERITY,"food")));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new UnderworldMonopolyEvent()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new MilitaryMonopolyEvent()));
 
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new GroundDefenceModifierEvent(1000,1)));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new GroundDefenceModifierEvent(10000,2)));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new GroundDefenceModifierEvent(50000,3)));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new GroundDefenceModifierEvent(100000,4)));
 
 
     }
