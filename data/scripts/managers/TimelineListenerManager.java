@@ -2,9 +2,7 @@ package data.scripts.managers;
 
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.IntervalUtil;
-import com.fs.starfarer.api.util.Misc;
 import data.listeners.timeline.models.BaseTimelineListener;
 
 import java.util.ArrayList;
@@ -68,7 +66,7 @@ public class TimelineListenerManager implements EveryFrameScript {
     //reset interval for obvious reasons
 
     public void executeAllListeners(float amount) {
-        if (!FactionManager.getMarketsUnderPlayer().isEmpty()) {
+        if (!AoTDFactionManager.getMarketsUnderPlayer().isEmpty()) {
             transientListeners.forEach(x -> x.advance(amount));
             Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getMemoryWithoutUpdate().set("$aotd_was_colonized",true));
         }
@@ -76,7 +74,7 @@ public class TimelineListenerManager implements EveryFrameScript {
         intervalCheck.nextInterval();
     }
     public void executeListenersOfClass(float amount,Class<?>clazz) {
-        if (!FactionManager.getMarketsUnderPlayer().isEmpty()) {
+        if (!AoTDFactionManager.getMarketsUnderPlayer().isEmpty()) {
             transientListeners.stream().filter(x->x.getClass().equals(clazz)).forEach(x->x. advanceImpl(amount));
         }
         pruneListeners();

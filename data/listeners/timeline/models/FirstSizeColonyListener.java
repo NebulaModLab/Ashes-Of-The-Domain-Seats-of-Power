@@ -1,8 +1,6 @@
 package data.listeners.timeline.models;
 
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
-import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.timelineevents.templates.FirstSizeReach;
 
@@ -17,12 +15,12 @@ public class FirstSizeColonyListener extends BaseOneTimeListener {
 
     @Override
     public void advanceImpl(float amount) {
-        FactionManager.getMarketsUnderPlayer().stream()
+        AoTDFactionManager.getMarketsUnderPlayer().stream()
                 .filter(x->x.getSize()>=checkedSizeFor)
                 .findFirst()
                 .ifPresent(x -> {
                     BaseFactionTimelineEvent event = new FirstSizeReach(x.getPrimaryEntity().getId(),checkedSizeFor,romanNumeral);
-                    FactionManager.getInstance().addEventToTimeline(event);
+                    AoTDFactionManager.getInstance().addEventToTimeline(event);
                     finish(event);
                 });
     }

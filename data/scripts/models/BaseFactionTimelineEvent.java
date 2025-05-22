@@ -4,9 +4,8 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.MutableStat;
 import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
-import com.fs.starfarer.api.util.Misc;
 import data.intel.EventOccuredIntel;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 
 import java.util.ArrayList;
 
@@ -67,9 +66,9 @@ public class BaseFactionTimelineEvent {
 
     public void createPointSection(TooltipMakerAPI tooltip) {
         if (getEventType() == TimelineEventType.UNIQUE) {
-            tooltip.addPara("Gain %s points towards all faction goals!", 5f, FactionManager.getColorForEvent(getEventType()).brighter(), getPointsForGoal() + "");
+            tooltip.addPara("Gain %s points towards all faction goals!", 5f, AoTDFactionManager.getColorForEvent(getEventType()).brighter(), getPointsForGoal() + "");
         } else {
-            tooltip.addPara("Gain %s points towards %s", 5f, FactionManager.getColorForEvent(getEventType()).brighter(), getPointsForGoal() + "", FactionManager.getStringType(getEventType()));
+            tooltip.addPara("Gain %s points towards %s", 5f, AoTDFactionManager.getColorForEvent(getEventType()).brighter(), getPointsForGoal() + "", AoTDFactionManager.getStringType(getEventType()));
 
         }
     }
@@ -81,10 +80,10 @@ public class BaseFactionTimelineEvent {
     public ArrayList<MutableStat> getEventsAffected() {
         ArrayList<MutableStat> existing = new ArrayList<>();
         if (getEventType() == TimelineEventType.UNIQUE) {
-            existing.addAll(FactionManager.getInstance().getGoalStats().values().stream().toList());
+            existing.addAll(AoTDFactionManager.getInstance().getGoalStats().values().stream().toList());
         }
         else{
-            existing.add(FactionManager.getInstance().getGoalStat(getEventType()));
+            existing.add(AoTDFactionManager.getInstance().getGoalStat(getEventType()));
         }
 
         return existing;
@@ -103,6 +102,7 @@ public class BaseFactionTimelineEvent {
     public void createIntelEntryForUnlocking() {
         EventOccuredIntel intel = new EventOccuredIntel(this);
         Global.getSector().getIntelManager().addIntel(intel);
+        AoTDFactionManager.getInstance().addXP(getPointsForGoal()*10);
     }
 
     public int getCycle() {

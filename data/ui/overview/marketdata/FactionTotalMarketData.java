@@ -6,7 +6,7 @@ import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 
 import java.awt.*;
@@ -44,17 +44,17 @@ public class FactionTotalMarketData implements ExtendUIPanelPlugin {
 
         ImageViewer commodity  = new ImageViewer(newHeight,newHeight,faction.getCrest());
         tooltip.addCustom(commodity.getComponentPanel(),0f).getPosition().inTL(1,2);
-        LabelAPI label = tooltip.addPara(FactionManager.getFactionName(faction),faction.getBaseUIColor(),0f);
+        LabelAPI label = tooltip.addPara(AoTDFactionManager.getFactionName(faction),faction.getBaseUIColor(),0f);
         label.getPosition().inTL(1,calculateHeight(label,newHeight));
         label.autoSizeToWidth(UIData.WIDTH_OF_COMMODITY);
         label.setAlignment(Alignment.MID);
         float x = UIData.WIDTH_OF_COMMODITY;
-        label = tooltip.addPara(FactionManager.getMarketSharePercentage(commodityId,faction) +"%", Color.ORANGE,0f);
+        label = tooltip.addPara(AoTDFactionManager.getMarketSharePercentage(commodityId,faction) +"%", Color.ORANGE,0f);
         label.getPosition().inTL(x,calculateHeight(label,newHeight));
         label.autoSizeToWidth(UIData.WIDTH_OF_MARKET_SHARE);
         label.setAlignment(Alignment.MID);
         x+=UIData.WIDTH_OF_MARKET_SHARE;
-        label = tooltip.addPara(Misc.getDGSCredits(FactionManager.getProfitsFromCommodityAcrossColonies(commodityId,faction)), Color.ORANGE,0f);
+        label = tooltip.addPara(Misc.getDGSCredits(AoTDFactionManager.getProfitsFromCommodityAcrossColonies(commodityId,faction)), Color.ORANGE,0f);
         label.getPosition().inTL(x,calculateHeight(label,newHeight));
         label.autoSizeToWidth(UIData.WIDTH_ON_PROFIT+UIData.WIDTH_OF_TOTAL_MARKET_VALUE);
         label.setAlignment(Alignment.MID);

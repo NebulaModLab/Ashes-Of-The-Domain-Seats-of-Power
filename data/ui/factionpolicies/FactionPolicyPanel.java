@@ -4,7 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.PositionAPI;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.SoundUIManager;
 import data.ui.basecomps.*;
 
@@ -26,7 +26,7 @@ public class FactionPolicyPanel implements ExtendUIPanelPlugin , SoundUIManager 
 
         float widthT = width*0.5f - 10f;
         float heightT = height-160;
-        FactionManager.getInstance().updateListBeforeUI();
+        AoTDFactionManager.getInstance().updateListBeforeUI();
         currentPoliciesListPanel =new FactionCurrentPoliciesListPanel(widthT,heightT);
         availablePoliciesListPanel = new FactionAvailablePoliciesListPanel(widthT,heightT);
         bonusPanel= new FactionBonusPanel(450, 130);

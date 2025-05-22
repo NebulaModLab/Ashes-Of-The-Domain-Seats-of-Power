@@ -2,11 +2,10 @@ package data.scripts.timelineevents.templates;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.TimelineEventType;
 
@@ -52,10 +51,10 @@ public class FirstItemInstalled extends BaseFactionTimelineEvent {
     }
     @Override
     public void updateDataUponEntryOfUI() {
-        FactionManager.getMarketsUnderPlayer()  .stream().filter(x->x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x->lastSavedName = x.getName());
+        AoTDFactionManager.getMarketsUnderPlayer()  .stream().filter(x->x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x->lastSavedName = x.getName());
     }
     public MarketAPI getMarketFittingCriteria(){
-        MarketAPI marketFound = FactionManager.getMarketsUnderPlayer().stream().filter(x -> x.getIndustries().stream().anyMatch(y -> y.getSpecialItem() != null && y.getSpecialItem().getId().equals(itemId))).findFirst().orElse(null);
+        MarketAPI marketFound = AoTDFactionManager.getMarketsUnderPlayer().stream().filter(x -> x.getIndustries().stream().anyMatch(y -> y.getSpecialItem() != null && y.getSpecialItem().getId().equals(itemId))).findFirst().orElse(null);
         if (marketFound != null) {
             entityId = marketFound.getPrimaryEntity().getId();
         }

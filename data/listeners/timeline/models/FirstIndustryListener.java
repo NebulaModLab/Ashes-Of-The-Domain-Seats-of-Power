@@ -1,11 +1,7 @@
 package data.listeners.timeline.models;
 
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
-import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
-import data.scripts.models.BaseFactionTimelineEvent;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.timelineevents.templates.FirstIndustryEvent;
-import data.scripts.timelineevents.templates.FirstSizeReach;
 
 public class FirstIndustryListener extends BaseOneTimeListener {
     String industryID;
@@ -29,7 +25,7 @@ public class FirstIndustryListener extends BaseOneTimeListener {
     }
     @Override
     public void advanceImpl(float amount) {
-        FactionManager.getMarketsUnderPlayer().stream()
+        AoTDFactionManager.getMarketsUnderPlayer().stream()
                 .filter(x->x.hasIndustry(industryID))
                 .findFirst()
                 .ifPresent(x -> {
@@ -39,7 +35,7 @@ public class FirstIndustryListener extends BaseOneTimeListener {
                     else{
                         event.initEntityMemory(x.getPrimaryEntity().getId());
                     }
-                    FactionManager.getInstance().addEventToTimeline(event);
+                    AoTDFactionManager.getInstance().addEventToTimeline(event);
                     finish(event);
                 });
     }

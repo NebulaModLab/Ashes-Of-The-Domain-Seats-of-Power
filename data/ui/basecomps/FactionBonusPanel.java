@@ -1,6 +1,5 @@
 package data.ui.basecomps;
 
-import ashlib.data.plugins.ui.models.ProgressBarComponent;
 import ashlib.data.plugins.ui.plugins.UILinesRenderer;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
@@ -8,12 +7,11 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.managers.FactionPolicySpecManager;
 import data.scripts.models.BaseFactionPolicy;
 import data.ui.factionpolicies.DetailedFactionPolicyTooltip;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,10 +52,10 @@ public class FactionBonusPanel implements ExtendUIPanelPlugin {
         tooltipForTitle.setTitleFont(Fonts.ORBITRON_24AABOLD);
         LabelAPI label = tooltipForTitle.addTitle("Current Effects");
         label.setAlignment(Alignment.MID);
-        HashSet<String> copy = FactionManager.getInstance().getCopyOfPolicies();
+        HashSet<String> copy = AoTDFactionManager.getInstance().getCopyOfPolicies();
         float opad = 0f;
-        ArrayList<BaseFactionPolicy>currentPolicies = FactionManager.getInstance().getCurrentFactionPolicies();
-        if (copy.stream().anyMatch(x -> !FactionManager.getInstance().doesHavePolicyEnabled(x))||currentPolicies.stream().anyMatch(x->!copy.contains(x.getSpec().getId()))) {
+        ArrayList<BaseFactionPolicy>currentPolicies = AoTDFactionManager.getInstance().getCurrentFactionPolicies();
+        if (copy.stream().anyMatch(x -> !AoTDFactionManager.getInstance().doesHavePolicyEnabled(x))||currentPolicies.stream().anyMatch(x->!copy.contains(x.getSpec().getId()))) {
             if(warningLabel==null){
                 warningLabel = tooltip.addPara("Warning: These changes apply upon leaving the Command Tab", Misc.getNegativeHighlightColor(), 5f);
                 warningLabel.setAlignment(Alignment.MID);
@@ -69,7 +67,7 @@ public class FactionBonusPanel implements ExtendUIPanelPlugin {
             }
 
 
-            copy.stream().filter(x -> !FactionManager.getInstance().doesHavePolicyEnabled(x)).forEach(x -> tooltip.addPara(BaseIntelPlugin.BULLET + "%s "+FactionPolicySpecManager.getSpec(x).getName(),3f,Misc.getTooltipTitleAndLightHighlightColor(),Misc.getPositiveHighlightColor(),"Add"));
+            copy.stream().filter(x -> !AoTDFactionManager.getInstance().doesHavePolicyEnabled(x)).forEach(x -> tooltip.addPara(BaseIntelPlugin.BULLET + "%s "+FactionPolicySpecManager.getSpec(x).getName(),3f,Misc.getTooltipTitleAndLightHighlightColor(),Misc.getPositiveHighlightColor(),"Add"));
             currentPolicies.stream().filter(x->!copy.contains(x.getSpec().getId())).forEach(x -> tooltip.addPara(BaseIntelPlugin.BULLET + "%s "+x.getSpec().getName(),3f,Misc.getTooltipTitleAndLightHighlightColor(),Misc.getNegativeHighlightColor(),"Remove"));
         }
         else{

@@ -4,7 +4,6 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Commodities;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
 import data.scripts.models.TimelineEventType;
 import data.scripts.timelineevents.templates.MonopolyEvent;
 
@@ -24,7 +23,7 @@ public class UnderworldMonopolyEvent extends MonopolyEvent {
 
     @Override
     public int getPointsForGoal() {
-        return 150;
+        return 180;
     }
 
     @Override

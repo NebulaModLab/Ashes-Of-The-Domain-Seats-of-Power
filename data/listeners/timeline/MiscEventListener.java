@@ -2,7 +2,7 @@ package data.listeners.timeline;
 
 import data.listeners.timeline.models.BaseOneTimeListener;
 import data.memory.AoTDSopMemFlags;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 
 public class MiscEventListener extends BaseOneTimeListener {
@@ -21,7 +21,7 @@ public class MiscEventListener extends BaseOneTimeListener {
     public void advanceImpl(float amount) {
         if(event.checkForCondition()){
 
-            FactionManager.getInstance().addEventToTimeline(event);
+            AoTDFactionManager.getInstance().addEventToTimeline(event);
             finish(event);
         }
     }

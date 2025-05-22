@@ -6,7 +6,7 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import data.misc.ProductionUtil;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.managers.FactionPolicySpecManager;
 import data.scripts.models.BaseFactionPolicy;
 import data.ui.basecomps.ExtendUIPanelPlugin;
@@ -46,7 +46,7 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
             mainPanel.removeComponent(headerPanel);
             tooltip = null;
         }
-        FactionManager manager = FactionManager.getInstance();
+        AoTDFactionManager manager = AoTDFactionManager.getInstance();
         List<BaseFactionPolicy> chosenPolicies = new ArrayList<>(manager.getCurrentFactionPolicies());
         chosenPolicies.removeIf(x->!manager.getCopyOfPolicies().contains(x.getSpec().getId()));
         manager.getCopyOfPolicies().forEach(x->{
@@ -176,7 +176,7 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
                     dialog.init(panelAPI, panelAPI1.getPosition().getCenterX() - (panelAPI.getPosition().getWidth() / 2), panelAPI1.getPosition().getCenterY() + (panelAPI.getPosition().getHeight() / 2), true);
                 }
                 else{
-                    FactionManager.getInstance().removePolicyFromCopy(panel.policy.getSpec().getId());
+                    AoTDFactionManager.getInstance().removePolicyFromCopy(panel.policy.getSpec().getId());
                     changeRequired = true;
                     break;
                 }

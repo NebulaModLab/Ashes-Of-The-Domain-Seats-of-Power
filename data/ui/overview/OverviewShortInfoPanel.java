@@ -6,12 +6,10 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.Pair;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.basecomps.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
@@ -34,12 +32,12 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
         panelOfGatheringPoint = Global.getSettings().createCustom(width, 100, renderer);
         TooltipMakerAPI tooltip = panelOfGatheringPoint.createUIElement(width, 100, false);
         tooltip.addSectionHeading("Faction Capital", Alignment.MID, 0f);
-        if (FactionManager.getInstance().doesControlCapital()) {
-                Pair<CustomPanelAPI, ButtonAPI> pair = AoTDGatehringPointPlugin.getMarketEntitySpriteButton(width - 15f, 75, 75,FactionManager.getInstance().getCapitalMarket());
+        if (AoTDFactionManager.getInstance().doesControlCapital()) {
+                Pair<CustomPanelAPI, ButtonAPI> pair = AoTDGatehringPointPlugin.getMarketEntitySpriteButton(width - 15f, 75, 75, AoTDFactionManager.getInstance().getCapitalMarket());
                 tooltip.addCustom(pair.one, 5f);
                 pair.two.setClickable(false);
 
-        } else if (!FactionManager.getInstance().didDeclaredCapital()) {
+        } else if (!AoTDFactionManager.getInstance().didDeclaredCapital()) {
             tooltip.setParaFont(Fonts.ORBITRON_12);
             tooltip.addPara("No capital selected. Choose one via the colony UI by clicking Population & Infrastructure.", Misc.getTooltipTitleAndLightHighlightColor(), 5f);
             tooltip.addPara("Note: The capital is permanent and cannot be changed later.", Misc.getTooltipTitleAndLightHighlightColor(), 5f);

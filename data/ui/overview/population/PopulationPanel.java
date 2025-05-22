@@ -7,7 +7,7 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 
 import java.awt.*;
@@ -37,9 +37,9 @@ public class PopulationPanel implements ExtendUIPanelPlugin {
         tooltip.setTitleOrbitronVeryLarge();
         tooltip.addTitle("Population Data : " + Global.getSector().getPlayerFaction().getDisplayNameLong(), Color.ORANGE).setAlignment(Alignment.MID);
         tooltip.setParaFont(Fonts.ORBITRON_16);
-        tooltip.addPara("Combined size of all markets under our control : %s", 10f, Color.ORANGE, (int) FactionManager.getTotalSize(Global.getSector().getPlayerFaction()) + "").setAlignment(Alignment.MID);
+        tooltip.addPara("Combined size of all markets under our control : %s", 10f, Color.ORANGE, (int) AoTDFactionManager.getTotalSize(Global.getSector().getPlayerFaction()) + "").setAlignment(Alignment.MID);
         if(showSectorPopulation){
-            tooltip.addPara("Combined size of entire sector : %s", 5f, Color.ORANGE, (int) FactionManager.getSizeOfSector() + "").setAlignment(Alignment.MID);
+            tooltip.addPara("Combined size of entire sector : %s", 5f, Color.ORANGE, (int) AoTDFactionManager.getSizeOfSector() + "").setAlignment(Alignment.MID);
 
         }
         else{
@@ -72,7 +72,7 @@ public class PopulationPanel implements ExtendUIPanelPlugin {
 
         CustomPanelAPI row = Global.getSettings().createCustom(contentWidth, itemHeight, null);
         if (showSectorPopulation) {
-            for (FactionAPI market : FactionManager.getAllFactionsRelevant()) {
+            for (FactionAPI market : AoTDFactionManager.getAllFactionsRelevant()) {
                 MarketPopData marketPanel = new MarketPopData(market, itemHeight);
                 float panelWidth = marketPanel.getMainPanel().getPosition().getWidth();
 
@@ -87,7 +87,7 @@ public class PopulationPanel implements ExtendUIPanelPlugin {
                 xCursor += panelWidth + spacing;
             }
         } else {
-            ArrayList<MarketAPI>markets = new ArrayList<MarketAPI>( FactionManager.getMarketsUnderPlayer().stream().sorted((a, b) -> Integer.compare((int) b.getSize(), a.getSize())).toList());
+            ArrayList<MarketAPI>markets = new ArrayList<MarketAPI>( AoTDFactionManager.getMarketsUnderPlayer().stream().sorted((a, b) -> Integer.compare((int) b.getSize(), a.getSize())).toList());
             for (MarketAPI market :markets) {
                 MarketPopData marketPanel = new MarketPopData(market, itemHeight);
                 float panelWidth = marketPanel.getMainPanel().getPosition().getWidth();

@@ -9,7 +9,7 @@ import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.Fonts;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
@@ -47,24 +47,24 @@ public class MilitaryGoal extends BaseFactionGoal{
     }
     @Override
     public void grantReward(String id) {
-        List<MarketAPI> markets = FactionManager.getMarketsUnderPlayer();
+        List<MarketAPI> markets = AoTDFactionManager.getMarketsUnderPlayer();
         if(id.equals("goal_1")){
             markets.forEach(x->x.getStability().modifyFlat("aotd_prosperity_1",1,"Reached Property Threshold"));
         }
         else if(id.equals("goal_2")){
-            FactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_military",50);
+            AoTDFactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_military",50);
         }
         else if(id.equals("goal_3")){
             Global.getSector().getMemoryWithoutUpdate().set("$aotd_logistic_unlocked",true);
         }
         else if(id.equals("goal_4")){
-            if(FactionManager.doesHaveMonopolyOverCommodities(30, Commodities.FOOD)){
+            if(AoTDFactionManager.doesHaveMonopolyOverCommodities(30, Commodities.FOOD)){
                 markets.forEach(x->x.getStability().modifyFlat("aotd_monopoly_food",2,"Monopoly over Food"));
             }
             else{
                 markets.forEach(x->{x.getStability().unmodifyFlat("aotd_monopoly_food");});
             }
-            if(FactionManager.doesHaveMonopolyOverCommodities(30, Commodities.DRUGS,Commodities.ORGANS)){
+            if(AoTDFactionManager.doesHaveMonopolyOverCommodities(30, Commodities.DRUGS,Commodities.ORGANS)){
                 Global.getSector().getPlayerStats().getDynamic().getStat(
                         Stats.getCommodityExportCreditsMultId(Commodities.DRUGS)).modifyMult("aotd_monopoly_underworld", 1f + 0.5f,"Concierge of Crime");
                 Global.getSector().getPlayerStats().getDynamic().getStat(
@@ -85,12 +85,12 @@ public class MilitaryGoal extends BaseFactionGoal{
         tooltip.addTitle(getTitle()).setAlignment(Alignment.MID);
         Color[]colors = new Color[]{Color.ORANGE,Color.ORANGE};
         tooltip.setParaFont(Fonts.ORBITRON_20AA);
-        tooltip.addPara("%s / %s",5f,colors, FactionManager.getInstance().getGoalStat(type).getModifiedInt()+"",""+FactionManager.maxPerCategory).setAlignment(Alignment.MID);
+        tooltip.addPara("%s / %s",5f,colors, AoTDFactionManager.getInstance().getGoalStat(type).getModifiedInt()+"",""+ AoTDFactionManager.maxPerCategory).setAlignment(Alignment.MID);
         tooltip.setParaFont(Fonts.DEFAULT_SMALL);
         tooltip.addPara("Focus on military advances of faction and it's strength to repel all dangers",5f);
         tooltip.addPara("For each threshold reached, you will get one time reward, ranging from new policies to new industries", Misc.getTooltipTitleAndLightHighlightColor(),5f);
         for (Map.Entry<String, Integer> entry : goals.entrySet()) {
-            tooltip.addPara(BaseIntelPlugin.BULLET+"At %s points",10f,FactionManager.getColorForEvent(type),entry.getValue()+"");
+            tooltip.addPara(BaseIntelPlugin.BULLET+"At %s points",10f, AoTDFactionManager.getColorForEvent(type),entry.getValue()+"");
             createTooltipForSection(entry.getKey(),tooltip);
         }
 

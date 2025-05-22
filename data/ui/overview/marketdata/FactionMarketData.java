@@ -6,7 +6,7 @@ import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 
 import java.awt.*;
@@ -48,19 +48,19 @@ public class FactionMarketData implements ExtendUIPanelPlugin {
         label.autoSizeToWidth(UIData.WIDTH_OF_COMMODITY);
         label.setAlignment(Alignment.MID);
         float x = UIData.WIDTH_OF_COMMODITY;
-        label = tooltip.addPara(FactionManager.getMarketSharePercentage(commodityId,faction) +"%", Color.ORANGE,0f);
+        label = tooltip.addPara(AoTDFactionManager.getMarketSharePercentage(commodityId,faction) +"%", Color.ORANGE,0f);
         label.getPosition().inTL(x,calculateHeight(label,height));
         label.autoSizeToWidth(UIData.WIDTH_OF_MARKET_SHARE);
         label.setAlignment(Alignment.MID);
         x+=UIData.WIDTH_OF_MARKET_SHARE;
-        label = tooltip.addPara(Misc.getDGSCredits(FactionManager.getProfitsFromCommodityAcrossColonies(commodityId,faction)), Color.ORANGE,0f);
+        label = tooltip.addPara(Misc.getDGSCredits(AoTDFactionManager.getProfitsFromCommodityAcrossColonies(commodityId,faction)), Color.ORANGE,0f);
         label.getPosition().inTL(x,calculateHeight(label,height));
         label.autoSizeToWidth(UIData.WIDTH_ON_PROFIT);
         label.setAlignment(Alignment.MID);
 
         x+=UIData.WIDTH_ON_PROFIT;
 
-        label = tooltip.addPara(Misc.getDGSCredits(FactionManager.getTotalMarketValue(commodityId)), Color.ORANGE,0f);
+        label = tooltip.addPara(Misc.getDGSCredits(AoTDFactionManager.getTotalMarketValue(commodityId)), Color.ORANGE,0f);
         label.getPosition().inTL(x,calculateHeight(label,newHeight));
         label.autoSizeToWidth(UIData.WIDTH_OF_TOTAL_MARKET_VALUE);
         label.setAlignment(Alignment.MID);

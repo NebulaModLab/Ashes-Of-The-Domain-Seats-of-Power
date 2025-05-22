@@ -24,7 +24,7 @@ public class ConsumerGoodsMonopolyEvent extends MonopolyEvent {
 
     @Override
     public int getPointsForGoal() {
-        return 120;
+        return 150;
     }
 
     @Override

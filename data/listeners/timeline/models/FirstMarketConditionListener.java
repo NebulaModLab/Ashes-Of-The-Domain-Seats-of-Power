@@ -1,8 +1,6 @@
 package data.listeners.timeline.models;
 
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
-import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.timelineevents.templates.FirstMarketCondition;
 
 public class FirstMarketConditionListener extends BaseOneTimeListener {
@@ -18,13 +16,13 @@ public class FirstMarketConditionListener extends BaseOneTimeListener {
 
     @Override
     public void advanceImpl(float amount) {
-        FactionManager.getMarketsUnderPlayer().stream()
+        AoTDFactionManager.getMarketsUnderPlayer().stream()
                 .filter(x->x.hasCondition(marketCondition))
                 .filter(x->!x.getPrimaryEntity().getMemoryWithoutUpdate().is("$aotd_was_colonized",true)||includePrevWorlds)
                 .findFirst()
                 .ifPresent(x -> {
                     event.init(x.getPrimaryEntity().getId(),marketCondition);
-                    FactionManager.getInstance().addEventToTimeline(event);
+                    AoTDFactionManager.getInstance().addEventToTimeline(event);
                     finish(event);
                 });
 

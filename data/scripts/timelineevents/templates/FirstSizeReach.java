@@ -1,11 +1,10 @@
 package data.scripts.timelineevents.templates;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.TimelineEventType;
 
@@ -56,7 +55,7 @@ public  class FirstSizeReach extends BaseFactionTimelineEvent {
 
     @Override
     public void updateDataUponEntryOfUI() {
-        FactionManager.getMarketsUnderPlayer().stream().filter(x->x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x->lastSavedName = x.getName());
+        AoTDFactionManager.getMarketsUnderPlayer().stream().filter(x->x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x->lastSavedName = x.getName());
     }
 
     @Override

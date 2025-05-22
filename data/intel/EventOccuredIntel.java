@@ -33,6 +33,7 @@ public class EventOccuredIntel extends BaseIntelPlugin {
         // Title of the intel
         info.addPara(getName(), title, 0f);
         info.addPara("Notable event : %s",5f,Color.ORANGE,event.getTitleOfEvent());
+        info.addPara("XP from event : %s",5f,Color.ORANGE,(event.getPointsForGoal()*10)+"");
 
     }
 

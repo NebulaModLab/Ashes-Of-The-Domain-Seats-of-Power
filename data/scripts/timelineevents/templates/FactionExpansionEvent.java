@@ -4,7 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.TimelineEventType;
 
@@ -45,7 +45,7 @@ public class FactionExpansionEvent extends BaseFactionTimelineEvent {
     @Override
     public boolean checkForCondition() {
         float size = 0;
-        for (MarketAPI marketAPI : FactionManager.getMarketsUnderPlayer()) {
+        for (MarketAPI marketAPI : AoTDFactionManager.getMarketsUnderPlayer()) {
             size+=marketAPI.getSize();
         }
         return size>=combinedMarketSize;

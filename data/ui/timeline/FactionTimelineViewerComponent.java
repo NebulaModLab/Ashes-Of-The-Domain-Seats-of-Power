@@ -6,7 +6,7 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import data.misc.ReflectionUtilis;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.CycleTimelineEvents;
 import data.ui.basecomps.ExtendUIPanelPlugin;
@@ -70,9 +70,9 @@ public class FactionTimelineViewerComponent implements ExtendUIPanelPlugin {
             dummy.removeComponent(content);
         }
         float calWidth = 25;
-        FactionManager.getInstance().getCycles().forEach(x->x.getEventsDuringCycle().forEach(BaseFactionTimelineEvent::updateDataUponEntryOfUI));
+        AoTDFactionManager.getInstance().getCycles().forEach(x->x.getEventsDuringCycle().forEach(BaseFactionTimelineEvent::updateDataUponEntryOfUI));
         ArrayList<FactionCycleShowcase>generatedShowcases = new ArrayList<>();
-        for (CycleTimelineEvents cycle : FactionManager.getInstance().getCycles()) {
+        for (CycleTimelineEvents cycle : AoTDFactionManager.getInstance().getCycles()) {
             FactionCycleShowcase showcase = new FactionCycleShowcase(cycle,dummy.getPosition().getHeight());
             generatedShowcases.add(showcase);
             calWidth+=showcase.getGeneratedWidth()+FactionCycleShowcase.spacerBetweenEvents;

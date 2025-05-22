@@ -6,13 +6,12 @@ import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class FactionAllData implements ExtendUIPanelPlugin {
     CustomPanelAPI mainPanel;
@@ -60,7 +59,7 @@ public class FactionAllData implements ExtendUIPanelPlugin {
 
             highLight = localData;
             if(data.isEmpty()){
-                for (String s : FactionManager.getAllCommoditiesInCirculationSorted(Global.getSector().getPlayerFaction(),true)) {
+                for (String s : AoTDFactionManager.getAllCommoditiesInCirculationSorted(Global.getSector().getPlayerFaction(),true)) {
                     FactionMarketData data = new FactionMarketData(componentPanel.getPosition().getWidth()-10,Global.getSector().getPlayerFaction(),s);
                     this.data.add(data);
                 }
@@ -85,7 +84,7 @@ public class FactionAllData implements ExtendUIPanelPlugin {
             headerTooltip.setParaFont(Fonts.ORBITRON_24AA);
             headerTooltip.addPara(Global.getSettings().getCommoditySpec(commodityID).getName(),Misc.getTooltipTitleAndLightHighlightColor(),0f).setAlignment(Alignment.MID);
             headerTooltip.setParaFont(Fonts.ORBITRON_16);
-            headerTooltip.addPara("Global Market Value : %s",5f,Color.ORANGE,Misc.getDGSCredits(FactionManager.getTotalMarketValue(commodityID))).setAlignment(Alignment.MID);
+            headerTooltip.addPara("Global Market Value : %s",5f,Color.ORANGE,Misc.getDGSCredits(AoTDFactionManager.getTotalMarketValue(commodityID))).setAlignment(Alignment.MID);
             ImageViewer viewer = new ImageViewer(60,60,Global.getSettings().getCommoditySpec(commodityID).getIconName());
             headerTooltip.addCustom(viewer.getComponentPanel(),5f).getPosition().inTL(componentPanel.getPosition().getWidth()/2-(viewer.getComponentPanel().getPosition().getWidth()/2),50);
 
@@ -102,7 +101,7 @@ public class FactionAllData implements ExtendUIPanelPlugin {
             button.getPosition().inTL(UIData.WIDTH_OF_COMMODITY+UIData.WIDTH_OF_MARKET_SHARE,0);
             button.setClickable(false);
 
-            for (FactionAPI faction : FactionManager.getMarketSharePercentageForEachFactionSorted(commodityID).keySet()) {
+            for (FactionAPI faction : AoTDFactionManager.getMarketSharePercentageForEachFactionSorted(commodityID).keySet()) {
                 FactionTotalMarketData data = new FactionTotalMarketData(componentPanel.getPosition().getWidth()-10,faction,commodityID);
                 data.button.setClickable(false);
                 mainTooltip.addCustom(data.getMainPanel(),5f);

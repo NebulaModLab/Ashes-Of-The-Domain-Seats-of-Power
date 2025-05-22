@@ -7,7 +7,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.TimelineEventType;
 
@@ -29,7 +29,7 @@ public class GroundDefenceModifierEvent extends BaseFactionTimelineEvent {
 
     @Override
     public boolean checkForCondition() {
-        MarketAPI marketValid = FactionManager.getMarketsUnderPlayer().stream().filter(x -> x.getStats().getDynamic().getMod(Stats.GROUND_DEFENSES_MOD).computeEffective(0f) >= groundModifier).findFirst().orElse(null);
+        MarketAPI marketValid = AoTDFactionManager.getMarketsUnderPlayer().stream().filter(x -> x.getStats().getDynamic().getMod(Stats.GROUND_DEFENSES_MOD).computeEffective(0f) >= groundModifier).findFirst().orElse(null);
         if (marketValid != null) {
             entityId = marketValid.getPrimaryEntity().getId();
         }
@@ -38,7 +38,7 @@ public class GroundDefenceModifierEvent extends BaseFactionTimelineEvent {
     }
     @Override
     public void updateDataUponEntryOfUI() {
-        FactionManager.getMarketsUnderPlayer().stream().filter(x->x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x->lastSavedName = x.getName());
+        AoTDFactionManager.getMarketsUnderPlayer().stream().filter(x->x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x->lastSavedName = x.getName());
     }
 
     @Override

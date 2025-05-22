@@ -7,7 +7,7 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.PositionAPI;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 import org.lwjgl.opengl.GL11;
 
@@ -60,7 +60,7 @@ public class PopulationChartPanel implements ExtendUIPanelPlugin {
         float angleStart = 0f;
 
         if (!displaySector) {
-            List<MarketAPI> markets = new ArrayList<>(FactionManager.getMarketsUnderPlayer());
+            List<MarketAPI> markets = new ArrayList<>(AoTDFactionManager.getMarketsUnderPlayer());
             if (markets == null || markets.isEmpty()) return;
 
 
@@ -68,8 +68,8 @@ public class PopulationChartPanel implements ExtendUIPanelPlugin {
 
             for (int i = 0; i < markets.size(); i++) {
                 MarketAPI market = markets.get(i);
-                float percent = FactionManager.getInstance().getPercentageOfPopulationOnMarket(market);
-                Color color = FactionManager.getInstance().getMarketColor(market.getId()).darker();
+                float percent = AoTDFactionManager.getInstance().getPercentageOfPopulationOnMarket(market);
+                Color color = AoTDFactionManager.getInstance().getMarketColor(market.getId()).darker();
 
                 if (i == markets.size() - 1) percent = 1f - cumulative; // ensure total = 1.0
                 float angleExtent = percent * 360f;
@@ -79,18 +79,18 @@ public class PopulationChartPanel implements ExtendUIPanelPlugin {
                 cumulative += percent;
             }
         } else {
-            List<FactionAPI> factions = new ArrayList<>(FactionManager.getAllFactionsRelevant());
+            List<FactionAPI> factions = new ArrayList<>(AoTDFactionManager.getAllFactionsRelevant());
             // Sort by sector presence descending
             factions.sort((a, b) -> Float.compare(
-                    FactionManager.getPercentageOfFactionInSector(b),
-                    FactionManager.getPercentageOfFactionInSector(a)
+                    AoTDFactionManager.getPercentageOfFactionInSector(b),
+                    AoTDFactionManager.getPercentageOfFactionInSector(a)
             ));
 
             float cumulative = 0f;
 
             for (int i = 0; i < factions.size(); i++) {
                 FactionAPI faction = factions.get(i);
-                float percent = FactionManager.getPercentageOfFactionInSector(faction);
+                float percent = AoTDFactionManager.getPercentageOfFactionInSector(faction);
                 Color color = faction.getBaseUIColor().darker();
 
                 if (i == factions.size() - 1) percent = 1f - cumulative;

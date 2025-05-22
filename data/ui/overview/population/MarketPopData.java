@@ -10,8 +10,7 @@ import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.PositionAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import com.fs.starfarer.campaign.econ.Market;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 
 import java.awt.*;
@@ -40,10 +39,10 @@ public class MarketPopData implements ExtendUIPanelPlugin {
         TooltipMakerAPI tooltip = contentPanel.createUIElement(1000, contentPanel.getPosition().getHeight(), false);
         ImageViewer viewer = new ImageViewer(mainPanel.getPosition().getHeight(), mainPanel.getPosition().getHeight(), Global.getSettings().getSpriteName("rendering", "GlitchSquare"));
         if(market!=null){
-            viewer.setColorOverlay(FactionManager.getInstance().getMarketColor(market.getId()));
+            viewer.setColorOverlay(AoTDFactionManager.getInstance().getMarketColor(market.getId()));
             tooltip.addCustom(viewer.getComponentPanel(), 0f);
             Color[] colors = new Color[] {Misc.getBasePlayerColor(),Color.ORANGE,Color.ORANGE};
-            LabelAPI label = tooltip.addPara( "%s" + " (%s) - %s", 5f,colors, market.getName(),""+market.getSize(), Misc.getRoundedValueMaxOneAfterDecimal(100f * FactionManager.getPercentageOfPopulationOnMarket(market)) + "%");
+            LabelAPI label = tooltip.addPara( "%s" + " (%s) - %s", 5f,colors, market.getName(),""+market.getSize(), Misc.getRoundedValueMaxOneAfterDecimal(100f * AoTDFactionManager.getPercentageOfPopulationOnMarket(market)) + "%");
 
             label.getPosition().inTL(55, mainPanel.getPosition().getHeight() / 2 - (label.computeTextHeight(label.getText()) / 2));
             float combinedWidth = 55 + label.computeTextWidth(label.getText());
@@ -53,7 +52,7 @@ public class MarketPopData implements ExtendUIPanelPlugin {
             viewer.setColorOverlay(faction.getBaseUIColor().darker());
             tooltip.addCustom(viewer.getComponentPanel(), 0f);
             Color[] colors = new Color[] {faction.getBaseUIColor().darker(),Color.ORANGE};
-            LabelAPI label = tooltip.addPara( "%s" + " (%s) - %s", 5f,colors, FactionManager.getFactionName(faction),""+(int)FactionManager.getTotalSize(faction),Misc.getRoundedValueMaxOneAfterDecimal(100 * FactionManager.getPercentageOfFactionInSector(faction)) + "%");
+            LabelAPI label = tooltip.addPara( "%s" + " (%s) - %s", 5f,colors, AoTDFactionManager.getFactionName(faction),""+(int) AoTDFactionManager.getTotalSize(faction),Misc.getRoundedValueMaxOneAfterDecimal(100 * AoTDFactionManager.getPercentageOfFactionInSector(faction)) + "%");
 
             label.getPosition().inTL(55, mainPanel.getPosition().getHeight() / 2 - (label.computeTextHeight(label.getText()) / 2));
             float combinedWidth = 55 + label.computeTextWidth(label.getText())+5;

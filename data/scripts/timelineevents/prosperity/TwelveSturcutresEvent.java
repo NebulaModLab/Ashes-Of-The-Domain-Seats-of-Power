@@ -6,7 +6,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.TimelineEventType;
 
@@ -50,7 +50,7 @@ public class TwelveSturcutresEvent extends BaseFactionTimelineEvent {
 
     @Override
     public boolean checkForCondition() {
-        MarketAPI market = FactionManager.getMarketsUnderPlayer().stream().filter(x->x.getIndustries().size()>=12).findFirst().orElse(null);
+        MarketAPI market = AoTDFactionManager.getMarketsUnderPlayer().stream().filter(x->x.getIndustries().size()>=12).findFirst().orElse(null);
         if (market != null) {
             entityId = market.getPrimaryEntity().getId();
         }
@@ -59,6 +59,6 @@ public class TwelveSturcutresEvent extends BaseFactionTimelineEvent {
 
     @Override
     public void updateDataUponEntryOfUI() {
-        FactionManager.getMarketsUnderPlayer().stream().filter(x -> x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x -> lastSavedName = x.getName());
+        AoTDFactionManager.getMarketsUnderPlayer().stream().filter(x -> x.getPrimaryEntity().getId().equals(entityId)).findFirst().ifPresent(x -> lastSavedName = x.getName());
     }
 }

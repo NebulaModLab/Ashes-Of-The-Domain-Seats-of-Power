@@ -5,7 +5,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import data.misc.ProductionUtil;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.FactionPolicySpec;
 
 import java.util.Iterator;
@@ -35,12 +35,12 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
         tooltipPanel = Global.getSettings().createCustom(panelWidth, panelHeight - 30, null);
         tooltip = tooltipPanel.createUIElement(panelWidth, panelHeight - 30, true);
 
-        int amountOfItems = FactionManager.getInstance().getSpecsForAvailableUI().size(); // Total number of items to place
+        int amountOfItems = AoTDFactionManager.getInstance().getSpecsForAvailableUI().size(); // Total number of items to place
         float separator = 5f;  // Example separator size
 
         int itemsPerRow = calculateMaxAmountOfItems(panelWidth, separator);
         int created = 0;
-        Iterator<FactionPolicySpec> specs = FactionManager.getInstance().getSpecsForAvailableUI().iterator();
+        Iterator<FactionPolicySpec> specs = AoTDFactionManager.getInstance().getSpecsForAvailableUI().iterator();
         while (specs.hasNext()) {
             int itemsThisRow = Math.min(itemsPerRow, amountOfItems - created);
             float currX = 0;
@@ -52,8 +52,8 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
             for (int i = 0; i < itemsThisRow; i++) {
                 if (!specs.hasNext()) break;
                 FactionPolicySpec spec = specs.next();
-                PolicyPanel item = new PolicyPanel(false, FactionManager.getInstance().getPolicyFromList(spec.getId()));
-                if(FactionManager.getInstance().getCopyOfPolicies().size()+1>FactionManager.getInstance().getAvailablePolicies().getModifiedInt()){
+                PolicyPanel item = new PolicyPanel(false, AoTDFactionManager.getInstance().getPolicyFromList(spec.getId()));
+                if(AoTDFactionManager.getInstance().getCopyOfPolicies().size()+1> AoTDFactionManager.getInstance().getAvailablePolicies().getModifiedInt()){
                     item.getButton().setClickable(false);
                 }
                 panels.add(item);
@@ -86,7 +86,7 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
                     dialog.init(panelAPI, panelAPI1.getPosition().getCenterX() - (panelAPI.getPosition().getWidth() / 2), panelAPI1.getPosition().getCenterY() + (panelAPI.getPosition().getHeight() / 2), true);
                 }
                 else{
-                    FactionManager.getInstance().addPolicyToCopy(panel.policy.getSpec().getId());
+                    AoTDFactionManager.getInstance().addPolicyToCopy(panel.policy.getSpec().getId());
                     changeRequired = true;
                     break;
                 }

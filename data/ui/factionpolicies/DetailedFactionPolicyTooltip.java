@@ -2,8 +2,7 @@ package data.ui.factionpolicies;
 
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
-import data.scripts.managers.FactionPolicySpecManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionPolicy;
 
 import java.awt.*;
@@ -30,8 +29,8 @@ public class DetailedFactionPolicyTooltip implements TooltipMakerAPI.TooltipCrea
         tooltip.setTitleOrbitronLarge();
         tooltip.addTitle(policy.getSpec().getName());
         policy.createDetailedTooltipDescription(tooltip);
-        if(FactionManager.getInstance().doesHavePolicyEnabled(policy.getSpec().getId())){
-            if(FactionManager.getInstance().doesHavePolicyInCopy(policy.getSpec().getId())){
+        if(AoTDFactionManager.getInstance().doesHavePolicyEnabled(policy.getSpec().getId())){
+            if(AoTDFactionManager.getInstance().doesHavePolicyInCopy(policy.getSpec().getId())){
                 tooltip.addPara("This policy is already in effect for about %s ",5f, Color.ORANGE, Misc.getStringForDays((int) policy.getDaysTillPlaced()));
             }
             else{

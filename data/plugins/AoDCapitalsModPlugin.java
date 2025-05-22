@@ -4,12 +4,6 @@ package data.plugins;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Conditions;
-import com.fs.starfarer.api.impl.campaign.intel.PerseanLeagueMembership;
-import com.fs.starfarer.api.impl.campaign.intel.TriTachyonDeal;
-import com.fs.starfarer.api.impl.campaign.intel.events.HegemonyHostileActivityFactor;
-import com.fs.starfarer.api.impl.campaign.intel.events.LuddicChurchHostileActivityFactor;
-import com.fs.starfarer.api.impl.campaign.intel.events.LuddicPathHostileActivityFactor;
-import com.fs.starfarer.api.impl.campaign.intel.events.TriTachyonHostileActivityFactor;
 import data.listeners.timeline.*;
 import data.listeners.timeline.models.FirstIncomeColonyListener;
 import data.listeners.timeline.models.FirstIndustryListener;
@@ -44,8 +38,8 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         if (!Global.getSector().hasScript(FactionAdvance.class)) {
             Global.getSector().addScript(new FactionAdvance());
         }
-        FactionManager.getInstance().getAvailablePolicies().modifyFlat("aotd_bonus", 2f);
-        FactionManager.getInstance().addNewPolicy("aotd_civ_fleet");
+        AoTDFactionManager.getInstance().getAvailablePolicies().modifyFlat("aotd_bonus", 2f);
+        AoTDFactionManager.getInstance().addNewPolicy("aotd_civ_fleet");
         Global.getSector().getListenerManager().addListener(new FactionMonthlyUpdateListenner(), true);
         if (!Global.getSector().getListenerManager().hasListenerOfClass(FactionHistoryUpdateListener.class)) {
             Global.getSector().getListenerManager().addListener(new FactionHistoryUpdateListener());
@@ -55,7 +49,6 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         if (newGame) {
             Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getPrimaryEntity().getMemoryWithoutUpdate().set("$aotd_was_colonized", true));
         }
-        FactionManager.getInstance().setCurrentXP(2000);
 
 
     }

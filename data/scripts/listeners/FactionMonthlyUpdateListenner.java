@@ -1,7 +1,7 @@
 package data.scripts.listeners;
 
 import com.fs.starfarer.api.campaign.listeners.EconomyTickListener;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 
 public class FactionMonthlyUpdateListenner implements EconomyTickListener {
     @Override
@@ -12,6 +12,6 @@ public class FactionMonthlyUpdateListenner implements EconomyTickListener {
     @Override
     public void reportEconomyMonthEnd() {
         //Report fires after month ends
-        FactionManager.getInstance().reportMonthEnd();
+        AoTDFactionManager.getInstance().reportMonthEnd();
     }
 }

@@ -6,12 +6,9 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
-import com.fs.starfarer.api.util.Misc;
-import data.misc.ProductionUtil;
-import data.misc.ReflectionUtilis;
 import data.misc.UIDataSop;
 import data.scripts.CoreUITrackerScript;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.factionpolicies.FactionPolicyPanel;
 import data.ui.overview.OverviewPanel;
 import data.ui.timeline.FactionTimelinePanel;
@@ -73,7 +70,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
     public void clearUI(boolean clearMusic) {
         ;
         panelMap.clear();
-        FactionManager.getInstance().applyChangesFromUI();
+        AoTDFactionManager.getInstance().applyChangesFromUI();
         policyPanel.availablePoliciesListPanel.getPanels().clear();
         policyPanel.currentPoliciesListPanel.getPanels().clear();
         mainPanel.removeComponent(panelForPlugins);

@@ -3,7 +3,6 @@ package data.scripts;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CoreUITabId;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.Pair;
@@ -11,7 +10,7 @@ import com.fs.starfarer.campaign.command.CustomProductionPanel;
 import data.misc.ProductionUtil;
 import data.misc.ReflectionUtilis;
 import data.misc.UIDataSop;
-import data.scripts.managers.FactionManager;
+import data.scripts.managers.AoTDFactionManager;
 import data.ui.FactionPanel;
 import de.unkrig.commons.nullanalysis.NotNull;
 import org.lwjgl.input.Keyboard;
@@ -122,7 +121,7 @@ public class CoreUITrackerScript implements EveryFrameScript {
             }, tryToGetButtonProd("colonies"), toRemove2.getPosition().getWidth(), Keyboard.KEY_2, false);
             mainParent.removeComponent(toRemove2);
             tryToGetButtonProd("income").getPosition().inTL(tryToGetButtonProd("income").getPosition().getX()-10,0);
-            tryToGetButtonProd("faction").setEnabled(!FactionManager.getMarketsUnderPlayer().isEmpty());
+            tryToGetButtonProd("faction").setEnabled(!AoTDFactionManager.getMarketsUnderPlayer().isEmpty());
         }
 
         if (shouldHandleReset()) {

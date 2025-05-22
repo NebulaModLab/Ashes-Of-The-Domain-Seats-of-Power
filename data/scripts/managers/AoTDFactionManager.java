@@ -8,6 +8,7 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.combat.MutableStat;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.Misc;
+import data.conditions.FactionCapital;
 import data.scripts.factiongoals.BaseFactionGoal;
 import data.scripts.factiongoals.MilitaryGoal;
 import data.scripts.factiongoals.ProsperityGoal;
@@ -19,14 +20,14 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FactionManager {
+public class AoTDFactionManager {
     public ArrayList<BaseFactionPolicy> currentFactionPolicies = new ArrayList<>();
     public HashSet<String> copyOfPolicies = new HashSet<>();
     public MutableStat availablePolicies = new MutableStat(1f);
     public ArrayList<CycleTimelineEvents> cycles = new ArrayList<>();
     public HashMap<TimelineEventType, MutableStat> goalStats = new HashMap<>();
     public HashMap<TimelineEventType, BaseFactionGoal> goalsScripts = new HashMap<>();
-    public int currentXP;
+    public int currentXP = 0;
     public String capitalID;//We do id here so it is not directly tied to market
 
     public String getCapitalID() {
@@ -40,6 +41,10 @@ public class FactionManager {
     }
     public void setCapitalID(String capitalID) {
         this.capitalID = capitalID;
+    }
+    public void addXP(int xp){
+        Global.getSector().getCampaignUI().addMessage("Gained "+xp+" Faction XP",Misc.getPositiveHighlightColor());
+        currentXP += xp;
     }
     public MarketAPI getCapitalMarket(){
         return getMarketsUnderPlayer().stream().filter(x->x.getPrimaryEntity().getId().equals(capitalID)).findFirst().orElse(null);
@@ -57,7 +62,7 @@ public class FactionManager {
     public int getEffectiveXP(){
         int currXP = currentXP;
         for (Map.Entry<Integer, Integer> entry : levels.entrySet()) {
-            if(entry.getValue()>=currXP){
+            if(currXP>=entry.getValue()){
                 currXP -= entry.getValue();
             }
             else{
@@ -70,11 +75,11 @@ public class FactionManager {
     public float getProgressXP(){
         int currXP = currentXP;
         for (Map.Entry<Integer, Integer> entry : levels.entrySet()) {
-            if(entry.getValue()>=currXP){
+            if(currXP>=entry.getValue()){
                 currXP -= entry.getValue();
             }
             else{
-                return Math.round((float) currXP /entry.getValue());
+                return (float) currXP /entry.getValue();
             }
 
         }
@@ -97,7 +102,7 @@ public class FactionManager {
 
     //    public long getTotalSizeRealistic(){
 //        long size = 0;
-//        for (MarketAPI marketAPI : FactionManager.getMarketsUnderPlayer()) {
+//        for (MarketAPI marketAPI : AoTDFactionManager.getMarketsUnderPlayer()) {
 //            long sizeExtracted = getRealisticSizeOfMarket(marketAPI);
 //            size+=sizeExtracted;
 //
@@ -119,7 +124,7 @@ public class FactionManager {
     public static float getTotalSize(FactionAPI faction) {
         float size = 0;
         if (faction.isPlayerFaction()) {
-            for (MarketAPI marketAPI : FactionManager.getMarketsUnderPlayer()) {
+            for (MarketAPI marketAPI : AoTDFactionManager.getMarketsUnderPlayer()) {
                 float sizeExtracted = getSizeOfMarket(marketAPI);
                 size += sizeExtracted;
 
@@ -268,11 +273,11 @@ public class FactionManager {
         currentXP+=getXpPointsPerMonth().getModifiedInt();
     }
 
-    public static FactionManager getInstance() {
+    public static AoTDFactionManager getInstance() {
         if (Global.getSector().getPersistentData().get(memKey) == null) {
             setInstance();
         }
-        return (FactionManager) Global.getSector().getPersistentData().get(memKey);
+        return (AoTDFactionManager) Global.getSector().getPersistentData().get(memKey);
     }
 
     public BaseFactionGoal getScriptForGoal(TimelineEventType type) {
@@ -284,7 +289,7 @@ public class FactionManager {
     }
 
     public static void setInstance() {
-        FactionManager manager = new FactionManager();
+        AoTDFactionManager manager = new AoTDFactionManager();
         manager.goalStats.put(TimelineEventType.MILITARY, new MutableStat(0f));
         manager.goalStats.put(TimelineEventType.PROSPERITY, new MutableStat(0f));
         manager.goalStats.put(TimelineEventType.RESEARCH_AND_EXPLORATION, new MutableStat(0f));
@@ -314,6 +319,7 @@ public class FactionManager {
     }
 
     public void advance(float amount) {
+        FactionCapital.applyToCapital();
         currentFactionPolicies.forEach(x -> x.advance(amount));
         cycles.forEach(x -> x.getEventsDuringCycle().forEach(y -> y.applyEffects(y.getEventsAffected())));
         goalsScripts.values().forEach(x -> x.advance(amount));
@@ -384,7 +390,7 @@ public class FactionManager {
     public boolean canUsePolicyInUI(BaseFactionPolicy policy) {
         boolean canUse = true;
         for (String incompatiblePolicyId : policy.getSpec().getIncompatiblePolicyIds()) {
-            if (FactionManager.getInstance().doesHavePolicyInCopy(incompatiblePolicyId)) {
+            if (AoTDFactionManager.getInstance().doesHavePolicyInCopy(incompatiblePolicyId)) {
                 canUse = false;
                 break;
             }
@@ -429,7 +435,7 @@ public class FactionManager {
 
     public static ArrayList<FactionAPI> getAllFactionsRelevant() {
         return new ArrayList<>(Global.getSector().getAllFactions().stream()
-                .filter(x -> (x.isShowInIntelTab() || x.isPlayerFaction()) && FactionManager.getTotalSize(x) > 0).sorted((a, b) -> Integer.compare((int) FactionManager.getTotalSize(b), (int) FactionManager.getTotalSize(a))) // sort descending
+                .filter(x -> (x.isShowInIntelTab() || x.isPlayerFaction()) && AoTDFactionManager.getTotalSize(x) > 0).sorted((a, b) -> Integer.compare((int) AoTDFactionManager.getTotalSize(b), (int) AoTDFactionManager.getTotalSize(a))) // sort descending
                 .toList());
     }
 
