@@ -32,6 +32,7 @@ public class ProsperityGoal extends BaseFactionGoal{
             markets.forEach(x->x.getStability().modifyFlat("aotd_prosperity_1",1,"Reached Property Threshold"));
         }
         else if(id.equals("goal_2")){
+            FactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_prosperity",50);
 
         }
         else if(id.equals("goal_3")){

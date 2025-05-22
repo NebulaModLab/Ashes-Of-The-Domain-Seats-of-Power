@@ -34,6 +34,11 @@ public class FirstPlanetaryShieldEvent extends FirstIndustryEvent {
     }
 
     @Override
+    public int getPointsForGoal() {
+        return 60;
+    }
+
+    @Override
     public TimelineEventType getEventType() {
         return TimelineEventType.UNIQUE;
     }

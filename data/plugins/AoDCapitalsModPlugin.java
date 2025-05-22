@@ -55,6 +55,7 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         if (newGame) {
             Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getPrimaryEntity().getMemoryWithoutUpdate().set("$aotd_was_colonized", true));
         }
+        FactionManager.getInstance().setCurrentXP(2000);
 
 
     }

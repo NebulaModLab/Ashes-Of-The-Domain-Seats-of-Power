@@ -107,12 +107,6 @@ public class FactionAllData implements ExtendUIPanelPlugin {
                 data.button.setClickable(false);
                 mainTooltip.addCustom(data.getMainPanel(),5f);
             }
-            TooltipMakerAPI.PlanetInfoParams params = new TooltipMakerAPI.PlanetInfoParams();
-            params.showConditions=true;
-            params.showName=true;
-            params.withClass = true;
-            params.conditionsHeight=40;
-            mainTooltip.showPlanetInfo(Misc.getPlayerMarkets(true).get(0).getPlanetEntity(),100,100,params,5f);
 
             componentPanel.addUIElement(headerTooltip).inTL(0,0);
             componentPanel.addUIElement(tooltip).inTL(0,120);

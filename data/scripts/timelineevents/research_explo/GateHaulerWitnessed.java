@@ -42,6 +42,11 @@ public class GateHaulerWitnessed extends BaseFactionTimelineEvent {
     }
 
     @Override
+    public int getPointsForGoal() {
+        return 70;
+    }
+
+    @Override
     public TimelineEventType getEventType() {
         return TimelineEventType.RESEARCH_AND_EXPLORATION;
     }

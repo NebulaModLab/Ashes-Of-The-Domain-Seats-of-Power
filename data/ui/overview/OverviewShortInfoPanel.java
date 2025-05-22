@@ -6,6 +6,7 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.Pair;
+import data.scripts.managers.FactionManager;
 import data.ui.basecomps.*;
 
 import java.util.ArrayList;
@@ -33,12 +34,21 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
         panelOfGatheringPoint = Global.getSettings().createCustom(width, 100, renderer);
         TooltipMakerAPI tooltip = panelOfGatheringPoint.createUIElement(width, 100, false);
         tooltip.addSectionHeading("Faction Capital", Alignment.MID, 0f);
-        if (!Misc.getPlayerMarkets(true).isEmpty()) {
-            if (Global.getSector().getPlayerFaction().getProduction().getGatheringPoint() != null) {
-                Pair<CustomPanelAPI, ButtonAPI> pair = AoTDGatehringPointPlugin.getMarketEntitySpriteButton(width - 15f, 75, 75, Global.getSector().getPlayerFaction().getProduction().getGatheringPoint());
+        if (FactionManager.getInstance().doesControlCapital()) {
+                Pair<CustomPanelAPI, ButtonAPI> pair = AoTDGatehringPointPlugin.getMarketEntitySpriteButton(width - 15f, 75, 75,FactionManager.getInstance().getCapitalMarket());
                 tooltip.addCustom(pair.one, 5f);
                 pair.two.setClickable(false);
-            }
+
+        } else if (!FactionManager.getInstance().didDeclaredCapital()) {
+            tooltip.setParaFont(Fonts.ORBITRON_12);
+            tooltip.addPara("No capital selected. Choose one via the colony UI by clicking Population & Infrastructure.", Misc.getTooltipTitleAndLightHighlightColor(), 5f);
+            tooltip.addPara("Note: The capital is permanent and cannot be changed later.", Misc.getTooltipTitleAndLightHighlightColor(), 5f);
+
+        }
+        else{
+            tooltip.setParaFont(Fonts.ORBITRON_12);
+            tooltip.addPara("Capital is lost! We must reclaim it immediately!",Misc.getNegativeHighlightColor(),5f).setAlignment(Alignment.MID);
+
         }
 
 
@@ -60,8 +70,8 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
         tooltipSub.addSectionHeading("Additional info", Alignment.MID, 5f);
 
         buttons.add(tooltipSub.addButton("Population", "pop", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
-        buttons.add(tooltipSub.addButton("Star Systems", "star", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
-        buttons.add(tooltipSub.addButton("Colonies", "colonies", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
+//        buttons.add(tooltipSub.addButton("Star Systems", "star", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
+//        buttons.add(tooltipSub.addButton("Colonies", "colonies", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
         buttons.add(tooltipSub.addButton("Global Market Data", "commodities", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
         tooltip.endSubTooltip();
 

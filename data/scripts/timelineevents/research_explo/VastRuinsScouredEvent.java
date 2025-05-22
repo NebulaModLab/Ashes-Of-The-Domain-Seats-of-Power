@@ -47,6 +47,10 @@ public class VastRuinsScouredEvent extends BaseFactionTimelineEvent {
                 Misc.getTextColor(), 0f).setAlignment(Alignment.MID);
     }
 
+    @Override
+    public int getPointsForGoal() {
+        return 150;
+    }
 
     @Override
     public TimelineEventType getEventType() {

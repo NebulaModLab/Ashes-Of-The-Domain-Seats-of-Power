@@ -18,7 +18,7 @@ public class TwelveSturcutresEvent extends BaseFactionTimelineEvent {
 
     @Override
     public int getPointsForGoal() {
-        return 20;
+        return 40;
     }
 
     @Override

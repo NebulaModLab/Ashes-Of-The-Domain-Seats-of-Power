@@ -122,7 +122,7 @@ public class BaseFactionTimelineEvent {
     }
 
     public int getPointsForGoal() {
-        return 10;
+        return 30;
     }
     protected String toRoman(int number) {
         String[] romans = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};

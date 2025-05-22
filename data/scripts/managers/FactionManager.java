@@ -26,6 +26,74 @@ public class FactionManager {
     public ArrayList<CycleTimelineEvents> cycles = new ArrayList<>();
     public HashMap<TimelineEventType, MutableStat> goalStats = new HashMap<>();
     public HashMap<TimelineEventType, BaseFactionGoal> goalsScripts = new HashMap<>();
+    public int currentXP;
+    public String capitalID;//We do id here so it is not directly tied to market
+
+    public String getCapitalID() {
+        return capitalID;
+    }
+    public boolean didDeclaredCapital(){
+        return capitalID!= null;
+    }
+    public boolean doesControlCapital(){
+        return didDeclaredCapital()&&getMarketsUnderPlayer().stream().anyMatch(x->x.getPrimaryEntity().getId().equals(capitalID));
+    }
+    public void setCapitalID(String capitalID) {
+        this.capitalID = capitalID;
+    }
+    public MarketAPI getCapitalMarket(){
+        return getMarketsUnderPlayer().stream().filter(x->x.getPrimaryEntity().getId().equals(capitalID)).findFirst().orElse(null);
+    }
+
+    public LinkedHashMap<Integer,Integer>levels = new LinkedHashMap<>();
+    public void addLevel(int level,int threshold){
+        levels.put(level,threshold);
+    }
+
+    public MutableStat getXpPointsPerMonth() {
+        return xpPointsPerMonth;
+    }
+
+    public int getEffectiveXP(){
+        int currXP = currentXP;
+        for (Map.Entry<Integer, Integer> entry : levels.entrySet()) {
+            if(entry.getValue()>=currXP){
+                currXP -= entry.getValue();
+            }
+            else{
+                return currXP;
+            }
+
+        }
+        return 0;
+    }
+    public float getProgressXP(){
+        int currXP = currentXP;
+        for (Map.Entry<Integer, Integer> entry : levels.entrySet()) {
+            if(entry.getValue()>=currXP){
+                currXP -= entry.getValue();
+            }
+            else{
+                return Math.round((float) currXP /entry.getValue());
+            }
+
+        }
+        return 0;
+    }
+    public int getEffectiveLevel(){
+        int currXP = currentXP;
+        for (Map.Entry<Integer, Integer> entry : levels.entrySet()) {
+            if(currXP>=entry.getValue()){
+                currXP -= entry.getValue();
+            }
+            else{
+                return entry.getKey();
+            }
+
+        }
+        return 1;
+    }
+
 
     //    public long getTotalSizeRealistic(){
 //        long size = 0;
@@ -144,7 +212,6 @@ public class FactionManager {
 
     public static int maxPerCategory = 1000;
     public static final String memKey = "$aotd_faction_manager";
-    int currentXP;
 
     public HashMap<TimelineEventType, MutableStat> getGoalStats() {
         return goalStats;
@@ -176,6 +243,9 @@ public class FactionManager {
     public void removeCycle(int cycle) {
         cycles.removeIf(x -> x.getRecordedCycle() == cycle);
     }
+    public int getLevelThreshold(int level){
+        return levels.get(level);
+    }
 
     public CycleTimelineEvents getCycle(int cycle) {
         addCycle(cycle);
@@ -195,7 +265,7 @@ public class FactionManager {
     }
 
     public void reportMonthEnd() {
-
+        currentXP+=getXpPointsPerMonth().getModifiedInt();
     }
 
     public static FactionManager getInstance() {
@@ -209,6 +279,10 @@ public class FactionManager {
         return goalsScripts.get(type);
     }
 
+    public void setCurrentXP(int currentXP) {
+        this.currentXP = currentXP;
+    }
+
     public static void setInstance() {
         FactionManager manager = new FactionManager();
         manager.goalStats.put(TimelineEventType.MILITARY, new MutableStat(0f));
@@ -218,6 +292,11 @@ public class FactionManager {
         manager.goalsScripts.put(TimelineEventType.MILITARY, new MilitaryGoal());
         manager.goalsScripts.put(TimelineEventType.PROSPERITY, new ProsperityGoal());
         manager.goalsScripts.put(TimelineEventType.RESEARCH_AND_EXPLORATION, new ResearchAndExplorationGoal());
+
+        for (int i = 1; i < 16; i++) {
+            manager.addLevel(i,2000);
+        };
+
         Global.getSector().getPersistentData().put(memKey, manager);
 
     }

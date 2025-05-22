@@ -7,6 +7,7 @@ import com.fs.starfarer.api.impl.campaign.intel.events.BaseEventIntel;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.managers.FactionManager;
 
 import java.awt.*;
 import java.util.List;
@@ -44,16 +45,17 @@ public class FactionXPPanel implements ExtendUIPanelPlugin {
         tooltip.setTitleFont(Fonts.ORBITRON_24AABOLD);
         LabelAPI label =tooltip.addTitle("Faction Experience");
         label.setAlignment(Alignment.MID);
-        ProgressBarComponent component = new ProgressBarComponent(width-15,21,0.4f, Misc.getDarkPlayerColor().brighter().brighter());
+        ProgressBarComponent component = new ProgressBarComponent(width-15,21,FactionManager.getInstance().getProgressXP(), Misc.getDarkPlayerColor().brighter().brighter());
         tooltip.addCustom(component.getRenderingPanel(),5f);
         tooltip.setParaFontOrbitron();
         Color[] colors = new Color[2];
         colors[0]=Misc.getTextColor();
         colors[1]=Misc.getHighlightColor();
-        label = tooltip.addPara("%s / %s",-19f,colors,"400","1000");
+        int effectiveLevel = +FactionManager.getInstance().getEffectiveLevel();
+        label = tooltip.addPara("%s / %s",-19f,colors,""+FactionManager.getInstance().getEffectiveXP(),FactionManager.getInstance().getLevelThreshold(effectiveLevel)+"");
         label.autoSizeToWidth(width-15);
         label.setAlignment(Alignment.MID);
-        label = tooltip.addPara("Level : %s",7f,Color.ORANGE,"5");
+        label = tooltip.addPara("Level : %s",7f,Color.ORANGE,""+ effectiveLevel);
         label.setAlignment(Alignment.MID);
         tooltip.setParaFontOrbitron();
         label =  tooltip.addPara("Current amount of policy slots : %s",15f,Color.ORANGE,"3");

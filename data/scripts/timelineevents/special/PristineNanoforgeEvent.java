@@ -31,7 +31,7 @@ public class PristineNanoforgeEvent extends FirstItemInstalled {
 
     @Override
     public int getPointsForGoal() {
-        return 40;
+        return 50;
     }
 
     @Override

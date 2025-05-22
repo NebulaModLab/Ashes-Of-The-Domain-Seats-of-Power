@@ -53,4 +53,9 @@ public class ParadiseColonizationEvent extends BaseFactionTimelineEvent {
     public TimelineEventType getEventType() {
         return TimelineEventType.RESEARCH_AND_EXPLORATION;
     }
+
+    @Override
+    public int getPointsForGoal() {
+        return 100;
+    }
 }
