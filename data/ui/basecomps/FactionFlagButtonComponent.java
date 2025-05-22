@@ -14,8 +14,15 @@ public class FactionFlagButtonComponent extends ButtonComponent {
     ImageViewer viewer;
     String lastSavedFlag;
     Object prevValue;
+    boolean logo = false;
     public FactionFlagButtonComponent(float width, float height) {
         super(width, height);
+        createUI();
+
+    }
+    public FactionFlagButtonComponent(float width, float height,boolean logo) {
+        super(width, height);
+        this.logo = logo;
         createUI();
 
     }
@@ -26,6 +33,9 @@ public class FactionFlagButtonComponent extends ButtonComponent {
         component = new LabelComponent(Fonts.ORBITRON_20AA, 20, Global.getSector().getPlayerFaction().getDisplayNameLong(), Misc.getTextColor().brighter(), width * 4, 30);
 
         String crestName = Global.getSector().getPlayerFaction().getCrest();
+        if(logo){
+            crestName = Global.getSector().getPlayerFaction().getLogo();
+        }
         viewer = new ImageViewer(width, height, crestName);
         addComponent(viewer, 0, 0);
         addComponent(component, ((width / 2) - (component.getTextWidth() / 2)), -22);

@@ -2,17 +2,20 @@ package data.scripts.managers;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignClockAPI;
+import com.fs.starfarer.api.campaign.FactionAPI;
+import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.combat.MutableStat;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.Misc;
-import com.fs.starfarer.campaign.econ.Market;
+import data.scripts.factiongoals.BaseFactionGoal;
+import data.scripts.factiongoals.MilitaryGoal;
+import data.scripts.factiongoals.ProsperityGoal;
+import data.scripts.factiongoals.ResearchAndExplorationGoal;
 import data.scripts.models.*;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,123 @@ public class FactionManager {
     public MutableStat availablePolicies = new MutableStat(1f);
     public ArrayList<CycleTimelineEvents> cycles = new ArrayList<>();
     public HashMap<TimelineEventType, MutableStat> goalStats = new HashMap<>();
+    public HashMap<TimelineEventType, BaseFactionGoal> goalsScripts = new HashMap<>();
+
+    //    public long getTotalSizeRealistic(){
+//        long size = 0;
+//        for (MarketAPI marketAPI : FactionManager.getMarketsUnderPlayer()) {
+//            long sizeExtracted = getRealisticSizeOfMarket(marketAPI);
+//            size+=sizeExtracted;
+//
+//        }
+//        return size;
+//    }
+//    private long getRealisticSizeOfMarket(MarketAPI marketAPI) {
+//        long sizeExtracted = (long) Math.pow(10,marketAPI.getSize());
+//        if(Misc.getMaxMarketSize(marketAPI)<sizeExtracted){
+//            sizeExtracted+= (long) ((long) Math.pow(10,marketAPI.getSize())* marketAPI.getPopulation().getWeightValue());
+//        }
+//        return sizeExtracted;
+//    }
+//
+//    public float getPercentageOfPopulationOnMarketRealistic(MarketAPI market){
+//        if(getTotalSizeRealistic()==0)return 0;
+//        return (float) (float)getRealisticSizeOfMarket(market) / getTotalSizeRealistic();
+//    }
+    public static float getTotalSize(FactionAPI faction) {
+        float size = 0;
+        if (faction.isPlayerFaction()) {
+            for (MarketAPI marketAPI : FactionManager.getMarketsUnderPlayer()) {
+                float sizeExtracted = getSizeOfMarket(marketAPI);
+                size += sizeExtracted;
+
+            }
+        } else {
+            for (MarketAPI marketAPI : Misc.getFactionMarkets(faction)) {
+                float sizeExtracted = getSizeOfMarket(marketAPI);
+                size += sizeExtracted;
+
+            }
+        }
+
+        return size;
+    }
+
+
+    public static float getSizeOfMarket(MarketAPI marketAPI) {
+        return marketAPI.getSize();
+    }
+
+    public static float getSizeOfSector() {
+        int size = 0;
+        for (MarketAPI allMarket : getAllMarkets()) {
+            size += allMarket.getSize();
+        }
+        return size;
+    }
+
+    public static float getPercentageOfPopulationOnMarket(MarketAPI market) {
+        if (getTotalSize(market.getFaction()) == 0) return 0;
+        return (float) (float) getSizeOfMarket(market) / getTotalSize(market.getFaction());
+    }
+
+    public static float getPercentageOfFactionInSector(FactionAPI faction) {
+        if (getTotalSize(faction) == 0) return 0;
+
+        return getTotalSize(faction) / getSizeOfSector();
+    }
+
+    public LinkedHashMap<String, Color> marketColors = new LinkedHashMap<>(); //This is for UI for population so it does not change colors on flowchart every time
+
+    public Color getMarketColor(String marketID) {
+        if (marketColors == null) marketColors = new LinkedHashMap<>();
+        if (marketColors.containsKey(marketID)) {
+            return marketColors.get(marketID);
+        }
+
+        // Generate a unique, non-similar, non-black color
+        Color newColor;
+        int attempts = 0;
+        do {
+            newColor = generateRandomColor();
+            attempts++;
+            if (attempts > 10000) {
+                break;
+            }
+        } while (isTooSimilar(newColor) || isTooDark(newColor));
+
+        marketColors.put(marketID, newColor);
+        return newColor;
+    }
+
+    private Color generateRandomColor() {
+        Random rand = new Random();
+        return new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+    }
+
+    private boolean isTooDark(Color color) {
+        // Consider it black or too dark if brightness is too low
+        float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+        return hsb[2] < 0.1f; // brightness too low (value is 0.0 to 1.0)
+    }
+
+    private boolean isTooSimilar(Color color) {
+        for (Color existing : marketColors.values()) {
+            if (colorDistance(color, existing) < 100.0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private double colorDistance(Color c1, Color c2) {
+        int rDiff = c1.getRed() - c2.getRed();
+        int gDiff = c1.getGreen() - c2.getGreen();
+        int bDiff = c1.getBlue() - c2.getBlue();
+        return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+    }
+
+
     public static int maxPerCategory = 1000;
     public static final String memKey = "$aotd_faction_manager";
     int currentXP;
@@ -33,6 +153,7 @@ public class FactionManager {
     public MutableStat getGoalStat(TimelineEventType type) {
         return goalStats.get(type);
     }
+
     public ArrayList<CycleTimelineEvents> getCycles() {
         return cycles;
     }
@@ -84,11 +205,19 @@ public class FactionManager {
         return (FactionManager) Global.getSector().getPersistentData().get(memKey);
     }
 
+    public BaseFactionGoal getScriptForGoal(TimelineEventType type) {
+        return goalsScripts.get(type);
+    }
+
     public static void setInstance() {
         FactionManager manager = new FactionManager();
         manager.goalStats.put(TimelineEventType.MILITARY, new MutableStat(0f));
         manager.goalStats.put(TimelineEventType.PROSPERITY, new MutableStat(0f));
         manager.goalStats.put(TimelineEventType.RESEARCH_AND_EXPLORATION, new MutableStat(0f));
+
+        manager.goalsScripts.put(TimelineEventType.MILITARY, new MilitaryGoal());
+        manager.goalsScripts.put(TimelineEventType.PROSPERITY, new ProsperityGoal());
+        manager.goalsScripts.put(TimelineEventType.RESEARCH_AND_EXPLORATION, new ResearchAndExplorationGoal());
         Global.getSector().getPersistentData().put(memKey, manager);
 
     }
@@ -107,7 +236,8 @@ public class FactionManager {
 
     public void advance(float amount) {
         currentFactionPolicies.forEach(x -> x.advance(amount));
-        cycles.forEach(x->x.getEventsDuringCycle().forEach(y->y.applyEffects(y.getEventsAffected())));
+        cycles.forEach(x -> x.getEventsDuringCycle().forEach(y -> y.applyEffects(y.getEventsAffected())));
+        goalsScripts.values().forEach(x -> x.advance(amount));
     }
 
     public void addNewPolicy(String id) {
@@ -208,7 +338,100 @@ public class FactionManager {
         }
         return null;
     }
-    public static List<MarketAPI>getMarketsUnderPlayer(){
-        return Misc.getFactionMarkets(Factions.PLAYER).stream().filter(x->!x.hasTag("nex_playerOutpost")).toList();
+
+    public static String getFactionName(FactionAPI faction) {
+
+        return faction.getDisplayName().substring(0, 1).toUpperCase() + faction.getDisplayName().substring(1);
+    }
+
+    public static List<MarketAPI> getMarketsUnderPlayer() {
+        return Misc.getFactionMarkets(Factions.PLAYER).stream().filter(x -> !x.hasTag("nex_playerOutpost")).toList();
+    }
+
+    public static ArrayList<FactionAPI> getAllFactionsRelevant() {
+        return new ArrayList<>(Global.getSector().getAllFactions().stream()
+                .filter(x -> (x.isShowInIntelTab() || x.isPlayerFaction()) && FactionManager.getTotalSize(x) > 0).sorted((a, b) -> Integer.compare((int) FactionManager.getTotalSize(b), (int) FactionManager.getTotalSize(a))) // sort descending
+                .toList());
+    }
+
+    public static List<MarketAPI> getAllMarkets() {
+        return Global.getSector().getEconomy().getMarketsCopy().stream().filter(x -> !x.hasTag("nex_playerOutpost") && x.getFaction() != null && (x.getFaction().isShowInIntelTab()||x.getFaction().isPlayerFaction()) && x.isInEconomy()).toList();
+    }
+
+    public static boolean doesHaveMonopolyOverCommodities(int threshold, String... commodities) {
+
+        return Arrays.stream(commodities).allMatch(x ->getMarketSharePercentage(x,Global.getSector().getPlayerFaction()) > threshold);
+    }
+
+    public static int getMarketSharePercentage(String commodityID,FactionAPI faction) {
+        MarketAPI market = Global.getSector().getEconomy().getMarketsCopy().get(0);
+        return market.getCommodityData(commodityID).getCommodityMarketData().getMarketSharePercent(faction);
+    }
+    public static HashSet<String> getAllCommoditiesInCirculation(){
+        HashSet<String>strs =new HashSet<>();
+        MarketAPI market = Global.getSector().getEconomy().getMarketsCopy().get(0);
+
+        Global.getSettings().getAllCommoditySpecs().stream().filter(x->market.getCommodityData(x.getId()).getCommodityMarketData().getMarketValue()!=0).forEach(x->strs.add(x.getId()));
+        return strs;
+    }
+    public static LinkedHashSet<String> getAllCommoditiesInCirculationSorted(FactionAPI faction, boolean descending) {
+        MarketAPI market = Global.getSector().getEconomy().getMarketsCopy().get(0); // Adjust this if you want to consider multiple markets
+        Comparator<String> comparator = Comparator.comparingDouble(
+                id -> market.getCommodityData(id).getCommodityMarketData().getMarketSharePercent(faction)
+        );
+
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+
+        return Global.getSettings().getAllCommoditySpecs().stream()
+                .map(CommoditySpecAPI::getId)
+                .filter(id -> market.getCommodityData(id).getCommodityMarketData().getMarketValue() != 0)
+                .sorted(comparator)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public static int getProfitsFromCommodityAcrossColonies(String commodityID,FactionAPI faction) {
+        int profit = 0;
+        for (MarketAPI marketAPI : getMarketsForFaction(faction)) {
+            profit+=marketAPI.getCommodityData(commodityID).getExportIncome();
+        }
+        return profit;
+
+
+    }
+    public static int getTotalMarketValue(String commodityID) {
+        MarketAPI market = Global.getSector().getEconomy().getMarketsCopy().get(0); // Adjust this if you want to consider multiple markets
+        return (int) market.getCommodityData(commodityID).getCommodityMarketData().getMarketValue();
+
+
+    }
+    public static LinkedHashMap<FactionAPI, Integer> getMarketSharePercentageForEachFactionSorted(String commodityId) {
+        MarketAPI market = Global.getSector().getEconomy().getMarketsCopy().get(0);
+
+        Map<FactionAPI, Integer> original = market.getCommodityData(commodityId)
+                .getCommodityMarketData()
+                .getMarketSharePercentPerFaction();
+
+        return original.entrySet().stream()
+                .sorted(Map.Entry.<FactionAPI, Integer>comparingByValue().reversed()) // Sort by value descending
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new // Preserve order
+                ));
+    }
+
+
+    public static List<MarketAPI> getMarketsForFaction(FactionAPI faction) {
+        List<MarketAPI> markets;
+        if(faction.isPlayerFaction()){
+            markets = getMarketsUnderPlayer();
+        }
+        else{
+            markets = Misc.getFactionMarkets(faction);
+        }
+        return markets;
     }
 }

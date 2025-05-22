@@ -2,19 +2,19 @@ package data.scripts.timelineevents.prosperity;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Commodities;
+import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.managers.FactionManager;
 import data.scripts.models.TimelineEventType;
 import data.scripts.timelineevents.templates.MonopolyEvent;
 
-public class UnderworldMonopolyEvent extends MonopolyEvent {
-    public UnderworldMonopolyEvent() {
-        super(TimelineEventType.PROSPERITY, "UnderworldMonopoly", Commodities.DRUGS,Commodities.ORGANS);
+public class ConsumerGoodsMonopolyEvent extends MonopolyEvent {
+    public ConsumerGoodsMonopolyEvent() {
+        super(TimelineEventType.PROSPERITY, "ConsumerMonopoly", Commodities.DOMESTIC_GOODS,Commodities.LUXURY_GOODS);
     }
     @Override
     public String getTitleOfEvent() {
-        return "Concierge of Crime"; //Yes i watched blacklist and what? We wil have Reddington references
+        return "Provider";
     }
 
     @Override
@@ -24,25 +24,25 @@ public class UnderworldMonopolyEvent extends MonopolyEvent {
 
     @Override
     public int getPointsForGoal() {
-        return 150;
+        return 120;
     }
 
     @Override
     public String getImagePath() {
-        return Global.getSettings().getSpriteName("illustrations","tritachyon_bar");
+        return Global.getSettings().getSpriteName("illustrations","freighters");
     }
     @Override
     public void createDetailedTooltipOnHover(TooltipMakerAPI tooltip) {
         super.createDetailedTooltipOnHover(tooltip);
         tooltip.addPara(
-                "With permissive free port policies and the Sector’s most expansive industrial infrastructure, %s has become the central hub for the production and distribution of illicit goods. " +
-                        "From recreational drugs to harvested organs, your worlds are the beating heart of the Sector’s underworld economy.",
+                "With sprawling manufactories and efficient trade networks, %s has emerged as the Sector’s dominant supplier of everyday life. " +
+                        "From household staples to high-end luxuries, your markets shape the daily routines of millions.",
                 10f,
                 Misc.getHighlightColor(),
                 Global.getSector().getPlayerFaction().getDisplayNameLong()
         );
         tooltip.addPara(
-                "Your ports are where smugglers strike deals, cartels establish networks, and fortunes are made in the shadows.",
+                "When colonists want comfort, when traders want demand, and when elites want indulgence — they turn to you.",
                 5f
         );
     }
@@ -50,11 +50,12 @@ public class UnderworldMonopolyEvent extends MonopolyEvent {
     @Override
     public void createSmallNoteForEvent(TooltipMakerAPI tooltip) {
         tooltip.addPara(
-                "%s has risen as the Sector’s primary nexus for illegal trade, empowered by open trade policies and unmatched industrial capacity.",
+                "%s has become the Sector’s premier source of domestic and luxury goods.",
                 0f,
                 Misc.getTextColor(),
                 Global.getSector().getPlayerFaction().getDisplayNameLong()
-        );
+        ).setAlignment(Alignment.MID);
     }
+
 
 }

@@ -6,10 +6,14 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
+import com.fs.starfarer.api.util.Misc;
+import data.misc.ProductionUtil;
+import data.misc.ReflectionUtilis;
 import data.misc.UIDataSop;
 import data.scripts.CoreUITrackerScript;
 import data.scripts.managers.FactionManager;
 import data.ui.factionpolicies.FactionPolicyPanel;
+import data.ui.overview.OverviewPanel;
 import data.ui.timeline.FactionTimelinePanel;
 import org.lwjgl.input.Keyboard;
 
@@ -29,7 +33,8 @@ public class FactionPanel implements CustomUIPanelPlugin {
     boolean pausedMusic = true;
     FactionPolicyPanel policyPanel;
     FactionTimelinePanel timelinePanel;
-
+    OverviewPanel overviewPanel;
+    Object outpostPanel;
     public HashMap<ButtonAPI, CustomPanelAPI> getPanelMap() {
         return panelMap;
     }
@@ -45,8 +50,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
         if (!AshMisc.isStringValid(panelToShowcase)) {
             panelToShowcase = "policies";
         }
-
-
+        this.outpostPanel = data;
         UIDataSop.WIDTH = panelForPlugins.getPosition().getWidth();
         UIDataSop.HEIGHT = panelForPlugins.getPosition().getHeight();
         createButtonsAndMainPanels();
@@ -165,7 +169,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
         mainPanel.addComponent(buttonPanel).inTL(0, 10);
         insertPolicyPanel(customProd);
         insertTimeLinePanel(research);
-
+        insertOverviewPanel(sp);
     }
 
     private void insertPolicyPanel(ButtonAPI tiedButton) {
@@ -183,7 +187,13 @@ public class FactionPanel implements CustomUIPanelPlugin {
 
         panelMap.put(tiedButton, timelinePanel.getMainPanel());
     }
+    private void insertOverviewPanel(ButtonAPI tiedButton) {
+        if (overviewPanel == null) {
+            overviewPanel = new OverviewPanel(panelForPlugins.getPosition().getWidth(), panelForPlugins.getPosition().getHeight());
+        }
 
+        panelMap.put(tiedButton, overviewPanel.getMainPanel());
+    }
     public void playSound(ButtonAPI button) {
         if (button.getText().toLowerCase().contains("policies")) {
             policyPanel.playSound();

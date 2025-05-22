@@ -14,7 +14,7 @@ public class MilitaryMonopolyEvent extends MonopolyEvent {
     }
     @Override
     public String getTitleOfEvent() {
-        return "Arsenal of the Sector"; //Yes i watched blacklist and what? We wil have Reddington references
+        return "Arsenal of the Sector";
     }
 
     @Override

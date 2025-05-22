@@ -60,7 +60,7 @@ public class FactionTimelineViewerComponent implements ExtendUIPanelPlugin {
         mover.setBorders(-dummy.getPosition().getWidth() + mainPanel.getPosition().getWidth(), 0);
         mover.setCurrOffset(0f);
         if (tooltip.getExternalScroller() != null) {
-            ReflectionUtilis.invokeMethodWithAutoProjection("setMaxShadowHeight", tooltip.getExternalScroller(), 10);
+            ReflectionUtilis.invokeMethodWithAutoProjection("setMaxShadowHeight", tooltip.getExternalScroller(), 10f);
             ReflectionUtilis.invokeMethodWithAutoProjection("setShowScrollbars", tooltip.getExternalScroller(), false);
         }
     }

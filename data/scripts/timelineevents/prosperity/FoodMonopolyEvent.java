@@ -17,7 +17,7 @@ public class FoodMonopolyEvent extends MonopolyEvent {
     }
     @Override
     public String getTitleOfEvent() {
-        return "Spoils of the Harvest";
+        return "Granary of the Sector";
     }
 
     @Override

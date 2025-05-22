@@ -11,4 +11,6 @@ public class AoTDSopMemFlags {
     public static String FIRST_INDUSTRY = "$aotd_sop_first_industry";
     public static String FIRST_ITEM = "$aotd_sop_first_item";
     public static String MISC_EVENT = "$aotd_misc_event";
+    public static String UNLOCK_POLICY = "$aotd_unlock_policy";
+
 }

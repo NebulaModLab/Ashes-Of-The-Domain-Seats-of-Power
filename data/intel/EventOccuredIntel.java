@@ -32,7 +32,7 @@ public class EventOccuredIntel extends BaseIntelPlugin {
 
         // Title of the intel
         info.addPara(getName(), title, 0f);
-        info.addPara("Noticeable event : %s",5f,Color.ORANGE,event.getTitleOfEvent());
+        info.addPara("Notable event : %s",5f,Color.ORANGE,event.getTitleOfEvent());
 
     }
 
@@ -50,7 +50,7 @@ public class EventOccuredIntel extends BaseIntelPlugin {
 
     @Override
     protected String getName() {
-        return "Noticeable event : "+event.getTitleOfEvent();
+        return "Notable event : "+event.getTitleOfEvent();
     }
 
     @Override

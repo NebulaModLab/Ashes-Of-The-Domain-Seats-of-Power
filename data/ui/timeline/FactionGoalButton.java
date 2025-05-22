@@ -7,6 +7,8 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import data.misc.ReflectionUtilis;
+import data.scripts.factiongoals.BaseFactionGoal;
+import data.scripts.factiongoals.ResearchAndExplorationGoal;
 import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.TimelineEventType;
@@ -46,6 +48,23 @@ public class FactionGoalButton implements ExtendUIPanelPlugin {
         ImageViewer viewer1 = new ImageViewer(contentPanel.getPosition().getWidth(),contentPanel.getPosition().getHeight(),Global.getSettings().getSpriteName("timeline_goal_overlay",timelineEvent.toString()));
         tooltip.addCustom(viewer1.getComponentPanel(),0f).getPosition().inTL(0,0);
         contentPanel.addUIElement(tooltip).inTL(0,0);
+        BaseFactionGoal goal = FactionManager.getInstance().getScriptForGoal(timelineEvent);
+        tooltip.addTooltipTo(new TooltipMakerAPI.TooltipCreator() {
+            @Override
+            public boolean isTooltipExpandable(Object tooltipParam) {
+                return false;
+            }
+
+            @Override
+            public float getTooltipWidth(Object tooltipParam) {
+                return 500;
+            }
+
+            @Override
+            public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
+                    goal.createTooltip(tooltip);
+            }
+        },contentPanel, TooltipMakerAPI.TooltipLocation.RIGHT);
         mainPanel.addComponent(contentPanel).inTL(0,0);
     }
     @Override

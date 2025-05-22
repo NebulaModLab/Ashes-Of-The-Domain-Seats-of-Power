@@ -1,6 +1,7 @@
 package data.listeners.timeline;
 
 import data.listeners.timeline.models.BaseOneTimeListener;
+import data.memory.AoTDSopMemFlags;
 import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 
@@ -11,7 +12,11 @@ public class MiscEventListener extends BaseOneTimeListener {
         super(memoryFlagToCheck+"_"+event.getID());
         this.event = event;
     }
+    public MiscEventListener(BaseFactionTimelineEvent event) {
 
+        super(AoTDSopMemFlags.MISC_EVENT +"_"+event.getID());
+        this.event = event;
+    }
     @Override
     public void advanceImpl(float amount) {
         if(event.checkForCondition()){

@@ -16,10 +16,18 @@ public class FactionXPPanel implements ExtendUIPanelPlugin {
     public CustomPanelAPI panelForUI;
 
     UILinesRenderer renderer = new UILinesRenderer(0f);
-
+    boolean renderBorders = true;
     public FactionXPPanel(float width, float height) {
         mainPanel = Global.getSettings().createCustom(width, height, this);
         createUI();
+        renderer = new UILinesRenderer(0f);
+        renderer.setPanel(mainPanel);
+
+    }
+    public FactionXPPanel(float width, float height,boolean renderBorders) {
+        mainPanel = Global.getSettings().createCustom(width, height, this);
+        createUI();
+        this.renderBorders = renderBorders;
         renderer = new UILinesRenderer(0f);
         renderer.setPanel(mainPanel);
 
@@ -74,7 +82,10 @@ public class FactionXPPanel implements ExtendUIPanelPlugin {
 
     @Override
     public void render(float alphaMult) {
-        renderer.render(alphaMult);
+        if(renderBorders){
+            renderer.render(alphaMult);
+
+        }
     }
 
     @Override

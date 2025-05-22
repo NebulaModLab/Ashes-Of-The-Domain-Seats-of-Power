@@ -25,15 +25,23 @@ public class FactionBonusPanel implements ExtendUIPanelPlugin {
     UILinesRenderer renderer = new UILinesRenderer(0f);
     LabelAPI warningLabel;
     public IntervalUtil util = new IntervalUtil(2f,2f);
+    public boolean renderBorders = true;
+
     public FactionBonusPanel(float width, float height) {
-        mainPanel = Global.getSettings().createCustom(width, height, this);
         mainPanel = Global.getSettings().createCustom(width, height, this);
         createUI();
         renderer = new UILinesRenderer(0f);
         renderer.setPanel(mainPanel);
 
     }
+    public FactionBonusPanel(float width, float height,boolean renderBorders) {
+        mainPanel = Global.getSettings().createCustom(width, height, this);
+        createUI();
+        this.renderBorders = renderBorders;
+        renderer = new UILinesRenderer(0f);
+        renderer.setPanel(mainPanel);
 
+    }
     public void createUI() {
         if (panelForUI != null) {
             mainPanel.removeComponent(panelForUI);
@@ -68,9 +76,12 @@ public class FactionBonusPanel implements ExtendUIPanelPlugin {
             warningLabel = null;
         }
         tooltip.addPara("Current policies still in effect",Misc.getButtonTextColor(),5f).setAlignment(Alignment.MID);
+        tooltip.addSpacer(2f);
         currentPolicies.forEach(x -> {
-            tooltip.addPara(BaseIntelPlugin.BULLET + x.getSpec().getName(),Misc.getPositiveHighlightColor(),3f);
-            tooltip.addTooltipToPrevious(new DetailedFactionPolicyTooltip(x), TooltipMakerAPI.TooltipLocation.BELOW,false);
+            LabelAPI labels = tooltip.addPara(BaseIntelPlugin.BULLET + x.getSpec().getName(),Misc.getPositiveHighlightColor(),3f);
+            labels.getPosition().setSize(labels.computeTextWidth(labels.getText()),labels.getPosition().getHeight());
+            labels.setHighlightOnMouseover(true);
+            tooltip.addTooltipTo(new DetailedFactionPolicyTooltip(x), (UIComponentAPI) labels, TooltipMakerAPI.TooltipLocation.BELOW,false);
         });
         tooltip.addSpacer(10f);
 
@@ -99,7 +110,10 @@ public class FactionBonusPanel implements ExtendUIPanelPlugin {
 
     @Override
     public void render(float alphaMult) {
-        renderer.render(alphaMult);
+        if(renderBorders){
+            renderer.render(alphaMult);
+
+        }
     }
 
     @Override

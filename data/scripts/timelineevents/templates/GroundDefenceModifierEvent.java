@@ -9,6 +9,7 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.managers.FactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
+import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
 
@@ -19,6 +20,11 @@ public class GroundDefenceModifierEvent extends BaseFactionTimelineEvent {
         this.groundModifier = groundModifier;
         this.romanNumeral = romani;
 
+    }
+
+    @Override
+    public TimelineEventType getEventType() {
+        return TimelineEventType.MILITARY;
     }
 
     @Override

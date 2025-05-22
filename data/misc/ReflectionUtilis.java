@@ -163,37 +163,69 @@ public class ReflectionUtilis {
         }
     }
 
-    public static Pair<Object, Class<?>[]> getMethodFromSuperclass(String methodName, Object instance) {
+    public static Pair<Object, Class<?>[]> getMethodFromSuperclass(String methodName, Object instance, Object... arguments) {
         Class<?> currentClass = instance.getClass();
 
         while (currentClass != null) {
-            // Retrieve all declared methods in the current class
             Object[] methods = currentClass.getDeclaredMethods();
 
             for (Object method : methods) {
                 try {
-                    // Retrieve the MethodHandle for the getParameterTypes method
-                    MethodHandle getParameterTypesHandle = ReflectionBetterUtilis.getParameterTypesHandle(method.getClass(), "getParameterTypes");
-                    // Use the MethodHandle to retrieve the method's name
+                    // Get method name
+                    String currentName = (String) getMethodNameHandle.invoke(method);
+                    if (!currentName.equals(methodName)) continue;
 
-                    // Check if the method name matches
-                    if (getMethodNameHandle.invoke(method).equals(methodName)) {
-                        // Invoke the MethodHandle to get the parameter types
-                        Class<?>[] parameterTypes = (Class<?>[]) getParameterTypesHandle.invoke(method);
+                    // Get parameter types
+                    Class<?>[] parameterTypes = (Class<?>[]) getParameterTypesHandle.invoke(method);
+
+                    // Check if argument types match
+                    if (areArgumentsCompatible(parameterTypes, arguments)) {
                         return new Pair<>(method, parameterTypes);
                     }
-                } catch (Throwable e) {
 
-                    e.printStackTrace();  // Handle any reflection errors
+                } catch (Throwable e) {
+                    e.printStackTrace();
                 }
             }
-            // Move to the superclass if no match is found
+
             currentClass = currentClass.getSuperclass();
         }
 
-        // Return null if the method was not found in the class hierarchy
         return null;
     }
+    private static boolean areArgumentsCompatible(Class<?>[] parameterTypes, Object[] arguments) {
+        if (parameterTypes.length != arguments.length) {
+            return false;
+        }
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            Object arg = arguments[i];
+
+            if (arg == null) {
+                if (parameterTypes[i].isPrimitive()) return false;
+            } else {
+                if (!wrap(parameterTypes[i]).isAssignableFrom(arg.getClass())) return false;
+            }
+        }
+
+        return true;
+    }
+    private static Class<?> wrap(Class<?> clazz) {
+        if (!clazz.isPrimitive()) return clazz;
+
+        if (clazz == int.class) return Integer.class;
+        if (clazz == long.class) return Long.class;
+        if (clazz == double.class) return Double.class;
+        if (clazz == float.class) return Float.class;
+        if (clazz == boolean.class) return Boolean.class;
+        if (clazz == char.class) return Character.class;
+        if (clazz == byte.class) return Byte.class;
+        if (clazz == short.class) return Short.class;
+        if (clazz == void.class) return Void.class;
+
+        return clazz; // fallback
+    }
+
     public static Object invokeStaticMethodWithAutoProjection(Class<?> targetClass, String methodName, Object... arguments) {
         try {
             // Find the method by its name and parameter types
@@ -257,7 +289,7 @@ public class ReflectionUtilis {
 
     public static Object invokeMethodWithAutoProjection(String methodName, Object instance, Object... arguments) {
         // Retrieve the method and its parameter types
-        Pair<Object, Class<?>[]> methodPair = getMethodFromSuperclass(methodName, instance);
+        Pair<Object, Class<?>[]> methodPair = getMethodFromSuperclass(methodName, instance,arguments);
 
         // Check if the method was found
         if (methodPair == null) {
@@ -287,7 +319,7 @@ public class ReflectionUtilis {
                 try {
                     projectedArgs[index] = convertArgument(arg, parameterTypes[index]);
                 } catch (Exception e) {
-                    throw new IllegalArgumentException("Cannot convert argument at index " + index + " to " + parameterTypes[index].getName(), e);
+                    continue;
                 }
             }
         }
