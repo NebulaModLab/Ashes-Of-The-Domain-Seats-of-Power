@@ -4,6 +4,7 @@ package data.plugins;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Conditions;
+import data.listeners.ChooseCapitalListener;
 import data.listeners.timeline.*;
 import data.listeners.timeline.models.FirstIncomeColonyListener;
 import data.listeners.timeline.models.FirstIndustryListener;
@@ -38,8 +39,7 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         if (!Global.getSector().hasScript(FactionAdvance.class)) {
             Global.getSector().addScript(new FactionAdvance());
         }
-        AoTDFactionManager.getInstance().getAvailablePolicies().modifyFlat("aotd_bonus", 2f);
-        AoTDFactionManager.getInstance().addNewPolicy("aotd_civ_fleet");
+
         Global.getSector().getListenerManager().addListener(new FactionMonthlyUpdateListenner(), true);
         if (!Global.getSector().getListenerManager().hasListenerOfClass(FactionHistoryUpdateListener.class)) {
             Global.getSector().getListenerManager().addListener(new FactionHistoryUpdateListener());
@@ -49,7 +49,8 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         if (newGame) {
             Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getPrimaryEntity().getMemoryWithoutUpdate().set("$aotd_was_colonized", true));
         }
-
+        Global.getSector().getListenerManager().addListener(new ChooseCapitalListener(),true);
+        AoTDFactionManager.getInstance().addXP(100000);
 
     }
 
@@ -101,6 +102,7 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FactionExpansionEvent(10,1)));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FactionExpansionEvent(20,2)));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FactionExpansionEvent(40,3)));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new FactionExpansionEvent(80,4)));
 
 
     }

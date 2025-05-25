@@ -8,7 +8,7 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.combat.MutableStat;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.Misc;
-import data.conditions.FactionCapital;
+import data.conditions.AoTDFactionCapital;
 import data.scripts.factiongoals.BaseFactionGoal;
 import data.scripts.factiongoals.MilitaryGoal;
 import data.scripts.factiongoals.ProsperityGoal;
@@ -27,8 +27,24 @@ public class AoTDFactionManager {
     public ArrayList<CycleTimelineEvents> cycles = new ArrayList<>();
     public HashMap<TimelineEventType, MutableStat> goalStats = new HashMap<>();
     public HashMap<TimelineEventType, BaseFactionGoal> goalsScripts = new HashMap<>();
+    public HashSet<Integer>intervalsForEachPolicySlot = new HashSet<>();
+    public HashSet<Integer>intervalsForAdditionalAdmin = new HashSet<>();
     public int currentXP = 0;
     public String capitalID;//We do id here so it is not directly tied to market
+
+    public int getMaxLevel(){
+        int curr = 0;
+        for (Integer policy : levels.keySet()) {
+            curr = policy;
+        }
+        return curr;
+    }
+    public void addIntervalForPolicySlot(int level){
+        intervalsForEachPolicySlot.add(level);
+    }
+    public void addIntervalForAdditionalAdmin(int level){
+        intervalsForAdditionalAdmin.add(level);
+    }
 
     public String getCapitalID() {
         return capitalID;
@@ -42,10 +58,37 @@ public class AoTDFactionManager {
     public void setCapitalID(String capitalID) {
         this.capitalID = capitalID;
     }
-    public void addXP(int xp){
-        Global.getSector().getCampaignUI().addMessage("Gained "+xp+" Faction XP",Misc.getPositiveHighlightColor());
-        currentXP += xp;
+    public void addXP(int xp) {
+        int levelBefore = getEffectiveLevel();
+
+        int maxXP = 0;
+        for (Integer value : levels.values()) {
+            maxXP += value;
+        }
+
+        int xpToAdd = Math.min(xp, maxXP - currentXP);
+
+        if (xpToAdd > 0) {
+            currentXP += xpToAdd;
+            Global.getSector().getCampaignUI().addMessage(
+                    "Gained " + xpToAdd + " Faction XP",
+                    Misc.getPositiveHighlightColor()
+            );
+        }
+
+        if (currentXP > maxXP) {
+            currentXP = maxXP;
+        }
+
+        int levelAfter = getEffectiveLevel();
+        if (levelBefore != levelAfter) {
+            Global.getSector().getCampaignUI().addMessage(
+                    "Reached level " + levelAfter + " : Check Faction Tab to see new bonuses!",
+                    Misc.getPositiveHighlightColor()
+            );
+        }
     }
+
     public MarketAPI getCapitalMarket(){
         return getMarketsUnderPlayer().stream().filter(x->x.getPrimaryEntity().getId().equals(capitalID)).findFirst().orElse(null);
     }
@@ -61,9 +104,11 @@ public class AoTDFactionManager {
 
     public int getEffectiveXP(){
         int currXP = currentXP;
+        int maxXP = 0;
         for (Map.Entry<Integer, Integer> entry : levels.entrySet()) {
             if(currXP>=entry.getValue()){
                 currXP -= entry.getValue();
+                maxXP = entry.getKey();
             }
             else{
                 return currXP;
@@ -72,6 +117,7 @@ public class AoTDFactionManager {
         }
         return 0;
     }
+
     public float getProgressXP(){
         int currXP = currentXP;
         for (Map.Entry<Integer, Integer> entry : levels.entrySet()) {
@@ -87,16 +133,18 @@ public class AoTDFactionManager {
     }
     public int getEffectiveLevel(){
         int currXP = currentXP;
+        int level = 1;
         for (Map.Entry<Integer, Integer> entry : levels.entrySet()) {
+            level = entry.getKey();
             if(currXP>=entry.getValue()){
                 currXP -= entry.getValue();
             }
             else{
-                return entry.getKey();
+                break;
             }
 
         }
-        return 1;
+        return level;
     }
 
 
@@ -270,7 +318,7 @@ public class AoTDFactionManager {
     }
 
     public void reportMonthEnd() {
-        currentXP+=getXpPointsPerMonth().getModifiedInt();
+       addXP( getXpPointsPerMonth().getModifiedInt());
     }
 
     public static AoTDFactionManager getInstance() {
@@ -301,11 +349,36 @@ public class AoTDFactionManager {
         for (int i = 1; i < 16; i++) {
             manager.addLevel(i,2000);
         };
+        manager.addIntervalForPolicySlot(2);
+        manager.addIntervalForPolicySlot(5);
+        manager.addIntervalForPolicySlot(8);
+        manager.addIntervalForPolicySlot(10);
+        manager.addIntervalForPolicySlot(15);
 
+        manager.addIntervalForAdditionalAdmin(5);
+        manager.addIntervalForAdditionalAdmin(10);
+        manager.addIntervalForAdditionalAdmin(15);
         Global.getSector().getPersistentData().put(memKey, manager);
 
     }
-
+    public int getPolicySlotsFromLevel(int level) {
+        int amount =0;
+        for (Integer i : intervalsForEachPolicySlot) {
+            if(level>=i){
+                amount++;
+            }
+        }
+        return amount;
+    }
+    public int getAdminsForEachLevel(int level) {
+        int amount =0;
+        for (Integer i : intervalsForAdditionalAdmin) {
+            if(level>=i){
+                amount++;
+            }
+        }
+        return amount;
+    }
     public BaseFactionPolicy getPolicyFromList(String id) {
         return currentFactionPolicies.stream().filter(x -> x.getSpec().getId().equals(id)).findFirst().orElse(FactionPolicySpecManager.getSpec(id).getPlugin());
     }
@@ -319,7 +392,9 @@ public class AoTDFactionManager {
     }
 
     public void advance(float amount) {
-        FactionCapital.applyToCapital();
+        AoTDFactionCapital.applyToCapital();
+        AoTDFactionManager.getInstance().getAvailablePolicies().modifyFlat("aotd_level_bonus", getPolicySlotsFromLevel(getEffectiveLevel()));
+        Global.getSector().getPlayerStats().getAdminNumber().modifyFlat("aotd_level_bonus", getAdminsForEachLevel(getEffectiveLevel()),"Faction Experience");
         currentFactionPolicies.forEach(x -> x.advance(amount));
         cycles.forEach(x -> x.getEventsDuringCycle().forEach(y -> y.applyEffects(y.getEventsAffected())));
         goalsScripts.values().forEach(x -> x.advance(amount));

@@ -28,6 +28,11 @@ public class CycleBorderComponent implements ExtendUIPanelPlugin {
     }
 
     @Override
+    public void createUI() {
+
+    }
+
+    @Override
     public void positionChanged(PositionAPI position) {
 
     }

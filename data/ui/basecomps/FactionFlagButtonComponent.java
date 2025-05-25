@@ -5,8 +5,10 @@ import ashlib.data.plugins.ui.models.resizable.ButtonComponent;
 import ashlib.data.plugins.ui.models.resizable.ImageViewer;
 import ashlib.data.plugins.ui.models.resizable.LabelComponent;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignUIAPI;
 import com.fs.starfarer.api.ui.Fonts;
 import com.fs.starfarer.api.util.Misc;
+import data.dialogs.PlanetSurveyChooseDialog;
 import data.misc.ReflectionUtilis;
 
 public class FactionFlagButtonComponent extends ButtonComponent {
@@ -47,6 +49,7 @@ public class FactionFlagButtonComponent extends ButtonComponent {
         ReflectionUtilis.setPrivateVariableFromSuperclass("dialogType", Global.getSector().getCampaignUI(), null);
         lastSavedFlag = Global.getSector().getPlayerFaction().getCrest();
         Global.getSector().getCampaignUI().showPlayerFactionConfigDialog();
+
     }
 
     @Override

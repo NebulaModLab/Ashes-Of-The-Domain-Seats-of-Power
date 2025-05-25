@@ -33,16 +33,17 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
             tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Research Grants", pad);
         }
         if(id.equals("goal_2")){
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Paperclip Initiative", pad);
+            tooltip.addPara(BaseIntelPlugin.INDENT+"Nova Exploraria can now sent 3 fleets on expeditions, instead of 1", pad);
             tooltip.addPara(BaseIntelPlugin.INDENT+"Gain 100 Faction XP monthly", pad);
         }
         if(id.equals("goal_3")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Nova Exploraria Expeditions can now perform advanced tech-mining operations across the Sector", pad);
             tooltip.addPara(BaseIntelPlugin.INDENT+"Nova Exploraria Expedition cost is reduced by 50%", pad);
-
         }
         if(id.equals("goal_4")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Increase chance of finding colony items during tech mining operations done by Nova Exploraria", pad);
+            tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Un-restricted exploration", pad);
+
             tooltip.addPara(BaseIntelPlugin.INDENT+"Gain one time 5000 Faction XP", pad);
             if(Global.getSettings().getModManager().isModEnabled("aotd_vok")){
                 tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock new unique capital building : Persean University", pad);

@@ -72,7 +72,31 @@ public class ReflectionUtilis {
         }
     }
 
-
+    public static Object getPrivateField(String fieldName, Object instanceToGetFrom) {
+        try {
+            Class<?> instances = instanceToGetFrom.getClass();
+            while (instances != null) {
+                for (Object obj : instances.getDeclaredFields()) {
+                    setFieldAccessibleHandle.invoke(obj, true);
+                    String name = (String) getFieldNameHandle.invoke(obj);
+                    if (name.equals(fieldName)) {
+                        return obj;
+                    }
+                }
+                for (Object obj : instances.getFields()) {
+                    setFieldAccessibleHandle.invoke(obj, true);
+                    String name = (String) getFieldNameHandle.invoke(obj);
+                    if (name.equals(fieldName)) {
+                        return obj;
+                    }
+                }
+                instances = instances.getSuperclass();
+            }
+            return null;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static Object getPrivateVariableFromSuperClass(String fieldName, Object instanceToGetFrom) {
         try {
             Class<?> instances = instanceToGetFrom.getClass();

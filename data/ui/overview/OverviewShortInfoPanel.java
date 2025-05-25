@@ -18,7 +18,7 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
     CustomPanelAPI panelOfGatheringPoint;
     ArrayList<ButtonAPI> buttons = new ArrayList<>();
     public boolean recreateUI = false;
-    public String current = "pop";
+    public String current = "colonies";
 
     public OverviewShortInfoPanel(float width, float height) {
         mainPanel = Global.getSettings().createCustom(width, height, this);
@@ -40,7 +40,7 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
         } else if (!AoTDFactionManager.getInstance().didDeclaredCapital()) {
             tooltip.setParaFont(Fonts.ORBITRON_12);
             tooltip.addPara("No capital selected. Choose one via the colony UI by clicking Population & Infrastructure.", Misc.getTooltipTitleAndLightHighlightColor(), 5f);
-            tooltip.addPara("Note: The capital is permanent and cannot be changed later.", Misc.getTooltipTitleAndLightHighlightColor(), 5f);
+            tooltip.addPara("Note: The capital is permanent and cannot be changed later. Losing capital will give heavy de-buffs!", Misc.getTooltipTitleAndLightHighlightColor(), 5f);
 
         }
         else{
@@ -69,7 +69,9 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
 
         buttons.add(tooltipSub.addButton("Population", "pop", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
 //        buttons.add(tooltipSub.addButton("Star Systems", "star", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
-//        buttons.add(tooltipSub.addButton("Colonies", "colonies", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
+       ButtonAPI button =tooltipSub.addButton("Capital Abilities", "colonies", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f);
+       button.setEnabled(AoTDFactionManager.getInstance().doesControlCapital());
+        buttons.add(button);
         buttons.add(tooltipSub.addButton("Global Market Data", "commodities", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
         tooltip.endSubTooltip();
 

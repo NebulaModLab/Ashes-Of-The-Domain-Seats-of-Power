@@ -6,10 +6,12 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.PositionAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import data.industry.NovaExploraria;
 import data.ui.basecomps.ExtendUIPanelPlugin;
 import data.ui.basecomps.FactionBonusPanel;
 import data.ui.basecomps.FactionFlagButtonComponent;
 import data.ui.basecomps.FactionXPPanel;
+import data.ui.overview.capitalbuilding.BaseCapitalButton;
 import data.ui.overview.marketdata.FactionAllData;
 import data.ui.overview.marketdata.FactionMarketData;
 import data.ui.overview.marketdata.UIData;
@@ -55,6 +57,8 @@ public class OverviewPanel implements ExtendUIPanelPlugin {
         if (current.equals("commodities")) {
             currentPanel =commodityData.getMainPanel();
         }
+        populationPanel.createUI();
+        commodityData.createUI();
         mainPanel.addComponent(currentPanel).inTL(405, 0);
     }
 
@@ -65,13 +69,20 @@ public class OverviewPanel implements ExtendUIPanelPlugin {
         float widthT = width * 0.5f - 10f;
         float heightT = height - 160;
 
+        if(shortInfoPanel==null){
+            shortInfoPanel = new OverviewShortInfoPanel(400, height);
+            current = shortInfoPanel.current;
+        }
 
-        shortInfoPanel = new OverviewShortInfoPanel(400, height);
-        current = shortInfoPanel.current;
 
         mainPanel.addComponent(shortInfoPanel.getMainPanel()).inTL(0, 0);
+        BaseCapitalButton button = NovaExploraria.getNova().createButton(width-410,130);
+        button.createUI();
+
+        mainPanel.addComponent(button.getMainPanel()).inTL(405,0);
+
         UIData.recompute(width - 410);
-        initalizeCurrentPanel();
+//        initalizeCurrentPanel();
 
     }
 

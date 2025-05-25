@@ -226,4 +226,9 @@ public class RightMouseTooltipMoverV2 implements ExtendUIPanelPlugin {
         return panelOfTooltip;
     }
 
+    @Override
+    public void createUI() {
+
+    }
+
 }

@@ -35,6 +35,7 @@ public class TimelineListenerManager implements EveryFrameScript {
         TimelineListenerManager manager = (TimelineListenerManager) Global.getSector().getScripts().stream().filter(x -> x instanceof TimelineListenerManager).findFirst().orElse(new TimelineListenerManager());
         if (!Global.getSector().hasScript(manager.getClass())) {
             Global.getSector().addScript(manager);
+            manager.intervalCheck.advance(2f);
         }
         return manager;
     }
@@ -62,9 +63,6 @@ public class TimelineListenerManager implements EveryFrameScript {
             executeAllListeners(amount);
         }
     }
-    //Functions used if for example we want to execute either all of listeners at once or only specific ones second does not
-    //reset interval for obvious reasons
-
     public void executeAllListeners(float amount) {
         if (!AoTDFactionManager.getMarketsUnderPlayer().isEmpty()) {
             transientListeners.forEach(x -> x.advance(amount));

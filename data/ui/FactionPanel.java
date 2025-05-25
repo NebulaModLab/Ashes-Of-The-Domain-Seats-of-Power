@@ -31,6 +31,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
     FactionPolicyPanel policyPanel;
     FactionTimelinePanel timelinePanel;
     OverviewPanel overviewPanel;
+    public static boolean sentSignalForUpdate = false;
     Object outpostPanel;
     public HashMap<ButtonAPI, CustomPanelAPI> getPanelMap() {
         return panelMap;
@@ -45,7 +46,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
         renderer = new UILinesRenderer(0f);
         this.panelForPlugins = mainPanel.createCustomPanel(mainPanel.getPosition().getWidth(), mainPanel.getPosition().getHeight() - 45, null);
         if (!AshMisc.isStringValid(panelToShowcase)) {
-            panelToShowcase = "policies";
+            panelToShowcase = "timeline";
         }
         this.outpostPanel = data;
         UIDataSop.WIDTH = panelForPlugins.getPosition().getWidth();
@@ -96,7 +97,11 @@ public class FactionPanel implements CustomUIPanelPlugin {
 
     @Override
     public void advance(float amount) {
-
+        if(sentSignalForUpdate){
+            sentSignalForUpdate = false;
+            overviewPanel.createUI();
+            timelinePanel.reset();
+        }
         for (Map.Entry<ButtonAPI, CustomPanelAPI> entry : panelMap.entrySet()) {
             entry.getKey().unhighlight();
             if (entry.getKey().isChecked()) {

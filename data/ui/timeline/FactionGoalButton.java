@@ -2,6 +2,7 @@ package data.ui.timeline;
 
 import ashlib.data.plugins.ui.models.resizable.ImageViewer;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.impl.campaign.econ.impl.PopulationAndInfrastructure;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
@@ -33,6 +34,7 @@ public class FactionGoalButton implements ExtendUIPanelPlugin {
         TooltipMakerAPI tooltip = contentPanel.createUIElement(contentPanel.getPosition().getWidth(),contentPanel.getPosition().getHeight(),false);
         button = tooltip.addAreaCheckbox("",null, Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Misc.getBrightPlayerColor(),contentPanel.getPosition().getWidth(),contentPanel.getPosition().getHeight(),0f);
         button.getPosition().inTL(0,0);;
+        button.setClickable(false);
         TooltipMakerAPI tl = tooltip.beginSubTooltip(contentPanel.getPosition().getWidth()-10);
         tl.setParaFont(Fonts.ORBITRON_24AA);
         tl.addPara(AoTDFactionManager.getStringType(timelineEvent),Misc.getTooltipTitleAndLightHighlightColor(),0f).setAlignment(Alignment.MID);

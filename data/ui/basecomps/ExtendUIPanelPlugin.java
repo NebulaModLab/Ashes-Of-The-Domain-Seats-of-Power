@@ -5,5 +5,5 @@ import com.fs.starfarer.api.ui.CustomPanelAPI;
 
 public interface ExtendUIPanelPlugin extends CustomUIPanelPlugin {
     public CustomPanelAPI getMainPanel();
-
+    public void createUI();
 }
