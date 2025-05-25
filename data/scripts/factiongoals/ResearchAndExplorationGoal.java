@@ -9,6 +9,7 @@ import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.Fonts;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import data.industry.NovaExploraria;
 import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.TimelineEventType;
 
@@ -23,6 +24,7 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
         this.goals.put("goal_2",400);
         this.goals.put("goal_3",700);
         this.goals.put("goal_4",1000);
+        initGrantedGoals();
     }
 
     @Override
@@ -57,31 +59,25 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
             markets.forEach(x->x.getStability().modifyFlat("aotd_prosperity_1",1,"Reached Property Threshold"));
         }
         else if(id.equals("goal_2")){
-            AoTDFactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_research",50);
+            AoTDFactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_research",100);
+            if(NovaExploraria.getNova()!=null){
+                NovaExploraria.getNova().getMaxAmountOfExpeditions().modifyFlat("aotd_research_goal",2);
+            }
+
         }
         else if(id.equals("goal_3")){
-            Global.getSector().getMemoryWithoutUpdate().set("$aotd_logistic_unlocked",true);
+            NovaExploraria.setCanDoInifniteTechmining();
+            if(NovaExploraria.getNova()!=null){
+                NovaExploraria.getNova().getMultiplierOfExpeditionCost().modifyMult("aotd_research_goal",0.5f);
+            }
         }
         else if(id.equals("goal_4")){
-            if(AoTDFactionManager.doesHaveMonopolyOverCommodities(30, Commodities.FOOD)){
-                markets.forEach(x->x.getStability().modifyFlat("aotd_monopoly_food",2,"Monopoly over Food"));
+            if(!grantedGoals.get(id)){
+                AoTDFactionManager.getInstance().addXP(5000);
             }
-            else{
-                markets.forEach(x->{x.getStability().unmodifyFlat("aotd_monopoly_food");});
-            }
-            if(AoTDFactionManager.doesHaveMonopolyOverCommodities(30, Commodities.DRUGS,Commodities.ORGANS)){
-                Global.getSector().getPlayerStats().getDynamic().getStat(
-                        Stats.getCommodityExportCreditsMultId(Commodities.DRUGS)).modifyMult("aotd_monopoly_underworld", 1f + 0.5f,"Concierge of Crime");
-                Global.getSector().getPlayerStats().getDynamic().getStat(
-                        Stats.getCommodityExportCreditsMultId(Commodities.ORGANS)).modifyMult("aotd_monopoly_underworld", 1f + 0.5f,"Concierge of Crime");
-            }
-            else{
-                Global.getSector().getPlayerStats().getDynamic().getStat(
-                        Stats.getCommodityExportCreditsMultId(Commodities.DRUGS)).unmodifyMult("aotd_monopoly_underworld");
-                Global.getSector().getPlayerStats().getDynamic().getStat(
-                        Stats.getCommodityExportCreditsMultId(Commodities.ORGANS)).unmodifyMult("aotd_monopoly_underworld");
-            }
+
         }
+        grantedGoals.put(id, true);
 
     }
     @Override

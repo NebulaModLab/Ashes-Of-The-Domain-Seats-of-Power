@@ -127,13 +127,13 @@ public class NovaExplorariaExpeditionFleetRouteManager extends RouteFleetAssignm
                 if(allEntity.isDiscoverable()){
                     plugin.discoverEntity(allEntity);
                     intel.getOthers().add(allEntity.getName());
-                    NovaExploraria.finishExpedition();
 
                 }
             }
             intel.setSuccessful(true);
             intel.setFinished(true);
         }
+        NovaExploraria.finishExpedition();
     }
 
     @Override

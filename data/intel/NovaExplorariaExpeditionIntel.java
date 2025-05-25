@@ -95,7 +95,9 @@ public class NovaExplorariaExpeditionIntel extends BaseIntelPlugin {
                     for (String other : others) {
                         info.addPara(other, Color.ORANGE,pad);
                     }
-
+                }
+                else{
+                    info.addPara("Nothing else was found",Misc.getTooltipTitleAndLightHighlightColor(),opad);
                 }
             }
             else{

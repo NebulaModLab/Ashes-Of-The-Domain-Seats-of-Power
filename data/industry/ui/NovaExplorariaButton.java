@@ -41,9 +41,9 @@ public class NovaExplorariaButton extends BaseCapitalButton {
             industry.maxAmountOfExpeditions.modifyFlat("bonus",2);
             LabelAPI label = tl.addPara("%s / %s",5f, Color.ORANGE,industry.amountOfExpeditions+"",industry.getMaxAmountOfExpeditions().getModifiedInt()+"");
             label.setAlignment(Alignment.MID);
-            surveyFleetButton= tl.addButton("Sent Survey Fleet",null,Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Alignment.MID, CutStyle.NONE,250,40,5f);
+            surveyFleetButton= tl.addButton("Sent Survey Fleet",null,Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Alignment.MID, CutStyle.NONE,250,30,5f);
             surveyFleetButton.getPosition().belowMid((UIComponentAPI) label,5);
-
+            surveyFleetButton.setEnabled(industry.canSentExpedition());
             tooltip.endSubTooltip();
             TooltipMakerAPI tl2= tooltip.beginSubTooltip(width/2);
             tl2.setParaFont(Fonts.ORBITRON_16);
@@ -51,7 +51,7 @@ public class NovaExplorariaButton extends BaseCapitalButton {
             label = tl2.addPara("%s / %s",5f, Color.ORANGE,"1","3");
             label.setAlignment(Alignment.MID);
 
-            techHunterPatrol = tl2.addButton("Sent Tech Hunter Fleet",null,Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Alignment.MID, CutStyle.NONE,250,40,5f);
+            techHunterPatrol = tl2.addButton("Sent Tech Hunter Fleet",null,Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Alignment.MID, CutStyle.NONE,250,30,5f);
             techHunterPatrol.getPosition().belowMid((UIComponentAPI) label,5);
 
             tooltip.endSubTooltip();

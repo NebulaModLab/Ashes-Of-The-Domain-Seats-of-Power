@@ -23,6 +23,8 @@ public class ProsperityGoal extends BaseFactionGoal{
         this.goals.put("goal_2",400);
         this.goals.put("goal_3",700);
         this.goals.put("goal_4",1000);
+        initGrantedGoals();
+
     }
 
     @Override

@@ -25,7 +25,15 @@ import static com.fs.starfarer.api.impl.campaign.procgen.themes.RuinsFleetRouteM
 public class NovaExploraria extends BaseCapitalIndustry {
     public int amountOfExpeditions =0;
     public MutableStat maxAmountOfExpeditions = new MutableStat(1f);
+    public MutableStat multiplierOfExpeditionCost = new MutableStat(1f);
 
+    public MutableStat getMultiplierOfExpeditionCost() {
+        return multiplierOfExpeditionCost;
+    }
+
+    public boolean canSentExpedition(){
+        return amountOfExpeditions<maxAmountOfExpeditions.getModifiedInt();
+    }
     public static boolean canDoInifniteTechmining(){
         return Global.getSector().getMemoryWithoutUpdate().is("$aotd_nova_exploraria_update_1",true);
     }
@@ -61,7 +69,7 @@ public class NovaExploraria extends BaseCapitalIndustry {
     }
 
     public void sentExpeditionFleet(StarSystemAPI systemToSurvey){
-        if(getCurrentAmountOfExpeditions()>=getMaxAmountOfExpeditions().getModifiedInt())return;
+        if(!canSentExpedition())return;
         setAmountOfExpeditions(getCurrentAmountOfExpeditions()+1);
 
         CampaignFleetAPI fleet = createScavenger(FleetTypes.SCAVENGER_LARGE,market.getStarSystem().getLocation(), null, market, false, Misc.random);

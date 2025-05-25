@@ -15,6 +15,9 @@ public class BaseFactionGoal {
     public void grantReward(String id){
 
     }
+    public void initGrantedGoals(){
+        goals.keySet().forEach(x->grantedGoals.put(x,false));
+    }
     public void advance(float amount){
         goals.entrySet().stream().filter(x->x.getValue()<= AoTDFactionManager.getInstance().getGoalStat(this.type).getModifiedInt()).forEach(x->grantedGoals.put(x.getKey(),true));
         grantedGoals.entrySet().stream().filter(Map.Entry::getValue).forEach(x->{grantReward(x.getKey());});
