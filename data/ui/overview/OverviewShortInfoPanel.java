@@ -6,6 +6,7 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.Pair;
+import data.industry.NovaExploraria;
 import data.scripts.managers.AoTDFactionManager;
 import data.ui.basecomps.*;
 
@@ -18,7 +19,7 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
     CustomPanelAPI panelOfGatheringPoint;
     ArrayList<ButtonAPI> buttons = new ArrayList<>();
     public boolean recreateUI = false;
-    public String current = "colonies";
+    public String current = "pop";
 
     public OverviewShortInfoPanel(float width, float height) {
         mainPanel = Global.getSettings().createCustom(width, height, this);
@@ -70,7 +71,7 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
         buttons.add(tooltipSub.addButton("Population", "pop", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
 //        buttons.add(tooltipSub.addButton("Star Systems", "star", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
        ButtonAPI button =tooltipSub.addButton("Capital Abilities", "colonies", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f);
-       button.setEnabled(AoTDFactionManager.getInstance().doesControlCapital());
+       button.setEnabled(AoTDFactionManager.getInstance().doesControlCapital()&& NovaExploraria.getNova()!=null);
         buttons.add(button);
         buttons.add(tooltipSub.addButton("Global Market Data", "commodities", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
         tooltip.endSubTooltip();

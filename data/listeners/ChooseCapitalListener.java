@@ -92,14 +92,4 @@ public class ChooseCapitalListener extends BaseIndustryOptionProvider {
 
     }
 
-    @Override
-    public void addToIndustryTooltip(Industry ind, Industry.IndustryTooltipMode mode, TooltipMakerAPI tooltip, float width, boolean expanded) {
-        if (getIndustryOptions(ind) == null) return;
-
-        float opad = 10f;
-        tooltip.addSectionHeading("TestIndustryOptionProvider", Alignment.MID, opad);
-        tooltip.addPara("Information about changes made to the this industry by "
-                + "any of the custom options would go here.", opad);
-    }
-
 }

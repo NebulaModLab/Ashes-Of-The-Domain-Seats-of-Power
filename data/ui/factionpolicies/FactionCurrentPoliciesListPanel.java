@@ -93,6 +93,7 @@ public class FactionCurrentPoliciesListPanel implements ExtendUIPanelPlugin {
                 BaseFactionPolicy policy = chosenPolicies.get(created); // Chosen or null
                 PolicyPanel item = new PolicyPanel(policy==null, policy);
                 if(policy!=null){
+                    item.getButton().setClickable(policy.canBeRemoved());
                     this.panels.add(item);
                 }
                 row.addComponent(item.getMainPanel()).inTL(currX, 0);

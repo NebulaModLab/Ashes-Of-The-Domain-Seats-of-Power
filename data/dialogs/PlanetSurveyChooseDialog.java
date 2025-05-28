@@ -24,14 +24,15 @@ public class PlanetSurveyChooseDialog implements InteractionDialogPlugin {
         dialog.setBackgroundDimAmount(0.9f);
         final ArrayList<SectorEntityToken> systems = new ArrayList<SectorEntityToken>();
         for (StarSystemAPI curr : Global.getSector().getStarSystems()) {
-            if(Global.getSector().getEconomy().getMarkets(curr.getCenter().getContainingLocation()).stream().anyMatch(x->x.getFaction()!=null&&x.isInEconomy()))continue;
-            if(!curr.getPlanets().stream().filter(x->!x.isBlackHole()&&!x.isStar()).toList().isEmpty()){
+            if (Global.getSector().getEconomy().getMarkets(curr.getCenter().getContainingLocation()).stream().anyMatch(x -> x.getFaction() != null && x.isInEconomy()))
+                continue;
+            if (!curr.getPlanets().stream().filter(x -> !x.isBlackHole() && !x.isStar()).toList().isEmpty()) {
                 if (curr.getPlanets().stream().filter(x -> x.getMarket() != null).allMatch(x -> x.getMarket().getSurveyLevel() == MarketAPI.SurveyLevel.FULL))
                     continue;
             } else if (curr.isEnteredByPlayer()) {
                 continue;
             }
-
+            if (curr.getName().equals("Limbo")) continue;
             if (curr.getHyperspaceAnchor() == null) continue;
             if (Misc.getStarSystemForAnchor(curr.getHyperspaceAnchor()) == null) continue;
             systems.add(curr.getHyperspaceAnchor());
@@ -70,9 +71,7 @@ public class PlanetSurveyChooseDialog implements InteractionDialogPlugin {
                     public void createInfoText(TooltipMakerAPI info, SectorEntityToken entity) {
                         int days = 30;
                         info.setParaSmallInsignia();
-                        String daysStr = "days";
-                        if (days == 1) daysStr = "day";
-                        info.addPara("    Estimated time of expedition's return: %s " + daysStr, 0f, Misc.getHighlightColor(), "" + days);
+                        info.addPara("   Estimated costs of expedition: %s ", 0f, Misc.getHighlightColor(), Misc.getDGSCredits(20000));
                     }
 
                     public boolean canConfirmSelection(SectorEntityToken entity) {

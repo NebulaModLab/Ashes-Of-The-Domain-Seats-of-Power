@@ -2,8 +2,6 @@ package data.scripts.factiongoals;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Commodities;
-import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.Fonts;
@@ -68,7 +66,7 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
         else if(id.equals("goal_3")){
             NovaExploraria.setCanDoInifniteTechmining();
             if(NovaExploraria.getNova()!=null){
-                NovaExploraria.getNova().getMultiplierOfExpeditionCost().modifyMult("aotd_research_goal",0.5f);
+                NovaExploraria.getNova().getMultiplierOfTechHunterCost().modifyMult("aotd_research_goal",0.5f);
             }
         }
         else if(id.equals("goal_4")){

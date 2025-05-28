@@ -52,7 +52,9 @@ public class OverviewPanel implements ExtendUIPanelPlugin {
 
         }
         if (current.equals("colonies")) {
-
+            BaseCapitalButton button = NovaExploraria.getNova().createButton(850,130);
+            button.createUI();
+            currentPanel = button.getMainPanel();
         }
         if (current.equals("commodities")) {
             currentPanel =commodityData.getMainPanel();
@@ -76,13 +78,10 @@ public class OverviewPanel implements ExtendUIPanelPlugin {
 
 
         mainPanel.addComponent(shortInfoPanel.getMainPanel()).inTL(0, 0);
-        BaseCapitalButton button = NovaExploraria.getNova().createButton(width-410,130);
-        button.createUI();
 
-        mainPanel.addComponent(button.getMainPanel()).inTL(405,0);
 
         UIData.recompute(width - 410);
-//        initalizeCurrentPanel();
+        initalizeCurrentPanel();
 
     }
 

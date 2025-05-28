@@ -110,10 +110,11 @@ public class NovaExplorariaExpeditionFleetRouteManager extends RouteFleetAssignm
         if (reason.equals(CampaignEventListener.FleetDespawnReason.DESTROYED_BY_BATTLE)){
             intel.setFinished(true);
             intel.setSuccessful(false);
+            intel.sendUpdateIfPlayerHasIntel(null,false);
         }
         if(reason.equals(CampaignEventListener.FleetDespawnReason.REACHED_DESTINATION)){
             intel.setSuccessful(true);
-            CoreScript.markSystemAsEntered(target,true);
+            CoreScript.markSystemAsEntered(target,false);
             MarketAPI gatheringPoint = Global.getSector().getPlayerFaction().getProduction().getGatheringPoint();;
             intel.getSurveyMap().values().forEach(x->gatheringPoint.getSubmarket(Submarkets.SUBMARKET_STORAGE).getCargo().addCommodity(x,1));
             intel.getSurveyMap().keySet().forEach(ListenerUtil::reportPlayerSurveyedPlanet);
@@ -132,6 +133,8 @@ public class NovaExplorariaExpeditionFleetRouteManager extends RouteFleetAssignm
             }
             intel.setSuccessful(true);
             intel.setFinished(true);
+            intel.sendUpdateIfPlayerHasIntel(null,false);
+
         }
         NovaExploraria.finishExpedition();
     }

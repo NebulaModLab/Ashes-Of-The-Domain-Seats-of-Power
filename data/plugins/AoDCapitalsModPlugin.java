@@ -4,7 +4,9 @@ package data.plugins;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Conditions;
+import data.industry.NovaExploraria;
 import data.listeners.ChooseCapitalListener;
+import data.listeners.NovaExploMonthListener;
 import data.listeners.timeline.*;
 import data.listeners.timeline.models.FirstIncomeColonyListener;
 import data.listeners.timeline.models.FirstIndustryListener;
@@ -50,6 +52,9 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
             Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getPrimaryEntity().getMemoryWithoutUpdate().set("$aotd_was_colonized", true));
         }
         Global.getSector().getListenerManager().addListener(new ChooseCapitalListener(),true);
+        if(NovaExploraria.getNova()!=null){
+            NovaExploraria.getNova().amountOfExpeditions=0;
+        }
         AoTDFactionManager.getInstance().addXP(100000);
 
     }

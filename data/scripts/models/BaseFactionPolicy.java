@@ -4,6 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.managers.FactionPolicySpecManager;
 
 public  class BaseFactionPolicy {
@@ -19,14 +20,25 @@ public  class BaseFactionPolicy {
     }
 
     public void createTooltipDescription(TooltipMakerAPI tooltip){
-        tooltip.addPara("WORK IN PROGRESS",Misc.getTooltipTitleAndLightHighlightColor(),5f).setAlignment(Alignment.MID);
+        if(!getSpec().canBeRemoved()){
+            tooltip.addPara("This policy can't be removed once in effect!",Misc.getNegativeHighlightColor(),3f).setAlignment(Alignment.MID);
+        }
+    }
+    public boolean canBeRemoved(){
+        if(!getSpec().canBeRemoved()){
+            return !AoTDFactionManager.getInstance().doesHavePolicyEnabled(specId);
+        }
+        return true;
     }
     public void createDetailedTooltipDescription(TooltipMakerAPI tooltip){
-
+        if(!getSpec().canBeRemoved()){
+            tooltip.addPara("This policy can't be removed once in effect!",Misc.getNegativeHighlightColor(),3f);
+        }
     }
     public void createEffectSectionForFactionInfoTooltip(TooltipMakerAPI tooltip){
 
     }
+
     public FactionPolicySpec getSpec(){
         return FactionPolicySpecManager.getSpec(this.specId);
     }

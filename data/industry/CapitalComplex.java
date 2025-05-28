@@ -43,6 +43,6 @@ public class CapitalComplex extends PopulationAndInfrastructure {
         return spec;
     }@Override
     public String getCurrentImage() {
-        return super.getCurrentImage();
+        return spec.getImageName();
     }
 }

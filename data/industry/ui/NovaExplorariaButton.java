@@ -1,5 +1,6 @@
 package data.industry.ui;
 
+import ashlib.data.plugins.ui.models.BasePopUpDialog;
 import ashlib.data.plugins.ui.models.resizable.ImageViewer;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignUIAPI;
@@ -7,6 +8,7 @@ import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import data.dialogs.PlanetSurveyChooseDialog;
 import data.industry.NovaExploraria;
+import data.misc.ProductionUtil;
 import data.ui.overview.capitalbuilding.BaseCapitalButton;
 
 import java.awt.*;
@@ -17,7 +19,7 @@ public class NovaExplorariaButton extends BaseCapitalButton {
         super(width, height);
         this.industry = exploraria;
     }
-    public ButtonAPI surveyFleetButton,techHunterPatrol;
+    public ButtonAPI surveyFleetButton,techHunterPatrol,abyssButton;
 
 
     @Override
@@ -35,28 +37,26 @@ public class NovaExplorariaButton extends BaseCapitalButton {
 
             float width = panel.getPosition().getWidth()-200;
             float effectiveWidth = width/2;
-            TooltipMakerAPI tl = tooltip.beginSubTooltip(width/2);
+            TooltipMakerAPI tl = tooltip.beginSubTooltip(width);
             tl.setParaFont(Fonts.ORBITRON_16);
-            tl.addPara("Survey fleets",0f).setAlignment(Alignment.MID);
+            tl.addPara("Available Exploraria Fleets",0f).setAlignment(Alignment.MID);
             industry.maxAmountOfExpeditions.modifyFlat("bonus",2);
-            LabelAPI label = tl.addPara("%s / %s",5f, Color.ORANGE,industry.amountOfExpeditions+"",industry.getMaxAmountOfExpeditions().getModifiedInt()+"");
+            LabelAPI label = tl.addPara("%s / %s",5f, Color.ORANGE,industry.getRemainingOnes()+"",industry.getMaxAmountOfExpeditions().getModifiedInt()+"");
             label.setAlignment(Alignment.MID);
-            surveyFleetButton= tl.addButton("Sent Survey Fleet",null,Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Alignment.MID, CutStyle.NONE,250,30,5f);
-            surveyFleetButton.getPosition().belowMid((UIComponentAPI) label,5);
+            float y = tl.getHeightSoFar()+10;
+            surveyFleetButton= tl.addButton("Sent Survey Fleet",null,Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Alignment.MID, CutStyle.NONE,220,25,5f);
+            surveyFleetButton.getPosition().inTL(effectiveWidth-(surveyFleetButton.getPosition().getWidth()+10),y);
             surveyFleetButton.setEnabled(industry.canSentExpedition());
-            tooltip.endSubTooltip();
-            TooltipMakerAPI tl2= tooltip.beginSubTooltip(width/2);
-            tl2.setParaFont(Fonts.ORBITRON_16);
-            tl2.addPara("Tech Hunter fleets",0f).setAlignment(Alignment.MID);
-            label = tl2.addPara("%s / %s",5f, Color.ORANGE,"1","3");
-            label.setAlignment(Alignment.MID);
-
-            techHunterPatrol = tl2.addButton("Sent Tech Hunter Fleet",null,Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Alignment.MID, CutStyle.NONE,250,30,5f);
-            techHunterPatrol.getPosition().belowMid((UIComponentAPI) label,5);
+            techHunterPatrol = tl.addButton("Sent Tech Hunters",null,Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Alignment.MID, CutStyle.NONE,220,25,5f);
+            techHunterPatrol.getPosition().inTL(effectiveWidth+10,y);
+            techHunterPatrol.setEnabled(industry.canSentExpedition()&&NovaExploraria.canDoInifniteTechmining());
+            abyssButton= tl.addButton("Sent Abyss Delvers",null,Misc.getBasePlayerColor(),new Color(120, 80, 200) ,Alignment.MID, CutStyle.NONE,220,25,5f);
+            abyssButton.getPosition().belowMid((UIComponentAPI) label,45);
+            abyssButton.setEnabled(industry.canSentExpedition()&&NovaExploraria.canDoAbyssDiving());
 
             tooltip.endSubTooltip();
+
             tooltip.addCustom(tl,0f).getPosition().inTL(200,5);
-            tooltip.addCustom(tl2,0f).getPosition().inTL(200+(width/2),5);
         }
     }
 
@@ -71,6 +71,22 @@ public class NovaExplorariaButton extends BaseCapitalButton {
                     createUI();
                 }
             });
+        }
+        if(abyssButton.isChecked()){
+            abyssButton.setChecked(false);
+            BasePopUpDialog dialog = new AbyssExpeditionDialog("Abyss Expedition",1,12,1,1,this);
+            CustomPanelAPI panelAPI = Global.getSettings().createCustom(700,330,dialog);
+            UIPanelAPI panelAPI1  = ProductionUtil.getCoreUI();
+            dialog.init(panelAPI,panelAPI1.getPosition().getCenterX()-(panelAPI.getPosition().getWidth()/2),panelAPI1.getPosition().getCenterY()+(panelAPI.getPosition().getHeight()/2),true);
+
+        }
+        if(techHunterPatrol.isChecked()){
+            techHunterPatrol.setChecked(false);
+            BasePopUpDialog dialog = new TechHunterDialog("Tech Hunters Expedition",1,12,1,1,this);
+            CustomPanelAPI panelAPI = Global.getSettings().createCustom(700,330,dialog);
+            UIPanelAPI panelAPI1  = ProductionUtil.getCoreUI();
+            dialog.init(panelAPI,panelAPI1.getPosition().getCenterX()-(panelAPI.getPosition().getWidth()/2),panelAPI1.getPosition().getCenterY()+(panelAPI.getPosition().getHeight()/2),true);
+
         }
     }
 }

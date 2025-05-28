@@ -104,7 +104,9 @@ public class NovaExplorariaExpeditionIntel extends BaseIntelPlugin {
                 info.addPara("Exploration fleet was destroyed during expedition, probably result of hostile actions of third parties",Misc.getTooltipTitleAndLightHighlightColor(),opad);
             }
         }
-        addDeleteButton(info,width-10);
+        if(finished){
+            addDeleteButton(info,width-10);
+        }
 
     }
 
@@ -114,14 +116,20 @@ public class NovaExplorariaExpeditionIntel extends BaseIntelPlugin {
 
     @Override
     protected String getName() {
-        return "Exploraria Expedition Fleet Report: "+ target.getName();
+        if(isSuccessful()){
+            return "Exploraria Expedition Fleet Report: "+ target.getName();
+
+        } else if (finished) {
+            return "Exploraria Expedition Failure : "+target.getName();
+        }
+        return "Exploraria Expedition Fleet Status: "+ target.getName();
     }
 
     @Override
     public Set<String> getIntelTags(SectorMapAPI map) {
         Set<String> tags = super.getIntelTags(map);
-        tags.remove(Tags.INTEL_FLEET_LOG);
-        tags.add(Tags.INTEL_EXPLORATION);
+        tags.clear();
+        tags.add("Nova Exploraria Archive");
         return tags;
     }
 }
