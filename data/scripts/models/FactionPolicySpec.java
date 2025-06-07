@@ -15,6 +15,8 @@ public class FactionPolicySpec {
     int order;
     boolean canBeRemoved;
     Set<String> incompatiblePolicyIds = new HashSet<>();
+    Set<String> tags = new HashSet<>();
+
     public void setCanBeRemoved(boolean canBeRemoved) {
         this.canBeRemoved = canBeRemoved;
     }
@@ -27,7 +29,19 @@ public class FactionPolicySpec {
         return canBeRemoved;
     }
 
-    public FactionPolicySpec(String id, String name, FactionPolicyType type, String plugin, int order,boolean canBeRemoved,Set<String> incompatiblePolicyIds) {
+    public boolean hasTag(String tag) {
+        return tags.contains(tag);
+    }
+
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    public void removeTag(String tag) {
+        tags.remove(tag);
+    }
+
+    public FactionPolicySpec(String id, String name, FactionPolicyType type, String plugin, int order, boolean canBeRemoved, Set<String> incompatiblePolicyIds, Set<String> tags) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -35,6 +49,7 @@ public class FactionPolicySpec {
         this.order = order;
         this.incompatiblePolicyIds = incompatiblePolicyIds;
         this.canBeRemoved = canBeRemoved;
+        this.tags = tags;
     }
 
     public int getOrder() {
@@ -86,7 +101,8 @@ public class FactionPolicySpec {
     public void setPlugin(String plugin) {
         this.plugin = plugin;
     }
-    public static FactionPolicySpec createSpecFromJson(JSONObject obj)  {
+
+    public static FactionPolicySpec createSpecFromJson(JSONObject obj) {
         try {
             String id = obj.getString("id");
             if (id == null || id.isEmpty()) return null;
@@ -94,24 +110,28 @@ public class FactionPolicySpec {
             int order = obj.getInt("order");
             String plugin = obj.getString("plugin");
             boolean canBeRemoved = obj.getBoolean("canBeRemoved");
-            if(!AshMisc.isStringValid(plugin)){
+            if (!AshMisc.isStringValid(plugin)) {
                 plugin = BaseFactionPolicy.class.getName();
             }
-            Set<String> incompatiblePolicyIds = new HashSet<>(AshMisc.loadEntries(obj.getString("incompatiblePolicies"),","));
-            return new FactionPolicySpec(id, name, FactionPolicyType.valueOf(obj.getString("type")),plugin, order,canBeRemoved,incompatiblePolicyIds);
-        }
-        catch (Exception e) {
+            Set<String> incompatiblePolicyIds = new HashSet<>(AshMisc.loadEntries(obj.getString("incompatiblePolicies"), ","));
+            Set<String> tags = new HashSet<>(AshMisc.loadEntries(obj.getString("tags"), ","));
+
+            return new FactionPolicySpec(id, name, FactionPolicyType.valueOf(obj.getString("type")), plugin, order, canBeRemoved, incompatiblePolicyIds,tags);
+        } catch (Exception e) {
             return null;
         }
 
     }
-    public boolean isIncompatibleWith(String policyId){
+
+    public boolean isIncompatibleWith(String policyId) {
         return incompatiblePolicyIds.contains(policyId);
     }
-    public boolean removeFromIncompatibility(String policyId){
+
+    public boolean removeFromIncompatibility(String policyId) {
         return incompatiblePolicyIds.remove(policyId);
     }
-    public boolean addIncompatibility(String policyId){
+
+    public boolean addIncompatibility(String policyId) {
         return incompatiblePolicyIds.add(policyId);
     }
 }

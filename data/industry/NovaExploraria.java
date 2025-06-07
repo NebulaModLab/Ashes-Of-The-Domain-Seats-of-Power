@@ -31,11 +31,16 @@ public class NovaExploraria extends BaseCapitalIndustry {
     public MutableStat maxAmountOfExpeditions = new MutableStat(1f);
     public MutableStat multiplierOfTechHunterCost = new MutableStat(1f);
     public MutableStat multiplierOfAbyssExpeditions = new MutableStat(1f);
+    public MutableStat multiplierOfSurveyExpeditions = new MutableStat(1f);
     ArrayList<CampaignFleetAPI>techHunterFleets = new ArrayList<>();
     ArrayList<CampaignFleetAPI>abyssDivers = new ArrayList<>();
 
     public ArrayList<CampaignFleetAPI> getTechHunterFleets() {
         return techHunterFleets;
+    }
+
+    public MutableStat getMultiplierOfSurveyExpeditions() {
+        return multiplierOfSurveyExpeditions;
     }
 
     public MutableStat getMultiplierOfAbyssExpeditions() {
@@ -44,6 +49,16 @@ public class NovaExploraria extends BaseCapitalIndustry {
 
     public ArrayList<CampaignFleetAPI> getAbyssDivers() {
         return abyssDivers;
+    }
+
+    @Override
+    public boolean isAvailableToBuild() {
+        return AoTDFactionManager.getInstance().doesControlCapital()&&AoTDFactionManager.getInstance().getCapitalMarket().getId().equals(market.getId());
+    }
+
+    @Override
+    public boolean showWhenUnavailable() {
+        return false;
     }
 
     @Override
@@ -69,8 +84,8 @@ public class NovaExploraria extends BaseCapitalIndustry {
     public static boolean canDoAbyssDiving(){
         return Global.getSector().getMemoryWithoutUpdate().is("$aotd_nova_exploraria_update_2",true);
     }
-    public static void setCanDoAbyssDiving(){
-        Global.getSector().getMemoryWithoutUpdate().set("$aotd_nova_exploraria_update_2",true);
+    public static void setCanDoAbyssDiving(boolean can){
+        Global.getSector().getMemoryWithoutUpdate().set("$aotd_nova_exploraria_update_2",can);
     }
     public static void setCanDoInifniteTechmining(){
          Global.getSector().getMemoryWithoutUpdate().set("$aotd_nova_exploraria_update_1",true);

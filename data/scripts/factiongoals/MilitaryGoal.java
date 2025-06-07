@@ -39,8 +39,8 @@ public class MilitaryGoal extends BaseFactionGoal{
         }
         if(id.equals("goal_3")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"All stations will regain combat readiness much quicker", pad);
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain access to new capital building : Enforcer HQ: they will hunt all luddic path bases and pirate bases, that affect our colonies.", pad);
-
+//            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain access to new capital building : Enforcer HQ: they will hunt all luddic path bases and pirate bases, that affect our colonies.", pad);
+        //Need to wait for sprite
         }
         if(id.equals("goal_4")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Full Surveillance", pad);

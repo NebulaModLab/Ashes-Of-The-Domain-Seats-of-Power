@@ -9,6 +9,7 @@ import java.awt.*;
 
 public class DetailedFactionPolicyTooltip implements TooltipMakerAPI.TooltipCreator {
     BaseFactionPolicy policy;
+    public static float width = 450;
 
     public DetailedFactionPolicyTooltip(BaseFactionPolicy policy) {
         this.policy = policy;
@@ -21,7 +22,7 @@ public class DetailedFactionPolicyTooltip implements TooltipMakerAPI.TooltipCrea
 
     @Override
     public float getTooltipWidth(Object tooltipParam) {
-        return 450;
+        return width;
     }
 
     @Override

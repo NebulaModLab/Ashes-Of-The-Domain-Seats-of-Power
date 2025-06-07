@@ -15,6 +15,9 @@ public  class BaseFactionPolicy {
         return daysTillPlaced;
     }
 
+    public String getID(){
+        return specId;
+    }
     public void setSpecId(String specId) {
         this.specId = specId;
     }
@@ -35,9 +38,7 @@ public  class BaseFactionPolicy {
             tooltip.addPara("This policy can't be removed once in effect!",Misc.getNegativeHighlightColor(),3f);
         }
     }
-    public void createEffectSectionForFactionInfoTooltip(TooltipMakerAPI tooltip){
 
-    }
 
     public FactionPolicySpec getSpec(){
         return FactionPolicySpecManager.getSpec(this.specId);
@@ -55,6 +56,12 @@ public  class BaseFactionPolicy {
     }
     public void unapplyPolicy(){
 
+    }
+    public boolean showInUI(){
+        return true;
+    }
+    public boolean canRemovePolicy(){
+        return true;
     }
     public boolean canUsePolicy(){
         return true;

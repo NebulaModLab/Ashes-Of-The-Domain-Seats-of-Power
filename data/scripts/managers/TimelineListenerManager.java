@@ -56,6 +56,8 @@ public class TimelineListenerManager implements EveryFrameScript {
         if (intervalCheck.intervalElapsed()) {
             if(needsResetAfterInterval){
                 needsResetAfterInterval = false;
+                AoTDFactionManager.getInstance().advance(0);
+                Global.getSector().getEconomy().nextStep();
                 pruneAllListeners();
                 transientListeners.addAll(listenersInQueue);
                 listenersInQueue.clear();

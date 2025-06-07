@@ -13,10 +13,34 @@ import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 public class ProsperityGoal extends BaseFactionGoal{
+    public static HashMap<String, HashSet<String>>mapOfMonopolies = new HashMap<>();
+    static {
+        HashSet<String> military = new HashSet<>();
+        military.add(Commodities.HAND_WEAPONS);
+        military.add(Commodities.SHIPS);
+        mapOfMonopolies.put("Military",military);
+
+        military = new HashSet<>();
+        military.add(Commodities.FOOD);
+        mapOfMonopolies.put("Food",military);
+
+        military = new HashSet<>();
+        military.add(Commodities.DRUGS);
+        military.add(Commodities.ORGANS);
+        mapOfMonopolies.put("Underworld",military);
+
+
+        military = new HashSet<>();
+        military.add(Commodities.DOMESTIC_GOODS);
+        military.add(Commodities.LUXURY_GOODS);
+        mapOfMonopolies.put("Consumer goods",military);
+    }
     public ProsperityGoal() {
         super(TimelineEventType.PROSPERITY);
         this.goals.put("goal_1",100);
@@ -72,12 +96,10 @@ public class ProsperityGoal extends BaseFactionGoal{
         }
         if(id.equals("goal_2")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Skilled workforce", pad);
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain 50 Faction XP monthly", pad);
+            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain 100 Faction XP monthly", pad);
         }
         if(id.equals("goal_3")){
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain access to new capital building : Logistic Center - that will sent fleets to worlds to fill missing demand, serving as faction stockpile", pad);
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Promote Tourism", pad);
-
+            tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Corporate Chatters", pad);
         }
         if(id.equals("goal_4")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"For each monopoly you own (Underworld, Agricultural, Military and Consumer Goods) gain distinct bonuses", pad);

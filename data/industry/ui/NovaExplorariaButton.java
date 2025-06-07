@@ -40,7 +40,6 @@ public class NovaExplorariaButton extends BaseCapitalButton {
             TooltipMakerAPI tl = tooltip.beginSubTooltip(width);
             tl.setParaFont(Fonts.ORBITRON_16);
             tl.addPara("Available Exploraria Fleets",0f).setAlignment(Alignment.MID);
-            industry.maxAmountOfExpeditions.modifyFlat("bonus",2);
             LabelAPI label = tl.addPara("%s / %s",5f, Color.ORANGE,industry.getRemainingOnes()+"",industry.getMaxAmountOfExpeditions().getModifiedInt()+"");
             label.setAlignment(Alignment.MID);
             float y = tl.getHeightSoFar()+10;

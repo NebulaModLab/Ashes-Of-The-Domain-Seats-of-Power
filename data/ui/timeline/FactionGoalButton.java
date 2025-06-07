@@ -40,7 +40,7 @@ public class FactionGoalButton implements ExtendUIPanelPlugin {
         tl.addPara(AoTDFactionManager.getStringType(timelineEvent),Misc.getTooltipTitleAndLightHighlightColor(),0f).setAlignment(Alignment.MID);
         tl.setParaFont(Fonts.ORBITRON_16);
         Color[]colors = new Color[]{Color.ORANGE,Color.ORANGE};
-        tl.addPara("%s / %s",5f,colors, AoTDFactionManager.getInstance().getGoalStat(timelineEvent).getModifiedInt()+"",""+ AoTDFactionManager.maxPerCategory).setAlignment(Alignment.MID);
+        tl.addPara("%s / %s",5f,colors, Math.min(AoTDFactionManager.maxPerCategory,AoTDFactionManager.getInstance().getGoalStat(timelineEvent).getModifiedInt())+"",""+ AoTDFactionManager.maxPerCategory).setAlignment(Alignment.MID);
         tooltip.endSubTooltip();
         tooltip.addCustom(tl,0f).getPosition().inTL(5,(height-15)/2-(tl.getHeightSoFar()/2));
         ImageViewer viewer1 = new ImageViewer(contentPanel.getPosition().getWidth(),contentPanel.getPosition().getHeight(),Global.getSettings().getSpriteName("timeline_goal_overlay",timelineEvent.toString()));

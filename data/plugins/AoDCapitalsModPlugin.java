@@ -3,6 +3,7 @@ package data.plugins;
 
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.impl.campaign.ids.Commodities;
 import com.fs.starfarer.api.impl.campaign.ids.Conditions;
 import data.industry.NovaExploraria;
 import data.listeners.ChooseCapitalListener;
@@ -23,11 +24,8 @@ import data.scripts.models.TimelineEventType;
 import data.scripts.timelineevents.military.*;
 import data.scripts.timelineevents.prosperity.*;
 import data.scripts.timelineevents.research_explo.MildConditionEvent;
-import data.scripts.timelineevents.special.FirstPlanetaryShieldEvent;
+import data.scripts.timelineevents.special.*;
 import data.scripts.timelineevents.research_explo.FirstVastRuins;
-import data.scripts.timelineevents.special.HypershuntInstallEvent;
-import data.scripts.timelineevents.special.OrbitalShadeEvent;
-import data.scripts.timelineevents.special.PristineNanoforgeEvent;
 import data.scripts.timelineevents.templates.FactionExpansionEvent;
 import data.scripts.timelineevents.templates.GroundDefenceModifierEvent;
 
@@ -55,8 +53,7 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         if(NovaExploraria.getNova()!=null){
             NovaExploraria.getNova().amountOfExpeditions=0;
         }
-        AoTDFactionManager.getInstance().addXP(100000);
-
+        AoTDFactionManager.getInstance().advance(0f);
     }
 
     public void addTransientScripts() {
@@ -88,6 +85,7 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new DefeatingPerseanLeague()));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new TriTachyonDealEvent()));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new SindiranDiktatDefeat()));
+        TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.MISC_EVENT,new MostWanted()));
 
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.FIRST_ITEM,new HypershuntInstallEvent()));
         TimelineListenerManager.getInstance().addNewListener(new MiscEventListener(AoTDSopMemFlags.FIRST_ITEM,new PristineNanoforgeEvent()));

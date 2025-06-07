@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class AoTDFactionManager {
     public ArrayList<BaseFactionPolicy> currentFactionPolicies = new ArrayList<>();
     public HashSet<String> copyOfPolicies = new HashSet<>();
-    public MutableStat availablePolicies = new MutableStat(1f);
+    public MutableStat availablePolicies = new MutableStat(0f);
     public ArrayList<CycleTimelineEvents> cycles = new ArrayList<>();
     public HashMap<TimelineEventType, MutableStat> goalStats = new HashMap<>();
     public HashMap<TimelineEventType, BaseFactionGoal> goalsScripts = new HashMap<>();
@@ -349,10 +349,8 @@ public class AoTDFactionManager {
         for (int i = 1; i < 16; i++) {
             manager.addLevel(i,2000);
         };
-        manager.addIntervalForPolicySlot(2);
-        manager.addIntervalForPolicySlot(5);
+        manager.addIntervalForPolicySlot(1);
         manager.addIntervalForPolicySlot(8);
-        manager.addIntervalForPolicySlot(10);
         manager.addIntervalForPolicySlot(15);
 
         manager.addIntervalForAdditionalAdmin(5);
@@ -360,6 +358,26 @@ public class AoTDFactionManager {
         manager.addIntervalForAdditionalAdmin(15);
         Global.getSector().getPersistentData().put(memKey, manager);
 
+    }
+    public int getNextLevelForPolicySlot(int level) {
+        int effectiveLevel = level+1;
+        int lev = getMaxLevel();
+        for (Integer object : intervalsForEachPolicySlot) {
+            if (object>=effectiveLevel) {
+                return object;
+            }
+        }
+        return lev;
+    }
+    public int getNextLevelForAdminSlot(int level) {
+        int effectiveLevel = level+1;
+        int lev = getMaxLevel();
+        for (Integer object : intervalsForAdditionalAdmin) {
+            if (object>=effectiveLevel) {
+                return object;
+            }
+        }
+        return lev;
     }
     public int getPolicySlotsFromLevel(int level) {
         int amount =0;
@@ -393,9 +411,12 @@ public class AoTDFactionManager {
 
     public void advance(float amount) {
         AoTDFactionCapital.applyToCapital();
+        AoTDFactionCapital.applyPenalties();
         AoTDFactionManager.getInstance().getAvailablePolicies().modifyFlat("aotd_level_bonus", getPolicySlotsFromLevel(getEffectiveLevel()));
         Global.getSector().getPlayerStats().getAdminNumber().modifyFlat("aotd_level_bonus", getAdminsForEachLevel(getEffectiveLevel()),"Faction Experience");
         currentFactionPolicies.forEach(x -> x.advance(amount));
+        currentFactionPolicies.forEach(BaseFactionPolicy::unapplyPolicy);
+        currentFactionPolicies.forEach(BaseFactionPolicy::applyPolicy);
         cycles.forEach(x -> x.getEventsDuringCycle().forEach(y -> y.applyEffects(y.getEventsAffected())));
         goalsScripts.values().forEach(x -> x.advance(amount));
     }
@@ -453,6 +474,7 @@ public class AoTDFactionManager {
     public ArrayList<FactionPolicySpec> getSpecsForAvailableUI() {
         ArrayList<FactionPolicySpec> specs = new ArrayList<>(FactionPolicySpecManager.getFactionPolicySpecs().values());
         specs.removeIf(x -> !canUsePolicyInUI(x.getPlugin()));
+        specs.removeIf(x->x.hasTag("hidden"));
         specs.removeIf(x -> copyOfPolicies.contains(x.getId()));
 
         return specs;
@@ -472,7 +494,7 @@ public class AoTDFactionManager {
         }
 
 
-        return canUse & policy.canUsePolicy() && copyOfPolicies.stream().noneMatch(x -> FactionPolicySpecManager.getSpec(x).getIncompatiblePolicyIds().contains(policy.getSpec().getId()));
+        return canUse & policy.showInUI() && copyOfPolicies.stream().noneMatch(x -> FactionPolicySpecManager.getSpec(x).getIncompatiblePolicyIds().contains(policy.getSpec().getId()));
     }
 
     public static String getStringType(TimelineEventType type) {
@@ -520,7 +542,7 @@ public class AoTDFactionManager {
 
     public static boolean doesHaveMonopolyOverCommodities(int threshold, String... commodities) {
 
-        return Arrays.stream(commodities).allMatch(x ->getMarketSharePercentage(x,Global.getSector().getPlayerFaction()) > threshold);
+        return Arrays.stream(commodities).allMatch(x ->getMarketSharePercentage(x,Global.getSector().getPlayerFaction()) >= threshold);
     }
 
     public static int getMarketSharePercentage(String commodityID,FactionAPI faction) {

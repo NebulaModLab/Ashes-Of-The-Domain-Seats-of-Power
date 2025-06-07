@@ -10,6 +10,7 @@ import data.scripts.managers.AoTDFactionManager;
 import java.util.ArrayList;
 
 public class BaseFactionTimelineEvent {
+    public static int multiplier = 2;
     public int cycle;
     public int day;
     public int month;
@@ -66,9 +67,9 @@ public class BaseFactionTimelineEvent {
 
     public void createPointSection(TooltipMakerAPI tooltip) {
         if (getEventType() == TimelineEventType.UNIQUE) {
-            tooltip.addPara("Gain %s points towards all faction goals!", 5f, AoTDFactionManager.getColorForEvent(getEventType()).brighter(), getPointsForGoal() + "");
+            tooltip.addPara("Gain %s points towards all faction goals!", 5f, AoTDFactionManager.getColorForEvent(getEventType()).brighter(), BaseFactionTimelineEvent.multiplier*getPointsForGoal() + "");
         } else {
-            tooltip.addPara("Gain %s points towards %s", 5f, AoTDFactionManager.getColorForEvent(getEventType()).brighter(), getPointsForGoal() + "", AoTDFactionManager.getStringType(getEventType()));
+            tooltip.addPara("Gain %s points towards %s", 5f, AoTDFactionManager.getColorForEvent(getEventType()).brighter(), BaseFactionTimelineEvent.multiplier*getPointsForGoal() + "", AoTDFactionManager.getStringType(getEventType()));
 
         }
     }
@@ -89,7 +90,7 @@ public class BaseFactionTimelineEvent {
         return existing;
     }
     public void applyEffects(ArrayList<MutableStat> goalStats){
-        goalStats.forEach(x->x.modifyFlat(getID(),getPointsForGoal()));
+        goalStats.forEach(x->x.modifyFlat(getID(),getPointsForGoal()*multiplier));
     }
     public String getID(){
         return this.getClass().getSimpleName();
@@ -102,7 +103,8 @@ public class BaseFactionTimelineEvent {
     public void createIntelEntryForUnlocking() {
         EventOccuredIntel intel = new EventOccuredIntel(this);
         Global.getSector().getIntelManager().addIntel(intel);
-        AoTDFactionManager.getInstance().addXP(getPointsForGoal()*10);
+        intel.endAfterDelay();
+        AoTDFactionManager.getInstance().addXP((int) (BaseFactionTimelineEvent.multiplier*getPointsForGoal()*10));
     }
 
     public int getCycle() {

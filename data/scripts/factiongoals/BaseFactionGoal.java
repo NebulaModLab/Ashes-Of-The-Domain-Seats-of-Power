@@ -22,6 +22,9 @@ public class BaseFactionGoal {
         goals.entrySet().stream().filter(x->x.getValue()<= AoTDFactionManager.getInstance().getGoalStat(this.type).getModifiedInt()).forEach(x->grantedGoals.put(x.getKey(),true));
         grantedGoals.entrySet().stream().filter(Map.Entry::getValue).forEach(x->{grantReward(x.getKey());});
     }
+    public boolean reachedGoal(String id){
+        return grantedGoals.get(id);
+    }
 
     public void createTooltipForSection(String id, TooltipMakerAPI tooltip){
 

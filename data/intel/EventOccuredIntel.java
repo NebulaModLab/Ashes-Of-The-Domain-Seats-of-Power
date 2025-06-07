@@ -39,7 +39,8 @@ public class EventOccuredIntel extends BaseIntelPlugin {
     @Override
     public void createSmallDescription(TooltipMakerAPI info, float width, float height) {
         info.addPara("A new event appeared on timeline!", 5f);
-        info.addPara("XP from event : %s",5f,Color.ORANGE,(event.getPointsForGoal()*10)+"");
+        info.addPara("XP from event : %s",5f,Color.ORANGE,(BaseFactionTimelineEvent.multiplier*event.getPointsForGoal()*10)+"");
+
         addGenericButton(info,width,"Access Faction Timeline",Button_SHIP);
     }
 

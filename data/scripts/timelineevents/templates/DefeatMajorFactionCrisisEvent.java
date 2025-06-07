@@ -18,7 +18,7 @@ public class DefeatMajorFactionCrisisEvent extends BaseFactionTimelineEvent {
 
     @Override
     public int getPointsForGoal() {
-        return 100;
+        return 50;
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.loading.specs.PlanetSpec;
 import data.conditions.AoTDFactionCapital;
 import data.scripts.managers.AoTDFactionManager;
 
@@ -30,7 +31,7 @@ public class ChooseCapitalListener extends BaseIndustryOptionProvider {
         if (isUnsuitable(ind, false)) return null;
 
 
-        if (ind.getId().equals(Industries.POPULATION)&&ind.getMarket().getFaction().isPlayerFaction()&& !AoTDFactionManager.getInstance().didDeclaredCapital()) {
+        if (ind.getId().equals(Industries.POPULATION)&&ind.getMarket().getFaction().isPlayerFaction()&& !AoTDFactionManager.getInstance().didDeclaredCapital()&&ind.getMarket().getSize()>=5) {
 
             List<IndustryOptionData> result = new ArrayList<IndustryOptionData>();
 
@@ -60,7 +61,8 @@ public class ChooseCapitalListener extends BaseIndustryOptionProvider {
                     TooltipMakerAPI info = panel.createUIElement(800, 100, false);
                     info.addSpacer(2f);
                     info.setParaInsigniaLarge();;
-                    info.addPara("Declaring this world as your capital will grant a %s bonus and allow the construction of unique buildings that can only be built on a capital world. Losing this world will cause a -10 Stability penalty across all colonies until the capital is retaken.", 5f,new Color[]{Color.ORANGE,Misc.getNegativeHighlightColor()},"+3 Stability","-10 Stability");
+                    info.addPara("Declaring this world as your capital will grant a %s bonus and allow the construction of unique buildings that can only be built on a capital world. Losing this world will cause a -10 Stability penalty across all colonies until the capital is retaken.", 5f,new Color[]{Color.ORANGE,Misc.getNegativeHighlightColor()},"+3 Stability","-7 Stability");
+
                     panel.addUIElement(info).inTL(0, 0);
                 }
 
@@ -78,6 +80,10 @@ public class ChooseCapitalListener extends BaseIndustryOptionProvider {
                     ind.setSpecialItem(opt.ind.getSpecialItem());
                     ind.setImproved(opt.ind.isImproved());
                     ind.setAICoreId(opt.ind.getAICoreId());
+                    PlanetAPI planet = ind.getMarket().getPlanetEntity();
+                    PlanetSpecAPI spec = planet.getSpec();
+                    ((PlanetSpec) spec).name = "Capital";
+                    planet.applySpecChanges();
 
                     AoTDFactionCapital.applyToCapital();
 

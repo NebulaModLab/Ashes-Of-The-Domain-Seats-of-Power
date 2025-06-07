@@ -71,7 +71,7 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
         buttons.add(tooltipSub.addButton("Population", "pop", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
 //        buttons.add(tooltipSub.addButton("Star Systems", "star", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
        ButtonAPI button =tooltipSub.addButton("Capital Abilities", "colonies", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f);
-       button.setEnabled(AoTDFactionManager.getInstance().doesControlCapital()&& NovaExploraria.getNova()!=null);
+       button.setEnabled(AoTDFactionManager.getInstance().doesControlCapital()&& NovaExploraria.getNova()!=null&&NovaExploraria.getNova().isFunctional());
         buttons.add(button);
         buttons.add(tooltipSub.addButton("Global Market Data", "commodities", Misc.getBasePlayerColor(), Misc.getDarkPlayerColor(), Alignment.MID, CutStyle.TL_BR, contentPanel.getPosition().getWidth() - 10, 30, 10f));
         tooltip.endSubTooltip();

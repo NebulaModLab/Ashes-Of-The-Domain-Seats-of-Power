@@ -3,6 +3,7 @@ package data.scripts.timelineevents.templates;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Commodities;
+import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionTimelineEvent;
 import data.scripts.models.TimelineEventType;
 
@@ -28,9 +29,7 @@ public class MonopolyEvent extends BaseFactionTimelineEvent {
 
     @Override
     public boolean checkForCondition() {
-        MarketAPI market = Global.getSector().getEconomy().getMarketsCopy().get(0);
-
-        return commoditiesForMonopoly.stream().allMatch(x -> market.getCommodityData(x).getCommodityMarketData().getMarketSharePercent(Global.getSector().getPlayerFaction()) > threshold);
+        return AoTDFactionManager.doesHaveMonopolyOverCommodities(threshold,commoditiesForMonopoly.toArray(new String[0]));
 
     }
 }
