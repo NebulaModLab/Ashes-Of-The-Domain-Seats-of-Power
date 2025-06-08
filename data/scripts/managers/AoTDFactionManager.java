@@ -346,16 +346,19 @@ public class AoTDFactionManager {
         manager.goalsScripts.put(TimelineEventType.PROSPERITY, new ProsperityGoal());
         manager.goalsScripts.put(TimelineEventType.RESEARCH_AND_EXPLORATION, new ResearchAndExplorationGoal());
 
-        for (int i = 1; i < 16; i++) {
+        for (int i = 1; i < 9; i++) {
             manager.addLevel(i,2000);
         };
         manager.addIntervalForPolicySlot(1);
+        manager.addIntervalForPolicySlot(3);
+        manager.addIntervalForPolicySlot(5);
         manager.addIntervalForPolicySlot(8);
-        manager.addIntervalForPolicySlot(15);
 
+        manager.addIntervalForAdditionalAdmin(1);
+        manager.addIntervalForAdditionalAdmin(3);
         manager.addIntervalForAdditionalAdmin(5);
-        manager.addIntervalForAdditionalAdmin(10);
-        manager.addIntervalForAdditionalAdmin(15);
+        manager.addIntervalForAdditionalAdmin(7);
+        manager.addIntervalForAdditionalAdmin(8);
         Global.getSector().getPersistentData().put(memKey, manager);
 
     }

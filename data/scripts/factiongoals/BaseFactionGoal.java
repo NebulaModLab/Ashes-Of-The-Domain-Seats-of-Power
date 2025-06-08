@@ -10,6 +10,7 @@ public class BaseFactionGoal {
     TimelineEventType type;
     public LinkedHashMap<String,Integer> goals = new LinkedHashMap<>();
     public HashMap<String,Boolean>grantedGoals = new HashMap<>();
+    public HashMap<String,Boolean>grantedRewards = new HashMap<>();
     public void createTooltip(TooltipMakerAPI tooltip){
     }
     public void grantReward(String id){

@@ -39,6 +39,11 @@ public class AILegalization extends BaseFactionPolicy {
     }
 
     @Override
+    public boolean showInUI() {
+        return AoTDFactionManager.getInstance().getEffectiveLevel()>=5;
+    }
+
+    @Override
     public void createDetailedTooltipDescription(TooltipMakerAPI tooltip) {
         tooltip.addPara("Increase production by %s for each industry with AI core", 5f, Color.ORANGE,"1");
         tooltip.addPara("Increase market's stability by %s and income by %s with AI core admin", 3f, Color.ORANGE,"2","30%");

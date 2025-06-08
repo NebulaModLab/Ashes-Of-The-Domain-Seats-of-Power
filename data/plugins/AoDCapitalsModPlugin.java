@@ -50,8 +50,8 @@ public class AoDCapitalsModPlugin extends BaseModPlugin {
             Global.getSector().getEconomy().getMarketsCopy().forEach(x -> x.getPrimaryEntity().getMemoryWithoutUpdate().set("$aotd_was_colonized", true));
         }
         Global.getSector().getListenerManager().addListener(new ChooseCapitalListener(),true);
-        if(NovaExploraria.getNova()!=null){
-            NovaExploraria.getNova().amountOfExpeditions=0;
+        if(newGame && Global.getSettings().isDevMode()){
+            AoTDFactionManager.getInstance().addXP(100000);
         }
         AoTDFactionManager.getInstance().advance(0f);
     }

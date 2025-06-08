@@ -30,11 +30,10 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
         float pad = 2f;
         if(id.equals("goal_1")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Gain access to Nova Exploraria Industry - That will sent survey teams to specified star systems.", pad);
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Research Grants", pad);
         }
         if(id.equals("goal_2")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Nova Exploraria can now sent 3 fleets on expeditions, instead of 1", pad);
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain 100 Faction XP monthly", pad);
+            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain 400 Faction XP monthly", pad);
         }
         if(id.equals("goal_3")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Nova Exploraria Expeditions can now perform advanced tech-mining operations across the Sector", pad);
@@ -46,7 +45,7 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
 
             tooltip.addPara(BaseIntelPlugin.INDENT+"Gain one time 5000 Faction XP", pad);
             if(Global.getSettings().getModManager().isModEnabled("aotd_vok")){
-                tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock new unique capital building : Persean University", pad);
+//                tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock new unique capital building : Persean University", pad);
             }
         }
     }
@@ -57,7 +56,7 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
             markets.forEach(x->x.getStability().modifyFlat("aotd_prosperity_1",1,"Reached Property Threshold"));
         }
         else if(id.equals("goal_2")){
-            AoTDFactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_research",100);
+            AoTDFactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_research",400);
             if(NovaExploraria.getNova()!=null){
                 NovaExploraria.getNova().getMaxAmountOfExpeditions().modifyFlat("aotd_research_goal",2);
             }
@@ -70,14 +69,20 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
             }
         }
         else if(id.equals("goal_4")){
-            if(!grantedGoals.get(id)){
+            if(!grantedRewards.get(id)){
                 AoTDFactionManager.getInstance().addXP(5000);
             }
 
         }
-        grantedGoals.put(id, true);
+        grantedRewards.put(id,true);
 
     }
+
+    @Override
+    public void advance(float amount) {
+        super.advance(amount);
+    }
+
     @Override
     public void createTooltip(TooltipMakerAPI tooltip) {
         tooltip.setTitleOrbitronVeryLarge();

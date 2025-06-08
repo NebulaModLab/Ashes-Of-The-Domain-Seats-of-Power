@@ -57,9 +57,11 @@ public class FactionXPPanel implements ExtendUIPanelPlugin {
         label = tooltip.addPara("Level : %s",7f,Color.ORANGE,""+ effectiveLevel);
         label.setAlignment(Alignment.MID);
         tooltip.setParaFontOrbitron();
-        label =  tooltip.addPara("Current amount of policy slots : %s",15f,Color.ORANGE,AoTDFactionManager.getInstance().getPolicySlotsFromLevel(AoTDFactionManager.getInstance().getEffectiveLevel())+"");
+        label =  tooltip.addPara("Current amount of policy slots : %s",5f,Color.ORANGE,AoTDFactionManager.getInstance().getPolicySlotsFromLevel(AoTDFactionManager.getInstance().getEffectiveLevel())+"");
         label.setAlignment(Alignment.MID);
         label = tooltip.addPara("Next policy slot will be unlocked at the level : %s",3f,Color.ORANGE,AoTDFactionManager.getInstance().getNextLevelForPolicySlot(AoTDFactionManager.getInstance().getEffectiveLevel())+"");
+        label.setAlignment(Alignment.MID);
+        label = tooltip.addPara("Next admin slot will be unlocked at the level : %s",3f,Color.ORANGE,AoTDFactionManager.getInstance().getNextLevelForAdminSlot(AoTDFactionManager.getInstance().getEffectiveLevel())+"");
         label.setAlignment(Alignment.MID);
 
         panelForUI.addUIElement(tooltip).inTL(0,2f);

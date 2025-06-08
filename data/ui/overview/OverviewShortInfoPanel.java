@@ -40,7 +40,7 @@ public class OverviewShortInfoPanel implements ExtendUIPanelPlugin {
 
         } else if (!AoTDFactionManager.getInstance().didDeclaredCapital()) {
             tooltip.setParaFont(Fonts.ORBITRON_12);
-            tooltip.addPara("No capital selected. Choose one via the colony UI by clicking Population & Infrastructure.", Misc.getTooltipTitleAndLightHighlightColor(), 5f);
+            tooltip.addPara("No capital selected. Choose one via the colony UI by clicking Population & Infrastructure (Min size 5 colony!).", Misc.getTooltipTitleAndLightHighlightColor(), 5f);
             tooltip.addPara("Note: The capital is permanent and cannot be changed later. Losing capital will give heavy de-buffs!", Misc.getTooltipTitleAndLightHighlightColor(), 5f);
 
         }

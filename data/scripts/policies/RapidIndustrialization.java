@@ -10,10 +10,18 @@ import data.scripts.models.TimelineEventType;
 public class RapidIndustrialization extends BaseFactionPolicy {
     @Override
     public void createTooltipDescription(TooltipMakerAPI tooltip) {
-        tooltip.addPara("Increase market upkeep multiplier by %s",0f, Misc.getNegativeHighlightColor(),"3").setAlignment(Alignment.MID);
+        tooltip.addPara("Increase market upkeep multiplier by %s",0f, Misc.getNegativeHighlightColor(),"1.5").setAlignment(Alignment.MID);
         tooltip.addPara("Increase build speed for all industries by %s",0f,Misc.getPositiveHighlightColor(),"50%").setAlignment(Alignment.MID);
 
         super.createTooltipDescription(tooltip);
+    }
+
+    @Override
+    public void createDetailedTooltipDescription(TooltipMakerAPI tooltip) {
+        tooltip.addPara("Increase market upkeep multiplier by %s",0f, Misc.getNegativeHighlightColor(),"1.5");
+        tooltip.addPara("Increase build speed for all industries by %s",0f,Misc.getPositiveHighlightColor(),"50%");
+
+        super.createDetailedTooltipDescription(tooltip);
     }
 
     @Override
@@ -25,12 +33,12 @@ public class RapidIndustrialization extends BaseFactionPolicy {
 
     @Override
     public void applyPolicy() {
-       AoTDFactionManager.getMarketsUnderPlayer().forEach(x->x.getUpkeepMult().modifyFlat(getID(),3,"Rapid industrialization"));
+       AoTDFactionManager.getMarketsUnderPlayer().forEach(x->x.getUpkeepMult().modifyMult(getID(),1.5f,"Rapid industrialization"));
     }
 
     @Override
     public void unapplyPolicy() {
-        AoTDFactionManager.getMarketsUnderPlayer().forEach(x->x.getUpkeepMult().unmodifyFlat(getID()));
+        AoTDFactionManager.getMarketsUnderPlayer().forEach(x->x.getUpkeepMult().unmodifyMult(getID()));
 
     }
 

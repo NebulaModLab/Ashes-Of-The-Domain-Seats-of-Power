@@ -45,6 +45,7 @@ public class FactionPanel implements CustomUIPanelPlugin {
         this.mainPanel = mainPanel;
         renderer = new UILinesRenderer(0f);
         this.panelForPlugins = mainPanel.createCustomPanel(mainPanel.getPosition().getWidth(), mainPanel.getPosition().getHeight() - 45, null);
+        AoTDFactionManager.getInstance().advance(0f);
         if (!AshMisc.isStringValid(panelToShowcase)) {
             panelToShowcase = "timeline";
         }

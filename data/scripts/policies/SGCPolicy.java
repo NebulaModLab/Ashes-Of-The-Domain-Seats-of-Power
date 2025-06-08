@@ -13,6 +13,7 @@ import com.fs.starfarer.api.util.Misc;
 import data.factors.SGCPolicyFactor;
 import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionPolicy;
+import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
 
@@ -62,7 +63,10 @@ public class SGCPolicy extends BaseFactionPolicy {
         }
 
     }
-
+    @Override
+    public boolean showInUI() {
+        return AoTDFactionManager.getInstance().getScriptForGoal(TimelineEventType.MILITARY).reachedGoal("goal_1");
+    }
     @Override
     public void applyPolicy() {
         if(HostileActivityEventIntel.get()!=null) {

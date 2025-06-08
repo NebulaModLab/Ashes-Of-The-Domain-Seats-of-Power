@@ -69,13 +69,26 @@ public class FactionAvailablePoliciesListPanel extends FactionCurrentPoliciesLis
 
         tooltipPanel.addUIElement(tooltip).inTL(0, 0);
         headerPanel.addUIElement(tooltipHeader).inTL(0, 0);
+        if(tooltip.getExternalScroller()!=null){
+            if(tooltip.getHeightSoFar()>=tooltipPanel.getPosition().getHeight()){
+                if((tooltip.getHeightSoFar()-tooltipPanel.getPosition().getHeight())-offset<=0){
+                    offset = tooltip.getHeightSoFar()-tooltipPanel.getPosition().getHeight();
+                }
+            }
 
+            tooltip.getExternalScroller().setYOffset(offset);
+        }
         mainPanel.addComponent(tooltipPanel).inTL(0, 30);
         mainPanel.addComponent(headerPanel).inTL(0, 0);
     }
 
     @Override
     public void advance(float amount) {
+        if (tooltip != null) {
+            if (tooltip.getExternalScroller() != null) {
+                offset = tooltip.getExternalScroller().getYOffset();
+            }
+        }
         for (PolicyPanel panel : panels) {
             if(panel.getButton().isChecked()){
                 panel.getButton().setChecked(false);

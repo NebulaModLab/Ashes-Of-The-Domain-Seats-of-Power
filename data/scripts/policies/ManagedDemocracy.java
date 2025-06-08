@@ -16,6 +16,7 @@ import com.fs.starfarer.api.util.Misc;
 import data.plugins.AoTDSopMisc;
 import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionPolicy;
+import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,7 +35,10 @@ public class ManagedDemocracy extends BaseFactionPolicy implements EconomyTickLi
 
         super.createTooltipDescription(tooltip);
     }
-
+    @Override
+    public boolean showInUI() {
+        return AoTDFactionManager.getInstance().getScriptForGoal(TimelineEventType.MILITARY).reachedGoal("goal_2");
+    }
     @Override
     public void createDetailedTooltipDescription(TooltipMakerAPI tooltip) {
         tooltip.addPara("Increase defence multiplier by %s",5f, Color.ORANGE,"1.5");

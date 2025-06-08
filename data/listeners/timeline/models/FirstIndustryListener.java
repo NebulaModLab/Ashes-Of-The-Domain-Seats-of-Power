@@ -26,9 +26,10 @@ public class FirstIndustryListener extends BaseOneTimeListener {
     @Override
     public void advanceImpl(float amount) {
         AoTDFactionManager.getMarketsUnderPlayer().stream()
-                .filter(x->x.hasIndustry(industryID))
+                .filter(x->x.hasIndustry(industryID)&&x.getIndustry(industryID).isFunctional())
                 .findFirst()
                 .ifPresent(x -> {
+                    
                     if(this.event==null){
                         event = new FirstIndustryEvent(industryID,x.getPrimaryEntity().getId());
                     }

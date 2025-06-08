@@ -12,6 +12,7 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.BaseFactionPolicy;
+import data.scripts.models.TimelineEventType;
 import org.lazywizard.lazylib.MathUtils;
 
 import java.awt.*;
@@ -22,7 +23,7 @@ public class FullSurveillance extends BaseFactionPolicy implements EconomyTickLi
     public void createTooltipDescription(TooltipMakerAPI tooltip) {
         tooltip.addPara("Every month",0f).setAlignment(Alignment.MID);
         tooltip.addPara("Reveal Luddic Path and Pirate bases, that are influencing your colonies",0f).setAlignment(Alignment.MID);
-        tooltip.addPara("Lowers stability by %s",0f, Misc.getNegativeHighlightColor(),"5").setAlignment(Alignment.MID);
+        tooltip.addPara("Lowers stability by %s",0f, Misc.getNegativeHighlightColor(),"3").setAlignment(Alignment.MID);
         super.createTooltipDescription(tooltip);
     }
 
@@ -31,10 +32,13 @@ public class FullSurveillance extends BaseFactionPolicy implements EconomyTickLi
         tooltip.addPara("Every month",5f);
         tooltip.addPara("Reveal Luddic Path and Pirate bases, that are influencing your colonies",3f);
         tooltip.addPara("Can reveal up to from %s to %s hostile bases each month",5f,Color.ORANGE,"1","4");
-        tooltip.addPara("Lowers stability by %s",3f, Misc.getNegativeHighlightColor(),"5");
+        tooltip.addPara("Lowers stability by %s",3f, Misc.getNegativeHighlightColor(),"3");
         super.createDetailedTooltipDescription(tooltip);
     }
-
+    @Override
+    public boolean showInUI() {
+        return AoTDFactionManager.getInstance().getScriptForGoal(TimelineEventType.PROSPERITY).reachedGoal("goal_4");
+    }
     @Override
     public void applyPolicyEffectAfterChangeInUI(boolean removing) {
         if(removing){
@@ -50,7 +54,7 @@ public class FullSurveillance extends BaseFactionPolicy implements EconomyTickLi
 
     @Override
     public void applyPolicy() {
-        AoTDFactionManager.getMarketsUnderPlayer().forEach(x->x.getStability().modifyFlat(getID(),-5,"Full Surveillance"));
+        AoTDFactionManager.getMarketsUnderPlayer().forEach(x->x.getStability().modifyFlat(getID(),-3,"Full Surveillance"));
     }
 
     @Override

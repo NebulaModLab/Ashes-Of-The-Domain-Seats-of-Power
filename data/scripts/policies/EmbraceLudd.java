@@ -40,8 +40,11 @@ public class EmbraceLudd extends BaseFactionPolicy {
 
         super.createDetailedTooltipDescription(tooltip);
     }
-
     @Override
+    public boolean showInUI() {
+        return AoTDFactionManager.getInstance().getEffectiveLevel() >= 5;
+    }
+        @Override
     public void applyPolicy() {
         AoTDFactionManager.getMarketsUnderPlayer().forEach(x->{
             if(!x.hasCondition("aotd_followers_ludd")){

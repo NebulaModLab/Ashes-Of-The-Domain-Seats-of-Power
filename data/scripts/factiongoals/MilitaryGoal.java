@@ -31,14 +31,14 @@ public class MilitaryGoal extends BaseFactionGoal{
         float pad = 2f;
         if(id.equals("goal_1")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Services Guarantees Citizenship", pad);
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Military Academies", pad);
         }
         if(id.equals("goal_2")){
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Increase ground defence modifier of planet by 1.5", pad);
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain 150 Faction XP monthly", pad);
+            tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Managed Democracy", pad);
+            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain 300 Faction XP monthly", pad);
         }
         if(id.equals("goal_3")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"All stations will regain combat readiness much quicker", pad);
+            tooltip.addPara(BaseIntelPlugin.INDENT+"Increase ground defence modifier of planet by 1.5", pad);
 //            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain access to new capital building : Enforcer HQ: they will hunt all luddic path bases and pirate bases, that affect our colonies.", pad);
         //Need to wait for sprite
         }
@@ -51,34 +51,22 @@ public class MilitaryGoal extends BaseFactionGoal{
     public void grantReward(String id) {
         List<MarketAPI> markets = AoTDFactionManager.getMarketsUnderPlayer();
         if(id.equals("goal_1")){
-            markets.forEach(x->x.getStability().modifyFlat("aotd_prosperity_1",1,"Reached Property Threshold"));
         }
         else if(id.equals("goal_2")){
-            AoTDFactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_military",50);
+            markets.forEach(x->x.getStats().getDynamic().getMod(Stats.GROUND_DEFENSES_MOD).modifyMult("aotd_military_goal_2",1.5f,"Reached Military Threshold"));
+
+            AoTDFactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_military",300);
         }
         else if(id.equals("goal_3")){
-            Global.getSector().getMemoryWithoutUpdate().set("$aotd_logistic_unlocked",true);
+
         }
         else if(id.equals("goal_4")){
-            if(AoTDFactionManager.doesHaveMonopolyOverCommodities(30, Commodities.FOOD)){
-                markets.forEach(x->x.getStability().modifyFlat("aotd_monopoly_food",2,"Monopoly over Food"));
+            if(!grantedRewards.get(id)){
+                AoTDFactionManager.getInstance().addXP(10000);
             }
-            else{
-                markets.forEach(x->{x.getStability().unmodifyFlat("aotd_monopoly_food");});
-            }
-            if(AoTDFactionManager.doesHaveMonopolyOverCommodities(30, Commodities.DRUGS,Commodities.ORGANS)){
-                Global.getSector().getPlayerStats().getDynamic().getStat(
-                        Stats.getCommodityExportCreditsMultId(Commodities.DRUGS)).modifyMult("aotd_monopoly_underworld", 1f + 0.5f,"Concierge of Crime");
-                Global.getSector().getPlayerStats().getDynamic().getStat(
-                        Stats.getCommodityExportCreditsMultId(Commodities.ORGANS)).modifyMult("aotd_monopoly_underworld", 1f + 0.5f,"Concierge of Crime");
-            }
-            else{
-                Global.getSector().getPlayerStats().getDynamic().getStat(
-                        Stats.getCommodityExportCreditsMultId(Commodities.DRUGS)).unmodifyMult("aotd_monopoly_underworld");
-                Global.getSector().getPlayerStats().getDynamic().getStat(
-                        Stats.getCommodityExportCreditsMultId(Commodities.ORGANS)).unmodifyMult("aotd_monopoly_underworld");
-            }
+
         }
+        grantedRewards.put(id,true);
 
     }
     @Override

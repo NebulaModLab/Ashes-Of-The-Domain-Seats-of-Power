@@ -58,7 +58,7 @@ public class ProsperityGoal extends BaseFactionGoal{
             markets.forEach(x->x.getStability().modifyFlat("aotd_prosperity_1",1,"Reached Property Threshold"));
         }
         else if(id.equals("goal_2")){
-            AoTDFactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_prosperity",50);
+            AoTDFactionManager.getInstance().getXpPointsPerMonth().modifyFlat("aotd_prosperity",200);
 
         }
         else if(id.equals("goal_3")){
@@ -83,8 +83,12 @@ public class ProsperityGoal extends BaseFactionGoal{
                 Global.getSector().getPlayerStats().getDynamic().getStat(
                         Stats.getCommodityExportCreditsMultId(Commodities.ORGANS)).unmodifyMult("aotd_monopoly_underworld");
             }
-        }
+            if(!grantedRewards.get(id)){
+                AoTDFactionManager.getInstance().addXP(7000);
+            }
 
+        }
+        grantedRewards.put(id,true);
     }
 
     @Override
@@ -95,8 +99,7 @@ public class ProsperityGoal extends BaseFactionGoal{
             tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Rapid Industrialisation", pad);
         }
         if(id.equals("goal_2")){
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Skilled workforce", pad);
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain 100 Faction XP monthly", pad);
+            tooltip.addPara(BaseIntelPlugin.INDENT+"Gain 200 Faction XP monthly", pad);
         }
         if(id.equals("goal_3")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Unlock policy : Corporate Chatters", pad);
