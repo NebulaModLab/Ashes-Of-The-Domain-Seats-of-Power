@@ -12,6 +12,7 @@ import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,6 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
         }
         if(id.equals("goal_3")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Nova Exploraria Expeditions can now perform advanced tech-mining operations across the Sector", pad);
-            tooltip.addPara(BaseIntelPlugin.INDENT+"Nova Exploraria Expedition cost is reduced by 50%", pad);
         }
         if(id.equals("goal_4")){
             tooltip.addPara(BaseIntelPlugin.INDENT+"Increase chance of finding colony items during tech mining operations done by Nova Exploraria", pad);
@@ -51,6 +51,8 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
     }
     @Override
     public void grantReward(String id) {
+        if(grantedRewards==null)grantedRewards = new HashMap<>();
+
         List<MarketAPI> markets = AoTDFactionManager.getMarketsUnderPlayer();
         if(id.equals("goal_1")){
             markets.forEach(x->x.getStability().modifyFlat("aotd_prosperity_1",1,"Reached Property Threshold"));
@@ -69,7 +71,7 @@ public class ResearchAndExplorationGoal extends BaseFactionGoal{
             }
         }
         else if(id.equals("goal_4")){
-            if(!grantedRewards.get(id)){
+            if(!grantedRewards.containsKey(id)){
                 AoTDFactionManager.getInstance().addXP(5000);
             }
 

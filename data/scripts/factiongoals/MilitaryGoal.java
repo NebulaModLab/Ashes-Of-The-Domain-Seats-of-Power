@@ -13,6 +13,7 @@ import data.scripts.managers.AoTDFactionManager;
 import data.scripts.models.TimelineEventType;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,8 @@ public class MilitaryGoal extends BaseFactionGoal{
     }
     @Override
     public void grantReward(String id) {
+        if(grantedRewards==null)grantedRewards = new HashMap<>();
+
         List<MarketAPI> markets = AoTDFactionManager.getMarketsUnderPlayer();
         if(id.equals("goal_1")){
         }
@@ -61,7 +64,7 @@ public class MilitaryGoal extends BaseFactionGoal{
 
         }
         else if(id.equals("goal_4")){
-            if(!grantedRewards.get(id)){
+            if(!grantedRewards.containsKey(id)){
                 AoTDFactionManager.getInstance().addXP(10000);
             }
 

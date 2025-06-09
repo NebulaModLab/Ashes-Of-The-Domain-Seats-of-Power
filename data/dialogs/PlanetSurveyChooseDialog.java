@@ -3,15 +3,20 @@ package data.dialogs;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.campaign.econ.MonthlyReport;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.campaign.intel.misc.GateHaulerIntel;
 import com.fs.starfarer.api.impl.campaign.rulecmd.missions.GateHaulerCMD;
+import com.fs.starfarer.api.impl.campaign.shared.SharedData;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import data.conditions.AoTDFactionCapital;
 import data.industry.NovaExploraria;
 import data.misc.ReflectionUtilis;
+import data.scripts.managers.AoTDFactionManager;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -43,6 +48,43 @@ public class PlanetSurveyChooseDialog implements InteractionDialogPlugin {
                     public void pickedEntity(SectorEntityToken entity) {
                         dialog.dismiss();
                         StarSystemAPI system = Misc.getStarSystemForAnchor(entity);
+                     ;  MonthlyReport report = SharedData.getData().getCurrentReport();
+                        MonthlyReport.FDNode marketsNode = report.getNode(MonthlyReport.OUTPOSTS);
+                        MonthlyReport.FDNode marketsNode2 = report.getNode(marketsNode,"nova_exploraria");
+                        marketsNode2.mapEntity = AoTDFactionManager.getInstance().getCapitalMarket().getPrimaryEntity();
+                        marketsNode2.name = "Nova Exploraria";
+                        marketsNode2.icon = Global.getSettings().getSpriteName("income_report", "generic_expense");
+                        MonthlyReport.FDNode paymentNode = report.getNode(marketsNode2, "tech");
+                        int reward;
+                        reward = (int) Misc.getDistance(new Vector2f(), entity.getLocationInHyperspace());
+                        //reward *= 1.25f;
+                        reward = 20000 + (reward / 10000) * 10000;
+                        if (reward < 10000) reward = 10000;
+                        int payment = reward;
+                        paymentNode.name = "Tech Hunters Payment";
+                        //paymentNode.custom = MonthlyReport.EXPORTS;
+                        //paymentNode.mapEntity = market.getPrimaryEntity();
+                        paymentNode.upkeep += payment;
+                        paymentNode.tooltipCreator = new TooltipMakerAPI.TooltipCreator() {
+                            @Override
+                            public boolean isTooltipExpandable(Object tooltipParam) {
+                                return false;
+                            }
+
+                            @Override
+                            public float getTooltipWidth(Object tooltipParam) {
+                                return 400;
+                            }
+
+                            @Override
+                            public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
+                                tooltip.addPara("Cost due to recent Survey Team expeditions",5f);
+                            }
+                        };
+                        paymentNode.mapEntity = AoTDFactionManager.getInstance().getCapitalMarket().getPrimaryEntity();
+                        paymentNode.icon = Global.getSettings().getSpriteName("income_report", "generic_expense");
+
+
                         NovaExploraria.getNova().sentExpeditionFleet(system);
                     }
 
@@ -71,7 +113,12 @@ public class PlanetSurveyChooseDialog implements InteractionDialogPlugin {
                     public void createInfoText(TooltipMakerAPI info, SectorEntityToken entity) {
                         int days = 30;
                         info.setParaSmallInsignia();
-                        info.addPara("   Estimated costs of expedition: %s ", 0f, Misc.getHighlightColor(), Misc.getDGSCredits(20000));
+                        int reward;
+                        reward = (int) Misc.getDistance(new Vector2f(), entity.getLocationInHyperspace());
+                        //reward *= 1.25f;
+                        reward = 20000 + (reward / 10000) * 10000;
+                        if (reward < 10000) reward = 10000;
+                        info.addPara("   Estimated costs of expedition: %s ", 0f, Misc.getHighlightColor(), Misc.getDGSCredits(reward));
                     }
 
                     public boolean canConfirmSelection(SectorEntityToken entity) {

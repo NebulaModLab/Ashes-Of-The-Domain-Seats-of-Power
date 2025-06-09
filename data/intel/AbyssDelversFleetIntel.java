@@ -96,10 +96,6 @@ public class AbyssDelversFleetIntel extends BaseIntelPlugin {
                 if(retreat){
                     info.addPara("Abyss Delvers have barley survived journey ",pad );
                     info.addPara("Those who have not lost their sanity, described about weird vessels, that hunted them down one by one in deepest parts of the Abyss",Misc.getNegativeHighlightColor(),opad);
-                    info.addPara("Even when loot was lost, we have gained valuable insight into what lingers in the abyss, making future expeditions safer!",Misc.getPositiveHighlightColor(),opad);
-
-                    info.addPara("Reduces max risk threshold for all abyss expeditions by 10%",Misc.getPositiveHighlightColor(),opad);
-                    info.addPara("Increase cost of Abyss Expeditions by 30%",Misc.getNegativeHighlightColor(),pad);
 
 
                 }

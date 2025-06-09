@@ -61,6 +61,11 @@ public class EventOccuredIntel extends BaseIntelPlugin {
     }
 
     @Override
+    public boolean shouldRemoveIntel() {
+        return isEnding()||isEnded();
+    }
+
+    @Override
     public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui) {
         if(buttonId==Button_SHIP){
             CoreUITrackerScript.setMemFlag(CoreUITrackerScript.getStringForCoreTabFaction());

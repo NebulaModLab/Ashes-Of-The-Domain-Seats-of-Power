@@ -53,6 +53,8 @@ public class ProsperityGoal extends BaseFactionGoal{
 
     @Override
     public void grantReward(String id) {
+        if(grantedRewards==null)grantedRewards = new HashMap<>();
+
         List<MarketAPI> markets = AoTDFactionManager.getMarketsUnderPlayer();
         if(id.equals("goal_1")){
             markets.forEach(x->x.getStability().modifyFlat("aotd_prosperity_1",1,"Reached Property Threshold"));
@@ -83,7 +85,7 @@ public class ProsperityGoal extends BaseFactionGoal{
                 Global.getSector().getPlayerStats().getDynamic().getStat(
                         Stats.getCommodityExportCreditsMultId(Commodities.ORGANS)).unmodifyMult("aotd_monopoly_underworld");
             }
-            if(!grantedRewards.get(id)){
+            if(!grantedRewards.containsKey(id)){
                 AoTDFactionManager.getInstance().addXP(7000);
             }
 
