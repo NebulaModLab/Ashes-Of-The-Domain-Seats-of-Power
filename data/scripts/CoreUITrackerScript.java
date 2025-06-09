@@ -119,8 +119,9 @@ public class CoreUITrackerScript implements EveryFrameScript {
                     tooltip.addPara("In this tab,your empire timeline and can govern your faction by changing policies.",5f);
                 }
             }, tryToGetButtonProd("colonies"), toRemove2.getPosition().getWidth(), Keyboard.KEY_2, false);
+            float x =tryToGetButtonProd("orders").getPosition().getX()-10;
             mainParent.removeComponent(toRemove2);
-            tryToGetButtonProd("income").getPosition().inTL(tryToGetButtonProd("income").getPosition().getX()-10,0);
+            tryToGetButtonProd("income").getPosition().rightOfMid(tryToGetButtonProd("faction"),1f);
             tryToGetButtonProd("faction").setEnabled(!AoTDFactionManager.getMarketsUnderPlayer().isEmpty());
         }
 
