@@ -66,6 +66,7 @@ public class TechHunterDialog extends BaseSliderDialog {
         //paymentNode.custom = MonthlyReport.EXPORTS;
         //paymentNode.mapEntity = market.getPrimaryEntity();
         paymentNode.upkeep += (costPerMonth*currentSegment);
+
         paymentNode.tooltipCreator = new TooltipMakerAPI.TooltipCreator() {
             @Override
             public boolean isTooltipExpandable(Object tooltipParam) {
