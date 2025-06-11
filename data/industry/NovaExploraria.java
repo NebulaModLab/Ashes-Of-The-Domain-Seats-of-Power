@@ -65,6 +65,9 @@ public class NovaExploraria extends BaseCapitalIndustry {
     public void advance(float amount) {
         super.advance(amount);
         cleanupInactiveFleets();
+        if(amountOfExpeditions<=0){
+            amountOfExpeditions = 0;
+        }
     }
     public void cleanupInactiveFleets() {
         techHunterFleets.removeIf(fleet -> fleet == null || fleet.isDespawning()|| !fleet.isAlive());
@@ -101,7 +104,7 @@ public class NovaExploraria extends BaseCapitalIndustry {
     }
     public static void   finishExpedition(){
         if(getNova()!=null){
-            getNova().setAmountOfExpeditions(getNova().getCurrentAmountOfExpeditions()-1);
+            getNova().setAmountOfExpeditions(getNova().amountOfExpeditions-1);
         }
     }
     public  int getCurrentAmountOfExpeditions(){
