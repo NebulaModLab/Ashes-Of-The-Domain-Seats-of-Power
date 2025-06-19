@@ -13,6 +13,7 @@ import com.fs.starfarer.api.impl.campaign.procgen.SalvageEntityGenDataSpec;
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.SalvageEntity;
 import com.fs.starfarer.api.impl.combat.threat.DisposableThreatFleetManager;
 import com.fs.starfarer.api.util.Misc;
+import data.industry.NovaExploraria;
 import data.intel.AbyssDelversFleetIntel;
 import data.intel.TechHunterFleetIntel;
 import org.lazywizard.lazylib.MathUtils;
@@ -61,14 +62,14 @@ public class AbyssDelversFleetRouteManager extends TechHuntersFleetRouteManager 
 
     @Override
     public void reportFleetDespawnedToListener(CampaignFleetAPI fleet, CampaignEventListener.FleetDespawnReason reason, Object param) {
-        if(reason .equals(CampaignEventListener.FleetDespawnReason.DESTROYED_BY_BATTLE)){
+        if(reason.equals(CampaignEventListener.FleetDespawnReason.DESTROYED_BY_BATTLE)){
             intelAbyss.setFinished(true);
             intelAbyss.setSuccessful(false);
             cargo.clear();
             intelAbyss.sendUpdateIfPlayerHasIntel(null,false);
             intelAbyss.endAfterDelay(5f);
-
         }
+
         if(reason.equals(CampaignEventListener.FleetDespawnReason.OTHER)&&param instanceof String && param.equals("rolled_wrong")){
             intelAbyss.setFinished(true);
             intelAbyss.setSuccessful(false);
@@ -76,8 +77,8 @@ public class AbyssDelversFleetRouteManager extends TechHuntersFleetRouteManager 
             intelAbyss.sendUpdateIfPlayerHasIntel(null,false);
 
             intelAbyss.endAfterDelay(5f);
-
         }
+
         if(reason.equals(CampaignEventListener.FleetDespawnReason.REACHED_DESTINATION)){
             intelAbyss.setFinished(true);
             intelAbyss.setSuccessful(true);
@@ -87,6 +88,8 @@ public class AbyssDelversFleetRouteManager extends TechHuntersFleetRouteManager 
             intelAbyss.endAfterDelay(5f);
             cargo.clear();
         }
+
+//        NovaExploraria.finishExpedition();
     }
     @Override
     public void pickWorldForTechMining(boolean ignore) {

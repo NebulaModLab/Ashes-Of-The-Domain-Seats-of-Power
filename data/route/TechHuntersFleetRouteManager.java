@@ -20,6 +20,7 @@ import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.SalvageEntity;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
+import data.industry.NovaExploraria;
 import data.intel.TechHunterFleetIntel;
 import org.lazywizard.lazylib.MathUtils;
 
@@ -88,34 +89,33 @@ public class TechHuntersFleetRouteManager extends RouteFleetAssignmentAI impleme
 
     @Override
     public void reportFleetDespawnedToListener(CampaignFleetAPI fleet, CampaignEventListener.FleetDespawnReason reason, Object param) {
-            if(reason .equals(CampaignEventListener.FleetDespawnReason.DESTROYED_BY_BATTLE)){
-                intel.setFinished(true);
-                intel.setSuccessful(false);
-                cargo.clear();
-                intel.endAfterDelay(5f);
-                intel.sendUpdateIfPlayerHasIntel(null,false);
+        if(reason .equals(CampaignEventListener.FleetDespawnReason.DESTROYED_BY_BATTLE)){
+            intel.setFinished(true);
+            intel.setSuccessful(false);
+            cargo.clear();
+            intel.endAfterDelay(5f);
+            intel.sendUpdateIfPlayerHasIntel(null,false);
+        }
 
+        if(reason.equals(CampaignEventListener.FleetDespawnReason.OTHER)&&param instanceof String && param.equals("rolled_wrong")){
+            intel.setFinished(true);
+            intel.setSuccessful(false);
+            cargo.clear();
+            intel.endAfterDelay(5f);
+            intel.sendUpdateIfPlayerHasIntel(null,false);
+        }
 
-            }
-            if(reason.equals(CampaignEventListener.FleetDespawnReason.OTHER)&&param instanceof String && param.equals("rolled_wrong")){
-                intel.setFinished(true);
-                intel.setSuccessful(false);
-                cargo.clear();
-                intel.endAfterDelay(5f);
-                intel.sendUpdateIfPlayerHasIntel(null,false);
+        if(reason.equals(CampaignEventListener.FleetDespawnReason.REACHED_DESTINATION)){
+            intel.setFinished(true);
+            intel.setSuccessful(true);
+            trueSource.getMarket().getSubmarket(Submarkets.SUBMARKET_STORAGE).getCargo().addAll(cargo);
+            intel.getCargo().addAll(cargo);
+            intel.endAfterDelay(5f);
+            cargo.clear();
+            intel.sendUpdateIfPlayerHasIntel(null,false);
+        }
 
-
-            }
-            if(reason.equals(CampaignEventListener.FleetDespawnReason.REACHED_DESTINATION)){
-                intel.setFinished(true);
-                intel.setSuccessful(true);
-                trueSource.getMarket().getSubmarket(Submarkets.SUBMARKET_STORAGE).getCargo().addAll(cargo);
-                intel.getCargo().addAll(cargo);
-                intel.endAfterDelay(5f);
-                cargo.clear();
-                intel.sendUpdateIfPlayerHasIntel(null,false);
-
-            }
+//        NovaExploraria.finishExpedition();
     }
 
     @Override
